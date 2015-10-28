@@ -51,7 +51,7 @@ public class JSFile implements IScriptable, IJavaScriptType
 
 	public JSFile(IUploadData upload)
 	{
-		if (upload.getFile() != null)
+		if (upload.getFile() != null && upload.getFile().getName().equals(upload.getName()))
 		{
 			this.file = new LocalFile(upload.getFile());
 		}

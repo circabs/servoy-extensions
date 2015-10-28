@@ -116,7 +116,7 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	{
 		FileSystemView fsf = FileSystemView.getFileSystemView();
 		// in Unix-based systems, the root directory is "/", not ~<user>/Desktop => old implementation not correct
-		// in Windows the root directory is indeed the desktop directory, but it's also <user.home>\Desktop 
+		// in Windows the root directory is indeed the desktop directory, but it's also <user.home>\Desktop
 		File homeDir = fsf.getHomeDirectory();
 		File desktopDir = new File(homeDir.getAbsolutePath() + File.separator + "Desktop"); //$NON-NLS-1$
 		if (desktopDir != null && desktopDir.isDirectory())
@@ -190,7 +190,7 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	 * application.output('is dir: ' + f.isDirectory());
 	 * application.output('is file: ' + f.isFile());
 	 * application.output('path: ' + f.getAbsolutePath());
-	 * 
+	 *
 	 * // This allows mutliple selection of files, using previous dir and the same filter as above. This also casts the result to the JSFile type using JSDoc.
 	 * // if filters are specified, "all file" filter will not show up unless "*" filter is present
 	 * /** @type {JSFile[]} *&#47;
@@ -204,7 +204,11 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	 * }
 	 * //for the web and NG you have to give a callback function that has a JSFile array as its first argument (also works in smart), only multi select and the title are used in the webclient, others are ignored
 	 * plugins.file.showFileOpenDialog(null,null,false,new Array("JPG and GIF", "jpg", "gif"),mycallbackfunction,'Select some nice files')
-	 * 
+	 *
+	 * When handling big files please look at the admin page properties: "servoy.ng_web_client.tempfile.threshold" and "servoy.ng_web_client.temp.uploadir", so that big files are mapped to temp files and saved to a good temp dir
+	 * so that in the callback method you can try to rename the temp generated file to something on the filesystem with a specific name. This way there is no need to stream anything again on the server side
+	 * (or access the bytes which will load the big file completely in memory)
+	 *
 	 */
 	@ServoyClientSupport(ng = false, wc = false, sc = true)
 	public Object js_showFileOpenDialog()
@@ -215,7 +219,7 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	/**
 	 * @clonedesc js_showFileOpenDialog()
 	 * @sampleas js_showFileOpenDialog()
-	 * 
+	 *
 	 * @param callbackfunction A function that takes the (JSFile) array of the selected files as first argument
 	 */
 	@ServoyClientSupport(ng = true, wc = true, sc = true)
@@ -227,8 +231,8 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	/**
 	 * @clonedesc js_showFileOpenDialog()
 	 * @sampleas js_showFileOpenDialog()
-	 * 
-	 * @param selectionMode 0=both,1=Files,2=Dirs 
+	 *
+	 * @param selectionMode 0=both,1=Files,2=Dirs
 	 */
 	@ServoyClientSupport(ng = false, wc = false, sc = true)
 	public Object js_showFileOpenDialog(Number selectionMode)
@@ -239,7 +243,7 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	/**
 	 * @clonedesc js_showFileOpenDialog()
 	 * @sampleas js_showFileOpenDialog()
-	 * 
+	 *
 	 * @param selectionMode 0=both,1=Files,2=Dirs
 	 * @param callbackfunction A function that takes the (JSFile) array of the selected files as first argument
 	 */
@@ -252,9 +256,9 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	/**
 	 * @clonedesc js_showFileOpenDialog()
 	 * @sampleas js_showFileOpenDialog()
-	 * 
+	 *
 	 * @param selectionMode 0=both,1=Files,2=Dirs
-	 * @param startDirectory JSFile instance of default folder; null=default/previous 
+	 * @param startDirectory JSFile instance of default folder; null=default/previous
 	 */
 	@ServoyClientSupport(ng = false, wc = false, sc = true)
 	public Object js_showFileOpenDialog(Number selectionMode, JSFile startDirectory)
@@ -265,9 +269,9 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	/**
 	 * @clonedesc js_showFileOpenDialog()
 	 * @sampleas js_showFileOpenDialog()
-	 * 
+	 *
 	 * @param selectionMode 0=both,1=Files,2=Dirs
-	 * @param startDirectory Path to default folder; null=default/previous 
+	 * @param startDirectory Path to default folder; null=default/previous
 	 */
 	@ServoyClientSupport(ng = false, wc = false, sc = true)
 	public Object js_showFileOpenDialog(Number selectionMode, String startDirectory)
@@ -278,9 +282,9 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	/**
 	 * @clonedesc js_showFileOpenDialog()
 	 * @sampleas js_showFileOpenDialog()
-	 * 
+	 *
 	 * @param selectionMode 0=both,1=Files,2=Dirs
-	 * @param startDirectory JSFile instance of default folder,null=default/previous 
+	 * @param startDirectory JSFile instance of default folder,null=default/previous
 	 * @param callbackfunction A function that takes the (JSFile) array of the selected files as first argument
 	 */
 	@ServoyClientSupport(ng = true, wc = true, sc = true)
@@ -292,9 +296,9 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	/**
 	 * @clonedesc js_showFileOpenDialog()
 	 * @sampleas js_showFileOpenDialog()
-	 * 
+	 *
 	 * @param selectionMode 0=both,1=Files,2=Dirs
-	 * @param startDirectory Path to default folder,null=default/previous 
+	 * @param startDirectory Path to default folder,null=default/previous
 	 * @param callbackfunction A function that takes the (JSFile) array of the selected files as first argument
 	 */
 	@ServoyClientSupport(ng = true, wc = true, sc = true)
@@ -306,10 +310,10 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	/**
 	 * @clonedesc js_showFileOpenDialog()
 	 * @sampleas js_showFileOpenDialog()
-	 * 
+	 *
 	 * @param selectionMode 0=both,1=Files,2=Dirs
 	 * @param startDirectory JSFile instance of default folder, null=default/previous
-	 * @param multiselect true/false 
+	 * @param multiselect true/false
 	 */
 	@ServoyClientSupport(ng = false, wc = false, sc = true)
 	public Object js_showFileOpenDialog(Number selectionMode, JSFile startDirectory, Boolean multiselect)
@@ -320,10 +324,10 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	/**
 	 * @clonedesc js_showFileOpenDialog()
 	 * @sampleas js_showFileOpenDialog()
-	 * 
+	 *
 	 * @param selectionMode 0=both,1=Files,2=Dirs
 	 * @param startDirectory Path to default folder, null=default/previous
-	 * @param multiselect true/false 
+	 * @param multiselect true/false
 	 */
 	@ServoyClientSupport(ng = false, wc = false, sc = true)
 	public Object js_showFileOpenDialog(Number selectionMode, String startDirectory, Boolean multiselect)
@@ -334,10 +338,10 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	/**
 	 * @clonedesc js_showFileOpenDialog()
 	 * @sampleas js_showFileOpenDialog()
-	 * 
+	 *
 	 * @param selectionMode 0=both,1=Files,2=Dirs
 	 * @param startDirectory JSFile instance of default folder,null=default/previous
-	 * @param multiselect true/false 
+	 * @param multiselect true/false
 	 * @param callbackfunction A function that takes the (JSFile) array of the selected files as first argument
 	 */
 	@ServoyClientSupport(ng = true, wc = true, sc = true)
@@ -349,10 +353,10 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	/**
 	 * @clonedesc js_showFileOpenDialog()
 	 * @sampleas js_showFileOpenDialog()
-	 * 
+	 *
 	 * @param selectionMode 0=both,1=Files,2=Dirs
 	 * @param startDirectory Path to default folder,null=default/previous
-	 * @param multiselect true/false 
+	 * @param multiselect true/false
 	 * @param callbackfunction A function that takes the (JSFile) array of the selected files as first argument
 	 */
 	@ServoyClientSupport(ng = true, wc = true, sc = true)
@@ -364,10 +368,10 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	/**
 	 * @clonedesc js_showFileOpenDialog()
 	 * @sampleas js_showFileOpenDialog()
-	 * 
+	 *
 	 * @param selectionMode 0=both,1=Files,2=Dirs
 	 * @param startDirectory JSFile instance of default folder,null=default/previous
-	 * @param multiselect true/false 
+	 * @param multiselect true/false
 	 * @param filter A filter or array of filters on the folder files.
 	 */
 	@ServoyClientSupport(ng = false, wc = false, sc = true)
@@ -379,10 +383,10 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	/**
 	 * @clonedesc js_showFileOpenDialog()
 	 * @sampleas js_showFileOpenDialog()
-	 * 
+	 *
 	 * @param selectionMode 0=both,1=Files,2=Dirs
 	 * @param startDirectory Path to default folder,null=default/previous
-	 * @param multiselect true/false 
+	 * @param multiselect true/false
 	 * @param filter A filter or array of filters on the folder files.
 	 */
 	@ServoyClientSupport(ng = false, wc = false, sc = true)
@@ -395,7 +399,7 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	/**
 	 * @clonedesc js_showFileOpenDialog()
 	 * @sampleas js_showFileOpenDialog()
-	 * 
+	 *
 	 * @param selectionMode 0=both,1=Files,2=Dirs
 	 * @param startDirectory JSFile instance of default folder,null=default/previous
 	 * @param multiselect true/false
@@ -411,7 +415,7 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	/**
 	 * @clonedesc js_showFileOpenDialog()
 	 * @sampleas js_showFileOpenDialog()
-	 * 
+	 *
 	 * @param selectionMode 0=both,1=Files,2=Dirs
 	 * @param startDirectory Path to default folder,null=default/previous
 	 * @param multiselect true/false
@@ -427,7 +431,7 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	/**
 	 * @clonedesc js_showFileOpenDialog()
 	 * @sampleas js_showFileOpenDialog()
-	 * 
+	 *
 	 * @param selectionMode 0=both,1=Files,2=Dirs
 	 * @param startDirectory JSFile instance of default folder, null=default/previous
 	 * @param multiselect true/false
@@ -436,7 +440,8 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	 * @param title The tile of the dialog
 	 */
 	@ServoyClientSupport(ng = true, wc = true, sc = true)
-	public Object js_showFileOpenDialog(Number selectionMode, JSFile startDirectory, Boolean multiselect, Object filter, Function callbackfunction, String title)
+	public Object js_showFileOpenDialog(Number selectionMode, JSFile startDirectory, Boolean multiselect, Object filter, Function callbackfunction,
+		String title)
 	{
 		return showFileOpenDialog(selectionMode, startDirectory, multiselect, filter, callbackfunction, title);
 	}
@@ -444,7 +449,7 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	/**
 	 * @clonedesc js_showFileOpenDialog()
 	 * @sampleas js_showFileOpenDialog()
-	 * 
+	 *
 	 * @param selectionMode 0=both,1=Files,2=Dirs
 	 * @param startDirectory Path to default folder, null=default/previous
 	 * @param multiselect true/false
@@ -453,7 +458,8 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	 * @param title The tile of the dialog
 	 */
 	@ServoyClientSupport(ng = true, wc = true, sc = true)
-	public Object js_showFileOpenDialog(Number selectionMode, String startDirectory, Boolean multiselect, Object filter, Function callbackfunction, String title)
+	public Object js_showFileOpenDialog(Number selectionMode, String startDirectory, Boolean multiselect, Object filter, Function callbackfunction,
+		String title)
 	{
 		return showFileOpenDialog(selectionMode, startDirectory, multiselect, filter, callbackfunction, title);
 	}
@@ -518,7 +524,7 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 
 				public void onSubmit()
 				{
-					// submit without uploaded files 
+					// submit without uploaded files
 				}
 			};
 			access.showFileOpenDialog(callback, file != null ? file.getAbsolutePath() : null, _multiselect, filterA, selection, title);
@@ -563,9 +569,9 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	 *
 	 * @param targetFolder JSFile object.
 	 * @param fileFilter Filter or array of filters for files in folder.
-	 * @param fileOption 1=files, 2=dirs 
-	 * @param visibleOption 1=visible, 2=nonvisible 
-	 * @param lockedOption 1=locked, 2=nonlocked 
+	 * @param fileOption 1=files, 2=dirs
+	 * @param visibleOption 1=visible, 2=nonvisible
+	 * @param lockedOption 1=locked, 2=nonlocked
 	 */
 	public JSFile[] js_getFolderContents(JSFile targetFolder, Object fileFilter, final Number fileOption, final Number visibleOption, final Number lockedOption)
 	{
@@ -578,9 +584,9 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	 *
 	 * @param targetFolder File path.
 	 * @param fileFilter Filter or array of filters for files in folder.
-	 * @param fileOption 1=files, 2=dirs 
-	 * @param visibleOption 1=visible, 2=nonvisible 
-	 * @param lockedOption 1=locked, 2=nonlocked 
+	 * @param fileOption 1=files, 2=dirs
+	 * @param visibleOption 1=visible, 2=nonvisible
+	 * @param lockedOption 1=locked, 2=nonlocked
 	 */
 	public JSFile[] js_getFolderContents(String targetFolder, Object fileFilter, final Number fileOption, final Number visibleOption, final Number lockedOption)
 	{
@@ -664,11 +670,11 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	/**
 	 * @clonedesc js_getFolderContents(JSFile,Object,Number,Number,Number)
 	 * @sampleas js_getFolderContents(JSFile,Object,Number,Number,Number)
-	 *  
+	 *
 	 * @param targetFolder JSFile object.
 	 * @param fileFilter Filter or array of filters for files in folder.
-	 * @param fileOption 1=files, 2=dirs 
-	 * @param visibleOption 1=visible, 2=nonvisible 
+	 * @param fileOption 1=files, 2=dirs
+	 * @param visibleOption 1=visible, 2=nonvisible
 	 */
 	public JSFile[] js_getFolderContents(JSFile targetFolder, Object fileFilter, final Number fileOption, final Number visibleOption)
 	{
@@ -678,11 +684,11 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	/**
 	 * @clonedesc js_getFolderContents(JSFile,Object,Number,Number,Number)
 	 * @sampleas js_getFolderContents(JSFile,Object,Number,Number,Number)
-	 *  
+	 *
 	 * @param targetFolder File path.
 	 * @param fileFilter Filter or array of filters for files in folder.
-	 * @param fileOption 1=files, 2=dirs 
-	 * @param visibleOption 1=visible, 2=nonvisible 
+	 * @param fileOption 1=files, 2=dirs
+	 * @param visibleOption 1=visible, 2=nonvisible
 	 */
 	public JSFile[] js_getFolderContents(String targetFolder, Object fileFilter, final Number fileOption, final Number visibleOption)
 	{
@@ -692,10 +698,10 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	/**
 	 * @clonedesc js_getFolderContents(JSFile,Object,Number,Number,Number)
 	 * @sampleas js_getFolderContents(JSFile,Object,Number,Number,Number)
-	 *  
+	 *
 	 * @param targetFolder JSFile object.
 	 * @param fileFilter Filter or array of filters for files in folder.
-	 * @param fileOption 1=files, 2=dirs 
+	 * @param fileOption 1=files, 2=dirs
 	 */
 	public JSFile[] js_getFolderContents(JSFile targetFolder, Object fileFilter, final Number fileOption)
 	{
@@ -705,10 +711,10 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	/**
 	 * @clonedesc js_getFolderContents(JSFile,Object,Number,Number,Number)
 	 * @sampleas js_getFolderContents(JSFile,Object,Number,Number,Number)
-	 *  
+	 *
 	 * @param targetFolder File path.
 	 * @param fileFilter Filter or array of filters for files in folder.
-	 * @param fileOption 1=files, 2=dirs 
+	 * @param fileOption 1=files, 2=dirs
 	 */
 	public JSFile[] js_getFolderContents(String targetFolder, Object fileFilter, final Number fileOption)
 	{
@@ -718,7 +724,7 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	/**
 	 * @clonedesc js_getFolderContents(JSFile,Object,Number,Number,Number)
 	 * @sampleas js_getFolderContents(JSFile,Object,Number,Number,Number)
-	 *  
+	 *
 	 * @param targetFolder JSFile object.
 	 * @param fileFilter Filter or array of filters for files in folder.
 	 */
@@ -730,7 +736,7 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	/**
 	 * @clonedesc js_getFolderContents(JSFile,Object,Number,Number,Number)
 	 * @sampleas js_getFolderContents(JSFile,Object,Number,Number,Number)
-	 *  
+	 *
 	 * @param targetFolder File path.
 	 * @param fileFilter Filter or array of filters for files in folder.
 	 */
@@ -742,7 +748,7 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	/**
 	 * @clonedesc js_getFolderContents(JSFile,Object,Number,Number,Number)
 	 * @sampleas js_getFolderContents(JSFile,Object,Number,Number,Number)
-	 *  
+	 *
 	 * @param targetFolder JSFile object.
 	 */
 	public JSFile[] js_getFolderContents(JSFile targetFolder)
@@ -753,7 +759,7 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	/**
 	 * @clonedesc js_getFolderContents(JSFile,Object,Number,Number,Number)
 	 * @sampleas js_getFolderContents(JSFile,Object,Number,Number,Number)
-	 *  
+	 *
 	 * @param targetFolder File path.
 	 */
 	public JSFile[] js_getFolderContents(String targetFolder)
@@ -789,8 +795,8 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	 * if (!plugins.file.moveFile(f, fmoved))
 	 * 	application.output('File move back failed.');
 	 *
-	 * @param source 
-	 * @param destination 
+	 * @param source
+	 * @param destination
 	 */
 	public boolean js_moveFile(Object source, Object destination)
 	{
@@ -823,10 +829,10 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 
 	/**
 	 * returns a JSFile for the given string
-	 * 
+	 *
 	 * @deprecated Replaced by {@link #convertToJSFile(Object)}.
-	 * 
-	 * @param fileName 
+	 *
+	 * @param fileName
 	 */
 	@Deprecated
 	public JSFile js_convertStringToJSFile(String fileName)
@@ -842,8 +848,8 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	 * if (f.canRead())
 	 * 	application.output("File can be read.");
 	 *
-	 * @param file 
-	 * 
+	 * @param file
+	 *
 	 * @return JSFile
 	 */
 	public JSFile js_convertToJSFile(Object file)
@@ -875,9 +881,9 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	 * if (!plugins.file.copyFolder(d, dcopy))
 	 * 	application.output("Folder copy failed.");
 	 *
-	 * @param source 
+	 * @param source
 	 * @param destination
-	 * 
+	 *
 	 * @return success boolean
 	 */
 	public boolean js_copyFolder(Object source, Object destination)
@@ -944,8 +950,8 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	 * if (!plugins.file.copyFile(f, fcopy))
 	 * 	application.output("Copy failed.");
 	 *
-	 * @param source 
-	 * @param destination 
+	 * @param source
+	 * @param destination
 	 */
 	public boolean js_copyFile(Object source, Object destination)
 	{
@@ -1037,7 +1043,7 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	 * if (!plugins.file.createFolder(d))
 	 * 	application.output("Folder could not be created.");
 	 *
-	 * @param destination 
+	 * @param destination
 	 */
 	public boolean js_createFolder(Object destination)
 	{
@@ -1059,7 +1065,7 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	 * if (plugins.file.deleteFile('story.txt'))
 	 * 	application.output('File deleted.');
 	 *
-	 * @param destination 
+	 * @param destination
 	 */
 	public boolean js_deleteFile(Object destination)
 	{
@@ -1077,8 +1083,8 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	 * if (plugins.file.deleteFolder('stories', true))
 	 * 	application.output('Folder deleted.');
 	 *
-	 * @param destination 
-	 * @param showWarning 
+	 * @param destination
+	 * @param showWarning
 	 */
 	public boolean js_deleteFolder(Object destination, boolean showWarning)
 	{
@@ -1093,9 +1099,9 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 				IRuntimeWindow runtimeWindow = access.getCurrentRuntimeWindow();
 				Window currentWindow = null;
 				if (runtimeWindow instanceof ISmartRuntimeWindow) currentWindow = ((ISmartRuntimeWindow)runtimeWindow).getWindow();
-				int option = JOptionPane.showConfirmDialog(
-					currentWindow,
-					Messages.getString("servoy.plugin.file.folderDelete.warning") + destFile.getAbsolutePath(), Messages.getString("servoy.plugin.file.folderDelete.title"), JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
+				int option = JOptionPane.showConfirmDialog(currentWindow,
+					Messages.getString("servoy.plugin.file.folderDelete.warning") + destFile.getAbsolutePath(), //$NON-NLS-1$
+					Messages.getString("servoy.plugin.file.folderDelete.title"), JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE); //$NON-NLS-1$
 				if (option != JOptionPane.YES_OPTION) return false;
 			}
 			File[] files = destFile.listFiles();
@@ -1114,7 +1120,7 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	 * var f = plugins.file.convertToJSFile('story.txt');
 	 * application.output('file size: ' + plugins.file.getFileSize(f));
 	 *
-	 * @param path 
+	 * @param path
 	 */
 	public long js_getFileSize(Object path)
 	{
@@ -1130,7 +1136,7 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	 * var f = plugins.file.convertToJSFile('story.txt');
 	 * application.output('last changed: ' + plugins.file.getModificationDate(f));
 	 *
-	 * @param path 
+	 * @param path
 	 */
 	public Date js_getModificationDate(Object path)
 	{
@@ -1166,8 +1172,8 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	 * application.output('Temporary file created as: ' + tempFile.getAbsolutePath());
 	 * plugins.file.writeTXTFile(tempFile, 'abcdefg');
 	 *
-	 * @param prefix 
-	 * @param suffix 
+	 * @param prefix
+	 * @param suffix
 	 */
 	@SuppressWarnings("nls")
 	public JSFile js_createTempFile(String prefix, String suffix)
@@ -1198,7 +1204,7 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	 * if (!f.createNewFile())
 	 * 	application.output("The file could not be created.");
 	 *
-	 * @param targetFile 
+	 * @param targetFile
 	 */
 	public JSFile js_createFile(Object targetFile)
 	{
@@ -1215,10 +1221,10 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	 * if (!success) application.output('Could not write file.');
 	 * // For file-encoding parameter options (default OS encoding is used), http://download.oracle.com/javase/1.4.2/docs/guide/intl/encoding.doc.html
 	 * // mimeType variable can be left null, and is used for webclient only. Specify one of any valid mime types as referenced here: http://www.w3schools.com/media/media_mimeref.asp'
-	 * 
+	 *
 	 * @param file JSFile
 	 * @param text_data Text to be written.
-	 * 
+	 *
 	 * @return Success boolean.
 	 */
 	public boolean js_writeTXTFile(JSFile file, String text_data)
@@ -1229,7 +1235,7 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	/**
 	 * @clonedesc js_writeTXTFile(JSFile, String)
 	 * @sampleas js_writeTXTFile(JSFile, String)
-	 * 
+	 *
 	 * @param file The file path.
 	 * @param text_data Text to be written.
 	 */
@@ -1241,11 +1247,11 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	/**
 	 * @clonedesc js_writeTXTFile(JSFile, String)
 	 * @sampleas js_writeTXTFile(JSFile, String)
-	 * 
+	 *
 	 * @param file JSFile
 	 * @param text_data Text to be written.
 	 * @param charsetname Charset name.
-	 * 
+	 *
 	 * @return Success boolean.
 	 */
 	public boolean js_writeTXTFile(JSFile file, String text_data, String charsetname)
@@ -1256,7 +1262,7 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	/**
 	 * @clonedesc js_writeTXTFile(JSFile, String)
 	 * @sampleas js_writeTXTFile(JSFile, String)
-	 * 
+	 *
 	 * @param file The file path.
 	 * @param text_data Text to be written.
 	 * @param charsetname Charset name.
@@ -1269,12 +1275,12 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	/**
 	 * @clonedesc js_writeTXTFile(JSFile, String)
 	 * @sampleas js_writeTXTFile(JSFile, String)
-	 * 
+	 *
 	 * @param file JSFile
 	 * @param text_data Text to be written.
 	 * @param charsetname Charset name.
 	 * @param mimeType Content type (used only on web).
-	 * 
+	 *
 	 * @return Success boolean.
 	 */
 	public boolean js_writeTXTFile(JSFile file, String text_data, String charsetname, String mimeType)
@@ -1285,7 +1291,7 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	/**
 	 * @clonedesc js_writeTXTFile(JSFile, String)
 	 * @sampleas js_writeTXTFile(JSFile, String)
-	 * 
+	 *
 	 * @param file The file path.
 	 * @param text_data Text to be written.
 	 * @param charsetname Charset name.
@@ -1310,8 +1316,7 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	 * @param encoding
 	 * @return
 	 */
-	protected boolean writeTXT(Object f, String data, String encoding, @SuppressWarnings("unused")
-	String contentType)
+	protected boolean writeTXT(Object f, String data, String encoding, @SuppressWarnings("unused") String contentType)
 	{
 		try
 		{
@@ -1386,7 +1391,7 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	/**
 	 * @clonedesc js_writeXMLFile(JSFile, String)
 	 * @sampleas js_writeXMLFile(JSFile, String)
-	 * 
+	 *
 	 * @param file a local JSFile
 	 * @param xml_data the xml data to write
 	 * @param encoding the specified encoding
@@ -1399,7 +1404,7 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	/**
 	 * @clonedesc js_writeXMLFile(JSFile, String)
 	 * @sampleas js_writeXMLFile(JSFile, String)
-	 * 
+	 *
 	 * @param file the file path as a String
 	 * @param xml_data the xml data to write
 	 * @param encoding the specified encoding
@@ -1424,7 +1429,7 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	 * var xml = controller.printXML()
 	 * var success = plugins.file.writeXMLFile(fileName, xml);
 	 * if (!success) application.output('Could not write file.');
-	 * 
+	 *
 	 * @param file a local JSFile
 	 * @param xml_data the xml data to write
 	 */
@@ -1436,7 +1441,7 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	/**
 	 * @clonedesc js_writeXMLFile(JSFile,String)
 	 * @sampleas js_writeXMLFile(JSFile,String)
-	 * 
+	 *
 	 * @param file the file path as a String
 	 * @param xml_data the xml data to write
 	 */
@@ -1467,9 +1472,9 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 
 	/**
 	 * Writes the given file to disk.
-	 * 
+	 *
 	 * If "file" is a JSFile or you are running in Smart Client, it writes data into a (local) binary file.
-	 * 
+	 *
 	 * If you are running in Web Client and "file" is a String (like 'mypdffile.pdf' to hint the browser what it is) the user will get
 	 * prompted by the browser to save the file (sent using "Content-disposition: attachment" HTTP header). If it is a JSFile instance
 	 * in this case it will be saved as a file on the server.
@@ -1498,7 +1503,7 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	/**
 	 * @clonedesc js_writeFile(JSFile,byte[])
 	 * @sampleas js_writeFile(JSFile,byte[])
-	 * 
+	 *
 	 * @param file the file path as a String
 	 * @param data the data to be written
 	 */
@@ -1510,7 +1515,7 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	/**
 	 * @clonedesc js_writeFile(JSFile, byte[])
 	 * @sampleas js_writeFile(JSFile, byte[])
-	 * 
+	 *
 	 * @param file a local JSFile
 	 * @param data the data to be written
 	 * @param mimeType the mime type (used in Web-Client)
@@ -1523,7 +1528,7 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	/**
 	 * @clonedesc js_writeFile(JSFile, byte[])
 	 * @sampleas js_writeFile(JSFile, byte[])
-	 * 
+	 *
 	 * @param file the file path as a String
 	 * @param data the data to be written
 	 * @param mimeType the mime type (used in Web-Client)
@@ -1533,8 +1538,7 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 		return writeFile(file, data, mimeType);
 	}
 
-	protected boolean writeFile(Object f, byte[] data, @SuppressWarnings("unused")
-	String mimeType)
+	protected boolean writeFile(Object f, byte[] data, @SuppressWarnings("unused") String mimeType)
 	{
 		if (data == null) return false;
 		try
@@ -1568,13 +1572,13 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 
 	/**
 	 * Opens the given local file.
-	 * 
+	 *
 	 * Smart Client: launches the default OS associated application to open an existing local file.
 	 * Web Client: the (server local) file will open inside the browser - if supported (sent using "Content-disposition: inline" HTTP header).
-	 * 
+	 *
 	 * @param file the local file to open. The file should exist and be accessible.
 	 * @return success status of the open operation
-	 * 
+	 *
 	 * @sample
 	 * 	var myPDF = plugins.file.createFile('my.pdf');
 	 *  myPDF.setBytes(data, true)
@@ -1589,7 +1593,7 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 
 	/**
 	 * @clonedesc {@link #js_openFile(JSFile)}
-	 * 
+	 *
 	 * @param file the local file to open. The file should exist and be accessible.
 	 * @param webClientTarget Target frame or named dialog/window. For example "_self" to open in the same browser window, "_blank" for another browser window. By default "_blank" is used.
 	 * @param webClientTargetOptions window options used when a new browser window is to be shown; see browser JS 'window.open(...)' documentation.
@@ -1618,26 +1622,26 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 
 	/**
 	 * Opens the given data as a file.
-	 * 
+	 *
 	 * Smart Client: writes the data to a temporary file, then launches the default OS associated application to open it.
 	 * Web Client: the data will open as a file inside the browser - if supported (sent using "Content-disposition: inline" HTTP header).
-	 * 
+	 *
 	 * @param fileName the name of the file that should open with the given data. Can be null (but in Smart Client null - so no extension - will probably make open fail).
 	 * @param data the file's binary content.
 	 * @param mimeType can be left null, and is used for webclient only. Specify one of any valid mime types:
 	 * https://developer.mozilla.org/en-US/docs/Properly_Configuring_Server_MIME_Types
 	 * http://www.iana.org/assignments/media-types/media-types.xhtml
 	 * http://www.w3.org/Protocols/rfc2616/rfc2616-sec3.html#sec3.7
-	 * 
+	 *
 	 * @return success status of the open operation
-	 * 
+	 *
 	 * @sample
 	 * // read or generate pdf file bytes
 	 * var bytes = plugins.file.readFile("c:/ExportedPdfs/13542.pdf");
-	 * 
+	 *
 	 * // mimeType variable can be left null
 	 * var mimeType = 'application/pdf'
-	 * 
+	 *
 	 * if (!plugins.file.openFile("MonthlyStatistics.pdf", bytes, mimeType))
 	 * 	application.output('Failed to open the file.');
 	 *
@@ -1650,7 +1654,7 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 
 	/**
 	 * @clonedesc {@link #js_openFile(String, byte[], String)}
-	 * 
+	 *
 	 * @param fileName the name of the file that should open with the given data. Can be null (but in Smart Client null - so no extension - will probably make open fail).
 	 * @param data the file's binary content.
 	 * @param mimeType can be left null, and is used for webclient only. Specify one of any valid mime types:
@@ -1659,16 +1663,16 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	 * http://www.w3.org/Protocols/rfc2616/rfc2616-sec3.html#sec3.7
 	 * @param webClientTarget Target frame or named dialog/window. For example "_self" to open in the same browser window, "_blank" for another browser window. By default "_blank" is used.
 	 * @param webClientTargetOptions window options used when a new browser window is to be shown; see browser JS 'window.open(...)' documentation.
-	 * 
+	 *
 	 * @return success status of the open operation
-	 * 
+	 *
 	 * @sample
 	 * // read or generate pdf file bytes
 	 * var bytes = plugins.file.readFile("c:/ExportedPdfs/13542.pdf");
-	 * 
+	 *
 	 * // mimeType variable can be left null
 	 * var mimeType = 'application/pdf'
-	 * 
+	 *
 	 * if (!plugins.file.openFile("MonthlyStatistics.pdf", bytes, mimeType, "_self", null))
 	 * 	application.output('Failed to open the file.');
 	 *
@@ -1720,7 +1724,7 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	 * application.output(txt);
 	 * // Read content from a text file selected from the file open dialog.
 	 * var txtUnknown = plugins.file.readTXTFile();
-	 * application.output(txtUnknown); 
+	 * application.output(txtUnknown);
 	 */
 
 	public String js_readTXTFile()
@@ -1731,7 +1735,7 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	/**
 	 * @clonedesc js_readTXTFile()
 	 * @sampleas js_readTXTFile()
-	 * 
+	 *
 	 * @param file JSFile.
 	 */
 	public String js_readTXTFile(JSFile file)
@@ -1742,7 +1746,7 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	/**
 	 * @clonedesc js_readTXTFile()
 	 * @sampleas js_readTXTFile()
-	 * 
+	 *
 	 * @param file the file path.
 	 */
 	public String js_readTXTFile(String file)
@@ -1753,7 +1757,7 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	/**
 	 * @clonedesc js_readTXTFile()
 	 * @sampleas js_readTXTFile()
-	 * 
+	 *
 	 * @param file JSFile.
 	 * @param charsetname Charset name.
 	 */
@@ -1765,7 +1769,7 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	/**
 	 * @clonedesc js_readTXTFile()
 	 * @sampleas js_readTXTFile()
-	 * 
+	 *
 	 * @param file the file path.
 	 * @param charsetname Charset name.
 	 */
@@ -1863,7 +1867,7 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	/**
 	 * @clonedesc js_showFileSaveDialog()
 	 * @sampleas js_showFileSaveDialog()
-	 * 
+	 *
 	 * @param fileNameDir JSFile to save.
 	 */
 	@ServoyClientSupport(mc = false, wc = false, sc = true, ng = false)
@@ -1875,7 +1879,7 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	/**
 	 * @clonedesc js_showFileSaveDialog()
 	 * @sampleas js_showFileSaveDialog()
-	 * 
+	 *
 	 * @param fileNameDir File (give as file path) to save.
 	 */
 	@ServoyClientSupport(mc = false, wc = false, sc = true, ng = false)
@@ -1917,8 +1921,8 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 		}
 
 		IClientPluginAccess access = plugin.getClientPluginAccess();
-		if (access.getApplicationType() != IClientPluginAccess.CLIENT && access.getApplicationType() != IClientPluginAccess.RUNTIME) throw new UnsupportedMethodException(
-			"File save is only supported in the SmartClient (not in web or headless client)"); //$NON-NLS-1$
+		if (access.getApplicationType() != IClientPluginAccess.CLIENT && access.getApplicationType() != IClientPluginAccess.RUNTIME)
+			throw new UnsupportedMethodException("File save is only supported in the SmartClient (not in web or headless client)"); //$NON-NLS-1$
 		IRuntimeWindow runtimeWindow = access.getCurrentRuntimeWindow();
 		Window currentWindow = null;
 		if (runtimeWindow instanceof ISmartRuntimeWindow) currentWindow = ((ISmartRuntimeWindow)runtimeWindow).getWindow();
@@ -1946,7 +1950,7 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	/**
 	 * @clonedesc js_showDirectorySelectDialog()
 	 * @sampleas js_showDirectorySelectDialog()
-	 * 
+	 *
 	 * @param directory Default directory as JSFile.
 	 */
 	@ServoyClientSupport(ng = false, wc = false, sc = true)
@@ -1958,7 +1962,7 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	/**
 	 * @clonedesc js_showDirectorySelectDialog()
 	 * @sampleas js_showDirectorySelectDialog()
-	 * 
+	 *
 	 * @param directory Default directory as file path.
 	 */
 	@ServoyClientSupport(ng = false, wc = false, sc = true)
@@ -1970,7 +1974,7 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	/**
 	 * @clonedesc js_showDirectorySelectDialog()
 	 * @sampleas js_showDirectorySelectDialog()
-	 * 
+	 *
 	 * @param directory Default directory as JSFile.
 	 * @param title Dialog title.
 	 */
@@ -1983,7 +1987,7 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	/**
 	 * @clonedesc js_showDirectorySelectDialog()
 	 * @sampleas js_showDirectorySelectDialog()
-	 * 
+	 *
 	 * @param directory Default directory as file path.
 	 * @param title Dialog title.
 	 */
@@ -2002,8 +2006,8 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 		}
 
 		IClientPluginAccess access = plugin.getClientPluginAccess();
-		if (access.getApplicationType() != IClientPluginAccess.CLIENT && access.getApplicationType() != IClientPluginAccess.RUNTIME) throw new UnsupportedMethodException(
-			"Directory selection is only supported in the SmartClient (not in web or headless client)"); //$NON-NLS-1$
+		if (access.getApplicationType() != IClientPluginAccess.CLIENT && access.getApplicationType() != IClientPluginAccess.RUNTIME)
+			throw new UnsupportedMethodException("Directory selection is only supported in the SmartClient (not in web or headless client)"); //$NON-NLS-1$
 		IRuntimeWindow runtimeWindow = access.getCurrentRuntimeWindow();
 		Window currentWindow = null;
 		if (runtimeWindow instanceof ISmartRuntimeWindow) currentWindow = ((ISmartRuntimeWindow)runtimeWindow).getWindow();
@@ -2028,7 +2032,7 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	 * // Read all content from a file selected from the file open dialog.
 	 * var bytesUnknownFile = plugins.file.readFile();
 	 * application.output('unknown file size: ' + bytesUnknownFile.length);
-	 * 
+	 *
 	 */
 	public byte[] js_readFile()
 	{
@@ -2038,7 +2042,7 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	/**
 	 * @clonedesc js_readFile()
 	 * @sampleas js_readFile()
-	 * 
+	 *
 	 * @param file JSFile.
 	 */
 	public byte[] js_readFile(JSFile file)
@@ -2049,7 +2053,7 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	/**
 	 * @clonedesc js_readFile()
 	 * @sampleas js_readFile()
-	 * 
+	 *
 	 * @param file the file path.
 	 */
 	public byte[] js_readFile(String file)
@@ -2060,7 +2064,7 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	/**
 	 * @clonedesc js_readFile()
 	 * @sampleas js_readFile()
-	 * 
+	 *
 	 * @param file JSFile.
 	 * @param size Number of bytes to read.
 	 */
@@ -2072,7 +2076,7 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	/**
 	 * @clonedesc js_readFile()
 	 * @sampleas js_readFile()
-	 * 
+	 *
 	 * @param file the file path.
 	 * @param size Number of bytes to read.
 	 */
@@ -2126,13 +2130,13 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 
 	/**
 	 * Appends a string given in parameter to a file, using default platform encoding.
-	 * 
+	 *
 	 * @sample
 	 * // append some text to a text file:
 	 * 	var ok = plugins.file.appendToTXTFile('myTextFile.txt', '\nMy fantastic new line of text\n');
-	 * 
+	 *
 	 * @since Servoy 5.2
-	 * 
+	 *
 	 * @param file a local {@link JSFile}
 	 * @param text the text to append to the file
 	 * @return true if appending worked
@@ -2145,9 +2149,9 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	/**
 	 * @clonedesc js_appendToTXTFile(JSFile,String)
 	 * @sampleas js_appendToTXTFile(JSFile,String)
-	 * 
+	 *
 	 * @since Servoy 5.2
-	 * 
+	 *
 	 * @param file the file path as a String
 	 * @param text the text to append to the file
 	 * @return true if appending worked
@@ -2159,15 +2163,15 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 
 	/**
 	 * Appends a string given in parameter to a file, using the specified encoding.
-	 * 
+	 *
 	 * @sampleas js_appendToTXTFile(JSFile, String)
-	 * 
+	 *
 	 * @since Servoy 5.2
-	 * 
+	 *
 	 * @param file a local {@link JSFile}
 	 * @param text the text to append to the file
 	 * @param encoding the encoding to use
-	 * 
+	 *
 	 * @return true if appending worked
 	 */
 	public boolean js_appendToTXTFile(JSFile file, String text, String encoding)
@@ -2178,7 +2182,7 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	/**
 	 * @clonedesc js_appendToTXTFile(JSFile,String,String)
 	 * @sampleas js_appendToTXTFile(JSFile,String,String)
-	 * 
+	 *
 	 * @param file the file path as a String
 	 * @param text the text to append to the file
 	 * @param encoding the encoding to use
@@ -2224,14 +2228,14 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 
 	/**
 	 * Convenience return to get a JSFile representation of a server file based on its path.
-	 * 
+	 *
 	 * @sample
 	 * var f = plugins.file.convertToRemoteJSFile('/story.txt');
 	 * if (f && f.canRead())
 	 * 	application.output('File can be read.');
 	 *
 	 * @since Servoy 5.2
-	 * 
+	 *
 	 * @param path the path representing a file on the server (should start with "/")
 	 * @return the {@link JSFile}
 	 */
@@ -2268,8 +2272,8 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	 * var files = plugins.file.getRemoteFolderContents('/', '.txt');
 	 *
 	 * @since Servoy 5.2.1
-
-	 * @param targetFolder  
+	
+	 * @param targetFolder
 	 * @return the array of file names
 	 */
 	public JSFile[] js_getRemoteFolderContents(JSFile targetFolder)
@@ -2343,8 +2347,8 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	 * @sampleas js_getRemoteFolderContents(JSFile)
 	 * @param targetFolder Folder as JSFile object.
 	 * @param fileFilter Filter or array of filters for files in folder.
-	 * @param fileOption 1=files, 2=dirs 
-	 * @param visibleOption 1=visible, 2=nonvisible 
+	 * @param fileOption 1=files, 2=dirs
+	 * @param visibleOption 1=visible, 2=nonvisible
 	 * @return the array of file names
 	 */
 	public JSFile[] js_getRemoteFolderContents(JSFile targetFolder, Object fileFilter, Number fileOption, Number visibleOption)
@@ -2357,8 +2361,8 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	 * @sampleas js_getRemoteFolderContents(JSFile)
 	 * @param targetFolder Folder path.
 	 * @param fileFilter Filter or array of filters for files in folder.
-	 * @param fileOption 1=files, 2=dirs 
-	 * @param visibleOption 1=visible, 2=nonvisible 
+	 * @param fileOption 1=files, 2=dirs
+	 * @param visibleOption 1=visible, 2=nonvisible
 	 * @return the array of file names
 	 */
 	public JSFile[] js_getRemoteFolderContents(String targetFolder, Object fileFilter, Number fileOption, Number visibleOption)
@@ -2371,8 +2375,8 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	 * @sampleas js_getRemoteFolderContents(JSFile)
 	 * @param targetFolder Folder as JSFile object.
 	 * @param fileFilter Filter or array of filters for files in folder.
-	 * @param fileOption 1=files, 2=dirs 
-	 * @param visibleOption 1=visible, 2=nonvisible 
+	 * @param fileOption 1=files, 2=dirs
+	 * @param visibleOption 1=visible, 2=nonvisible
 	 * @param lockedOption 1=locked, 2=nonlocked
 	 * @return the array of file names
 	 */
@@ -2386,8 +2390,8 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	 * @sampleas js_getRemoteFolderContents(JSFile)
 	 * @param targetFolder Folder path.
 	 * @param fileFilter Filter or array of filters for files in folder.
-	 * @param fileOption 1=files, 2=dirs 
-	 * @param visibleOption 1=visible, 2=nonvisible 
+	 * @param fileOption 1=files, 2=dirs
+	 * @param visibleOption 1=visible, 2=nonvisible
 	 * @param lockedOption 1=locked, 2=nonlocked
 	 * @return the array of file names
 	 */
@@ -2470,13 +2474,13 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 
 	/**
 	 * Retrieves an array of files/folders from the server
-	 * 
+	 *
 	 * @deprecated Replaced by {@link #getRemoteFolderContents(Object[])}.
-	 * 
+	 *
 	 * @since Servoy 5.2
-	 * 
+	 *
 	 * @param serverPath the path of a remote directory (relative to the defaultFolder)
-	 * 
+	 *
 	 * @return the array of file names
 	 */
 	@Deprecated
@@ -2487,14 +2491,14 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 
 	/**
 	 * Retrieves an array of files/folders from the server
-	 * 
+	 *
 	 * @deprecated Replaced by {@link #getRemoteFolderContents(Object[])}.
-	 * 
+	 *
 	 * @since Servoy 5.2
-	 * 
+	 *
 	 * @param serverPath a {@link JSFile} or String with the path of a remote directory (relative to the defaultFolder)
 	 * @param filesOnly if true only files will be retrieve, if false, files and folders will be retrieved
-	 * 
+	 *
 	 * @return the array of file names
 	 */
 	@Deprecated
@@ -2506,9 +2510,9 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 
 	/**
 	 * Overloaded method, only defines file(s) to be streamed
-	 * 
+	 *
 	 * @since Servoy 5.2
-	 * 
+	 *
 	 * @sample
 	 * // send one file:
 	 * var file = plugins.file.showFileOpenDialog( 1, null, false, null, null, 'Choose a file to transfer' );
@@ -2516,7 +2520,7 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	 * 	plugins.file.streamFilesToServer( file, callbackFunction );
 	 * }
 	 * //plugins.file.streamFilesToServer( 'servoy.txt', callbackFunction );
-	 * 
+	 *
 	 * // send an array of files:
 	 * var folder = plugins.file.showDirectorySelectDialog();
 	 * if (folder) {
@@ -2529,7 +2533,7 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	 * // files[0] = 'file1.txt';
 	 * // files[1] = 'file2.txt';
 	 * // var monitor = plugins.file.streamFilesToServer( files, callbackFunction );
-	 * 
+	 *
 	 * @param files file(s) to be streamed (can be a String path or a {@link JSFile}) or an Array of these
 	 * @return a {@link JSProgressMonitor} object to allow client to subscribe to progress notifications
 	 */
@@ -2540,11 +2544,11 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 
 	/**
 	 * Overloaded method, defines file(s) to be streamed and a callback function
-	 * 
+	 *
 	 * @since Servoy 5.2
-	 * 
+	 *
 	 * @sampleas js_streamFilesToServer(Object)
-	 * 
+	 *
 	 * @param files file(s) to be streamed (can be a String path or a {@link JSFile}) or an Array of these
 	 * @param serverFiles can be a JSFile or JSFile[], a String or String[], representing the file name(s) to use on the server
 	 * @return a {@link JSProgressMonitor} object to allow client to subscribe to progress notifications
@@ -2556,11 +2560,11 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 
 	/**
 	 * Overloaded method, defines file(s) to be streamed and a callback function
-	 * 
+	 *
 	 * @since Servoy 5.2
-	 * 
+	 *
 	 * @sampleas js_streamFilesToServer(Object)
-	 * 
+	 *
 	 * @param files file(s) to be streamed (can be a String path or a {@link JSFile}) or an Array of these
 	 * @param callback the {@link Function} to be called back at the end of the process (for every file); the callback function is invoked with argument the filename that was transfered; an extra second exception parameter can be given if an exception occured
 	 * @return a {@link JSProgressMonitor} object to allow client to subscribe to progress notifications
@@ -2572,11 +2576,11 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 
 	/**
 	 * Overloaded method, defines file(s) to be streamed, a callback function and file name(s) to use on the server
-	 * 
+	 *
 	 * @since Servoy 5.2
-	 * 
+	 *
 	 * @sampleas js_streamFilesToServer(Object)
-	 * 
+	 *
 	 * @param files file(s) to be streamed (can be a String path or a {@link JSFile}) or an Array of these)
 	 * @param serverFiles can be a JSFile or JSFile[], a String or String[], representing the file name(s) to use on the server
 	 * @param callback the {@link Function} to be called back at the end of the process (for every file); the callback function is invoked with argument the filename that was transfered; an extra second exception parameter can be given if an exception occured
@@ -2634,9 +2638,9 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 
 	/**
 	 * Stream 1 or more files from the server to the client.
-	 * 
+	 *
 	 * @since Servoy 5.2
-	 * 
+	 *
 	 * @sample
 	 * // transfer all the files of a chosen server folder to a directory on the client
 	 * var dir = plugins.file.showDirectorySelectDialog();
@@ -2646,10 +2650,10 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	 * 		var monitor = plugins.file.streamFilesFromServer(dir, list, callbackFunction);
 	 * 	}
 	 * }
-	 * 
+	 *
 	 * // transfer one file on the client
 	 * var monitor = plugins.file.streamFilesFromServer('/path/to/file', 'path/to/serverFile', callbackFunction);
-	 * 
+	 *
 	 * // transfer an array of serverFiles to an array of files on the client
 	 * var files = new Array();
 	 * files[0] = '/path/to/file1';
@@ -2658,7 +2662,7 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	 * serverFiles[0] = '/path/to/serverFile1';
 	 * serverFiles[1] = '/path/to/serverFile2';
 	 * var monitor = plugins.file.streamFilesFromServer(files, serverFiles, callbackFunction);
-	 * 
+	 *
 	 * @param files file(s) to be streamed into (can be a String path a {@link JSFile}) or an Array of these
 	 * @param serverFiles the files on the server that will be transfered to the client, can be a String or a String[]
 	 * @return a {@link JSProgressMonitor} object to allow client to subscribe to progress notifications
@@ -2671,11 +2675,11 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	/**
 	 * Stream 1 or more files from the server to the client, the callback method is invoked after every file, with as argument
 	 * the filename that was transfered. An extra second exception parameter can be given if an exception did occur.
-	 * 
+	 *
 	 * @since Servoy 5.2
-	 * 
+	 *
 	 * @sampleas js_streamFilesFromServer(Object, Object)
-	 * 
+	 *
 	 * @param files file(s) to be streamed into (can be a String path or a {@link JSFile}) or an Array of these
 	 * @param serverFiles the files on the server that will be transfered to the client, can be a JSFile or JSFile[], a String or String[]
 	 * @param callback the {@link Function} to be called back at the end of the process (for every file); the callback function is invoked with argument the filename that was transfered; an extra second exception parameter can be given if an exception occured
@@ -2738,8 +2742,8 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 							{
 								totalBytes += remoteFiles[i].size();
 								// we can have a related local file, else a folder has been provided, thus we create a related local file to receive the transfer:
-								filesToBeStreamed[i] = (i < fileObjects.length && !firstFile.isDirectory()) ? getFileFromArg(fileObjects[i], true) : new File(
-									firstFile, remoteFiles[i].getName());
+								filesToBeStreamed[i] = (i < fileObjects.length && !firstFile.isDirectory()) ? getFileFromArg(fileObjects[i], true)
+									: new File(firstFile, remoteFiles[i].getName());
 							}
 						}
 					}
@@ -2755,8 +2759,8 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 						{
 							remoteFiles[i] = new RemoteFile(datas[i], service, clientId);
 							totalBytes += datas[i].size();
-							filesToBeStreamed[i] = (i < fileObjects.length && !firstFile.isDirectory()) ? getFileFromArg(fileObjects[i], true) : new File(
-								firstFile, remoteFiles[i].getName());
+							filesToBeStreamed[i] = (i < fileObjects.length && !firstFile.isDirectory()) ? getFileFromArg(fileObjects[i], true)
+								: new File(firstFile, remoteFiles[i].getName());
 						}
 					}
 					JSProgressMonitor progressMonitor = new JSProgressMonitor(this, totalBytes, remoteFiles.length);
@@ -2776,7 +2780,7 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	/**
 	 * Utility method to give access to the {@link IFileService} remote service
 	 * @since Servoy 5.2
-	 * 
+	 *
 	 * @return the service
 	 */
 	protected IFileService getFileService() throws Exception
@@ -2787,7 +2791,7 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	/**
 	 * Utility method to unwrap a given object to Object[] array
 	 * @since Servoy 5.2
-	 * 
+	 *
 	 * @param f The object to unwrap
 	 * @return The Object[] array
 	 */
@@ -2815,7 +2819,7 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 
 	/**
 	 * Schedule a JSProgressMonitor to be run at fixed interval
-	 * 
+	 *
 	 * @param monitor the {@link JSProgressMonitor} to schedule
 	 * @param interval the interval (in seconds) to run the callback
 	 */
@@ -2828,7 +2832,7 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 
 	/**
 	 * Callback a Servoy {@link Function} passing a JSProgressMonitor
-	 * 
+	 *
 	 * @param monitor the {@link JSProgressMonitor} to return to the client
 	 * @param function the client {@link FunctionDefinition} of a Servoy {@link Function} to callback
 	 */
@@ -2846,7 +2850,7 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	 * @sample
 	 * // get the (server-side) default upload location path:
 	 * var serverPath = plugins.file.getDefaultUploadLocation();
-	 * 
+	 *
 	 * @return the location as canonical path
 	 */
 	public String js_getDefaultUploadLocation()
@@ -2866,12 +2870,12 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	/**
 	 * Get a url from a remote file that can be used to download the file in a browser.
 	 * This is a complete url with the server url that is get from application.getServerURL()
-	 * 
+	 *
 	 * @sample
 	 * var file = plugins.file.convertToRemoteJSFile("aremotefile.pdf");
 	 * var url = plugins.file.getUrlForRemoteFile(file);
 	 * application.showURL(url);
-	 * 
+	 *
 	 * @param file the remote file where the url should be generated from. Must be a remote file
 	 * @return the url as a string
 	 */
@@ -2889,7 +2893,7 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	/**
 	 * @clonedesc js_getUrlForRemoteFile(JSFile)
 	 * @sampleas js_getUrlForRemoteFile(JSFile)
-	 * 
+	 *
 	 * @param file the remote file where the url should be generated from. Must be a remote file
 	 * @return the url as a string
 	 */
@@ -2901,15 +2905,15 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	/**
 	 * If the client's solution is closed, the file given to this method wil be deleted.
 	 * This can be a remote or local file.
-	 * 
+	 *
 	 * This can be used to have temp files within a client that will be cleaned up when the solution is closed.
-	 * So they live as long as the client has its solution open.  
-	 * 
+	 * So they live as long as the client has its solution open.
+	 *
 	 * @sample
 	 * var file = plugins.file.createFile("newfile.txt");
 	 * plugins.file.writeTXTFile(file, "some data");
 	 * plugins.file.trackFileForDeletionfile(file);
-	 * 
+	 *
 	 * @param file the file to track
 	 */
 	public void js_trackFileForDeletion(JSFile file)
@@ -3220,8 +3224,8 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	/**
 	 * helper function to get int value of java.lang.Numeber object or default value in case of null
 	 * @param numberObject
-	 * @param defaultValue 
-	 * @return 
+	 * @param defaultValue
+	 * @return
 	 */
 	private int getNumberAsInt(Number numberObject, int defaultValue)
 	{
@@ -3231,8 +3235,8 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	/**
 	 * helper function to get boolean value of java.lang.Boolean object or default value in case of null
 	 * @param booleanObject
-	 * @param defaultValue 
-	 * @return 
+	 * @param defaultValue
+	 * @return
 	 */
 	private boolean getBooleanAsbool(Boolean booleanObject, boolean defaultValue)
 	{

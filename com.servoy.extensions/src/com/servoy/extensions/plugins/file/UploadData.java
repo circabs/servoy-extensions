@@ -60,9 +60,9 @@ public class UploadData extends AbstractFile
 	@Override
 	public String getContentType()
 	{
-		String contentType = MimeTypes.getContentType(getBytes(), getName());
+		String contentType = upload.getContentType();
 		if (contentType != null) return contentType;
-		return upload.getContentType();
+		return MimeTypes.getContentType(getBytes(), getName());
 	}
 
 	@Override
@@ -74,7 +74,18 @@ public class UploadData extends AbstractFile
 	@Override
 	public long size()
 	{
+		if (getFile() != null) return getFile().length();
 		return getBytes().length;
+	}
+
+	@Override
+	public boolean renameTo(IAbstractFile dest)
+	{
+		if (getFile() != null && dest instanceof LocalFile)
+		{
+			return getFile().renameTo(((LocalFile)dest).getFile());
+		}
+		return false;
 	}
 
 	@SuppressWarnings("nls")
@@ -84,22 +95,12 @@ public class UploadData extends AbstractFile
 		return "UploadData[name:" + getName() + ",contenttype:" + getContentType() + "]";
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.servoy.j2db.plugins.IUploadData#getInputStream()
-	 */
 	@Override
 	public InputStream getInputStream() throws IOException
 	{
 		return upload.getInputStream();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.servoy.extensions.plugins.file.IAbstractFile#setBytes(byte[], boolean)
-	 */
 	public boolean setBytes(byte[] bytes, boolean createFile)
 	{
 		throw new UnsupportedMethodException("JSFile.setBytes() is not web compatible"); //$NON-NLS-1$

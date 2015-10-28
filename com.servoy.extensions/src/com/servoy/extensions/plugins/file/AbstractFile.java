@@ -27,7 +27,7 @@ import com.servoy.j2db.util.MimeTypes;
 
 /**
  * Defines the basic implementation of the {@link IAbstractFile} interface
- * 
+ *
  * @author jcompagner
  * @author Servoy Stuff
  * @since Servoy 5.2
@@ -60,6 +60,7 @@ public abstract class AbstractFile implements IAbstractFile
 
 	public String getParent()
 	{
+		if (getFile() != null) return getFile().getParent();
 		return null;
 	}
 
@@ -70,16 +71,19 @@ public abstract class AbstractFile implements IAbstractFile
 
 	public String getPath()
 	{
+		if (getFile() != null) return getFile().getPath();
 		return null;
 	}
 
 	public boolean isAbsolute()
 	{
+		if (getFile() != null) return getFile().isAbsolute();
 		return true;
 	}
 
 	public String getAbsolutePath()
 	{
+		if (getFile() != null) return getFile().getAbsolutePath();
 		return null;
 	}
 
@@ -90,41 +94,49 @@ public abstract class AbstractFile implements IAbstractFile
 
 	public boolean canRead()
 	{
+		if (getFile() != null) return getFile().canRead();
 		return true;
 	}
 
 	public boolean canWrite()
 	{
+		if (getFile() != null) return getFile().canWrite();
 		return false;
 	}
 
 	public boolean exists()
 	{
+		if (getFile() != null) return getFile().exists();
 		return true;
 	}
 
 	public boolean isDirectory()
 	{
+		if (getFile() != null) return getFile().isDirectory();
 		return false;
 	}
 
 	public boolean isFile()
 	{
+		if (getFile() != null) return getFile().isFile();
 		return false;
 	}
 
 	public boolean isHidden()
 	{
+		if (getFile() != null) return getFile().isHidden();
 		return false;
 	}
 
 	public long lastModified()
 	{
+		if (getFile() != null) return getFile().lastModified();
 		return -1;
 	}
 
 	public long size()
 	{
+		if (getFile() != null) return getFile().length();
 		return -1;
 	}
 
@@ -135,6 +147,7 @@ public abstract class AbstractFile implements IAbstractFile
 
 	public boolean delete()
 	{
+		if (getFile() != null) return getFile().delete();
 		return false;
 	}
 
@@ -175,7 +188,7 @@ public abstract class AbstractFile implements IAbstractFile
 
 	/**
 	 * Returns the mime-type of a file, using byte reading and/or file extension recognition
-	 * 
+	 *
 	 * @param file the File to find the contentType of
 	 * @retun the mime-type or null if not recognized
 	 */
@@ -197,7 +210,7 @@ public abstract class AbstractFile implements IAbstractFile
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.servoy.j2db.plugins.IUploadData#getInputStream()
 	 */
 	public InputStream getInputStream() throws IOException
@@ -207,7 +220,7 @@ public abstract class AbstractFile implements IAbstractFile
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.servoy.extensions.plugins.file.IAbstractFile#setBytes(byte[])
 	 */
 	public boolean setBytes(byte[] bytes)
