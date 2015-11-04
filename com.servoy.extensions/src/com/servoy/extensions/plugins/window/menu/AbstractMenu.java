@@ -31,7 +31,7 @@ import com.servoy.j2db.util.Utils;
 
 /**
  * Base class for Menus. Wraps IMenu client-specific menu implementation, is exposed in scripting.
- * 
+ *
  * @author rgansevles
  *
  */
@@ -78,9 +78,9 @@ public abstract class AbstractMenu implements IScriptable, IJavaScriptType
 
 	/**
 	 * Add a checkbox.
-	 * 
+	 *
 	 * @sampleas js_addCheckBox(String,Function,Object,String,Boolean,Number)
-	 * 
+	 *
 	 * @return checkbox
 	 */
 	public CheckBox js_addCheckBox() throws PluginException
@@ -90,11 +90,11 @@ public abstract class AbstractMenu implements IScriptable, IJavaScriptType
 
 	/**
 	 * Add a checkbox with given name.
-	 * 
+	 *
 	 * @sampleas js_addCheckBox(String,Function,Object,String,Boolean,Number)
-	 * 
+	 *
 	 * @param name the checkbox text; this can be also html if enclosed between html tags
-	 * 
+	 *
 	 * @return checkbox
 	 */
 	public CheckBox js_addCheckBox(String name) throws PluginException
@@ -105,9 +105,9 @@ public abstract class AbstractMenu implements IScriptable, IJavaScriptType
 	/**
 	 * @clonedesc js_addCheckBox(String,Function,Object,String,Boolean,Number)
 	 * @sampleas js_addCheckBox(String,Function,Object,String,Boolean,Number)
-	 * 
+	 *
 	 * @param index the index at which to add the checkbox
-	 * 
+	 *
 	 * @return checkbox
 	 */
 	public CheckBox js_addCheckBox(Number index) throws PluginException
@@ -121,10 +121,10 @@ public abstract class AbstractMenu implements IScriptable, IJavaScriptType
 	/**
 	 * @clonedesc js_addCheckBox(String,Function,Object,String,Boolean,Number)
 	 * @sampleas js_addCheckBox(String,Function,Object,String,Boolean,Number)
-	 * 
-	 * @param name the checkbox text; this can be also html if enclosed between html tags 
+	 *
+	 * @param name the checkbox text; this can be also html if enclosed between html tags
 	 * @param feedback_item the feedback function
-	 * 
+	 *
 	 * @return checkbox
 	 */
 	public CheckBox js_addCheckBox(String name, Function feedback_item) throws PluginException
@@ -135,11 +135,11 @@ public abstract class AbstractMenu implements IScriptable, IJavaScriptType
 	/**
 	 * @clonedesc js_addCheckBox(String,Function,Object,String,Boolean,Number)
 	 * @sampleas js_addCheckBox(String,Function,Object,String,Boolean,Number)
-	 * 
+	 *
 	 * @param name the checkbox text; this can be also html if enclosed between html tags
 	 * @param feedback_item the feedback function
 	 * @param icon the checkbox icon (can be an image URL or the image content byte array)
-	 * 
+	 *
 	 * @return checkbox
 	 */
 	public CheckBox js_addCheckBox(String name, Function feedback_item, Object icon) throws PluginException
@@ -150,12 +150,12 @@ public abstract class AbstractMenu implements IScriptable, IJavaScriptType
 	/**
 	 * @clonedesc js_addCheckBox(String,Function,Object,String,Boolean,Number)
 	 * @sampleas js_addCheckBox(String,Function,Object,String,Boolean,Number)
-	 * 
+	 *
 	 * @param name the checkbox text; this can be also html if enclosed between html tags
 	 * @param feedback_item the feedback function
 	 * @param icon the checkbox icon (can be an image URL or the image content byte array)
-	 * @param mnemonic the checkbox mnemonic 
-	 * 
+	 * @param mnemonic the checkbox mnemonic
+	 *
 	 * @return checkbox
 	 */
 	public CheckBox js_addCheckBox(String name, Function feedback_item, Object icon, String mnemonic) throws PluginException
@@ -166,13 +166,13 @@ public abstract class AbstractMenu implements IScriptable, IJavaScriptType
 	/**
 	 * @clonedesc js_addCheckBox(String,Function,Object,String,Boolean,Number)
 	 * @sampleas js_addCheckBox(String,Function,Object,String,Boolean,Number)
-	 * 
+	 *
 	 * @param name the checkbox text; this can be also html if enclosed between html tags
 	 * @param feedback_item the feedback function
 	 * @param icon the checkbox icon (can be an image URL or the image content byte array)
-	 * @param mnemonic the checkbox mnemonic  
+	 * @param mnemonic the checkbox mnemonic
 	 * @param enabled the enabled state of the checkbox
-	 * 
+	 *
 	 * @return checkbox
 	 */
 	public CheckBox js_addCheckBox(String name, Function feedback_item, Object icon, String mnemonic, Boolean enabled) throws PluginException
@@ -190,10 +190,10 @@ public abstract class AbstractMenu implements IScriptable, IJavaScriptType
 	 * menu.text = "New Menu";
 	 * // alternatively create a popup menu
 	 * //var menu = plugins.window.createPopupMenu();
-	 * 
+	 *
 	 * // when you don't define an index the checkbox will be added at the last position
 	 * // this is what you usually do to build a new menu
-	 * // minimum settings are the text and method 
+	 * // minimum settings are the text and method
 	 * // the method can be a global or form method
 	 * // be sure to enter the method WITHOUT '()' at the end
 	 * menu.addCheckBox("checkbox", feedback_checkbox);
@@ -207,7 +207,7 @@ public abstract class AbstractMenu implements IScriptable, IJavaScriptType
 	 * menu.addCheckBox("checkbox disabled", feedback_checkbox, "media:///yourimage.gif", "d", false);
 	 * // add a checkbox with text aligned to the right
 	 * menu.addCheckBox("align right", feedback_checkbox, null, null, true, MenuItem.ALIGN_RIGHT);
-	 * 
+	 *
 	 * // add a checkbox at a given index (checkbox properties must be configured after creation)
 	 * // indexes start at 0 (zero) so index 2 is in fact position 3
 	 * var chk = menu.addCheckBox(2);
@@ -217,10 +217,10 @@ public abstract class AbstractMenu implements IScriptable, IJavaScriptType
 	 * @param name the checkbox text; this can be also html if enclosed between html tags
 	 * @param feedback_item the feedback function
 	 * @param icon the checkbox icon (can be an image URL or the image content byte array)
-	 * @param mnemonic the checkbox mnemonic  
+	 * @param mnemonic the checkbox mnemonic
 	 * @param enabled the enabled state of the checkbox
 	 * @param align the alignment type
-	 * 
+	 *
 	 * @return checkbox
 	 */
 	public CheckBox js_addCheckBox(String name, Function feedback_item, Object icon, String mnemonic, Boolean enabled, Number align) throws PluginException
@@ -293,9 +293,9 @@ public abstract class AbstractMenu implements IScriptable, IJavaScriptType
 
 	/**
 	 * Add a menu item.
-	 * 
+	 *
 	 * @sampleas js_addMenuItem(String,Function,Object,String,Boolean,Number)
-	 * 
+	 *
 	 * @return menu item
 	 */
 	public MenuItem js_addMenuItem() throws PluginException
@@ -305,11 +305,11 @@ public abstract class AbstractMenu implements IScriptable, IJavaScriptType
 
 	/**
 	 * Add a menu item with given name.
-	 * 
+	 *
 	 * @sampleas js_addMenuItem(String,Function,Object,String,Boolean,Number)
-	 * 
+	 *
 	 * @param name the menu item text; this can be also html if enclosed between html tags
-	 * 
+	 *
 	 * @return menu item
 	 */
 	public MenuItem js_addMenuItem(String name) throws PluginException
@@ -320,9 +320,9 @@ public abstract class AbstractMenu implements IScriptable, IJavaScriptType
 	/**
 	 * @clonedesc js_addMenuItem(String,Function,Object,String,Boolean,Number)
 	 * @sampleas js_addMenuItem(String,Function,Object,String,Boolean,Number)
-	 * 
+	 *
 	 * @param index the index at which to add the menu item
-	 * 
+	 *
 	 * @return menu item
 	 */
 	public MenuItem js_addMenuItem(Number index) throws PluginException
@@ -336,10 +336,10 @@ public abstract class AbstractMenu implements IScriptable, IJavaScriptType
 	/**
 	 * @clonedesc js_addMenuItem(String,Function,Object,String,Boolean,Number)
 	 * @sampleas js_addMenuItem(String,Function,Object,String,Boolean,Number)
-	 * 
+	 *
 	 * @param name the menu item text; this can be also html if enclosed between html tags
 	 * @param feedback_item the feedback function
-	 * 
+	 *
 	 * @return menu item
 	 */
 	public MenuItem js_addMenuItem(String name, Function feedback_item) throws PluginException
@@ -350,11 +350,11 @@ public abstract class AbstractMenu implements IScriptable, IJavaScriptType
 	/**
 	 * @clonedesc js_addMenuItem(String,Function,Object,String,Boolean,Number)
 	 * @sampleas js_addMenuItem(String,Function,Object,String,Boolean,Number)
-	 * 
+	 *
 	 * @param name the menu item text; this can be also html if enclosed between html tags
-	 * @param feedback_item the feedback function  
+	 * @param feedback_item the feedback function
 	 * @param icon the menu item icon (can be an image URL or the image content byte array)
-	 * 
+	 *
 	 * @return menu item
 	 */
 	public MenuItem js_addMenuItem(String name, Function feedback_item, Object icon) throws PluginException
@@ -365,12 +365,12 @@ public abstract class AbstractMenu implements IScriptable, IJavaScriptType
 	/**
 	 * @clonedesc js_addMenuItem(String,Function,Object,String,Boolean,Number)
 	 * @sampleas js_addMenuItem(String,Function,Object,String,Boolean,Number)
-	 * 
+	 *
 	 * @param name the menu item text; this can be also html if enclosed between html tags
-	 * @param feedback_item the feedback function  
-	 * @param icon the menu item icon (can be an image URL or the image content byte array)  
+	 * @param feedback_item the feedback function
+	 * @param icon the menu item icon (can be an image URL or the image content byte array)
 	 * @param mnemonic the menu item mnemonic
-	 * 
+	 *
 	 * @return menu item
 	 */
 	public MenuItem js_addMenuItem(String name, Function feedback_item, Object icon, String mnemonic) throws PluginException
@@ -381,13 +381,13 @@ public abstract class AbstractMenu implements IScriptable, IJavaScriptType
 	/**
 	 * @clonedesc js_addMenuItem(String,Function,Object,String,Boolean,Number)
 	 * @sampleas js_addMenuItem(String,Function,Object,String,Boolean,Number)
-	 * 
+	 *
 	 * @param name the menu item text; this can be also html if enclosed between html tags
-	 * @param feedback_item the feedback function  
-	 * @param icon the menu item icon (can be an image URL or the image content byte array)  
+	 * @param feedback_item the feedback function
+	 * @param icon the menu item icon (can be an image URL or the image content byte array)
 	 * @param mnemonic the menu item mnemonic
 	 * @param enabled the enabled state of the menu item
-	 * 
+	 *
 	 * @return menu item
 	 */
 	public MenuItem js_addMenuItem(String name, Function feedback_item, Object icon, String mnemonic, Boolean enabled) throws PluginException
@@ -405,7 +405,7 @@ public abstract class AbstractMenu implements IScriptable, IJavaScriptType
 	 * menu.text = "New Menu";
 	 * // alternatively create a popup menu
 	 * //var menu = plugins.window.createPopupMenu();
-	 * 
+	 *
 	 * // when you don't define an index the item will be added at the last position
 	 * // this is what you usually do to build a new menu
 	 * // minimum settings are the text and method
@@ -422,7 +422,7 @@ public abstract class AbstractMenu implements IScriptable, IJavaScriptType
 	 * menu.addMenuItem("disabled item", feedback_item, "media:///yourimage.gif", "d", false);
 	 * // add an item with text aligned to the right
 	 * menu.addMenuItem("align right", feedback_item, null, null, true, SM_ALIGNMENT.RIGHT);
-	 * 
+	 *
 	 * // add an item at a given index (item properties must be configured after creation)
 	 * // indexes start at 0 (zero) so index 2 is in fact position 3
 	 * var item = menu.addMenuItem(2);
@@ -430,12 +430,12 @@ public abstract class AbstractMenu implements IScriptable, IJavaScriptType
 	 * item.setMethod(feedback_item);
 	 *
 	 * @param name the menu item text; this can be also html if enclosed between html tags
-	 * @param feedback_item the feedback function  
-	 * @param icon the menu item icon (can be an image URL or the image content byte array)  
+	 * @param feedback_item the feedback function
+	 * @param icon the menu item icon (can be an image URL or the image content byte array)
 	 * @param mnemonic the menu item mnemonic
 	 * @param enabled the enabled state of the menu item
 	 * @param align the alignment type
-	 * 
+	 *
 	 * @return menu item
 	 */
 	public MenuItem js_addMenuItem(String name, Function feedback_item, Object icon, String mnemonic, Boolean enabled, Number align) throws PluginException
@@ -450,8 +450,8 @@ public abstract class AbstractMenu implements IScriptable, IJavaScriptType
 	/**
 	 * Add a radio button.
 	 * @sampleas js_addRadioButton(String,Function,Object,String,Boolean,Number)
-	 * 
-	 * @return a radio button menu item 
+	 *
+	 * @return a radio button menu item
 	 */
 	public RadioButton js_addRadioButton() throws PluginException
 	{
@@ -460,12 +460,12 @@ public abstract class AbstractMenu implements IScriptable, IJavaScriptType
 
 	/**
 	 * Add a radio button with given name.
-	 * 
+	 *
 	 * @sampleas js_addRadioButton(String,Function,Object,String,Boolean,Number)
-	 * 
+	 *
 	 * @param name the radio button text; this can be also html if enclosed between html tags
-	 * 
-	 * @return a radio button menu item 
+	 *
+	 * @return a radio button menu item
 	 */
 	public RadioButton js_addRadioButton(String name) throws PluginException
 	{
@@ -475,10 +475,10 @@ public abstract class AbstractMenu implements IScriptable, IJavaScriptType
 	/**
 	 * @clonedesc js_addRadioButton(String,Function,Object,String,Boolean,Number)
 	 * @sampleas js_addRadioButton(String,Function,Object,String,Boolean,Number)
-	 * 
+	 *
 	 * @param index the index at which to add the radio button
-	 * 
-	 * @return a radio button menu item 
+	 *
+	 * @return a radio button menu item
 	 */
 	public RadioButton js_addRadioButton(Number index) throws PluginException
 	{
@@ -496,11 +496,11 @@ public abstract class AbstractMenu implements IScriptable, IJavaScriptType
 	/**
 	 * @clonedesc js_addRadioButton(String,Function,Object,String,Boolean,Number)
 	 * @sampleas js_addRadioButton(String,Function,Object,String,Boolean,Number)
-	 * 
+	 *
 	 * @param name the radio button text; this can be also html if enclosed between html tags
-	 * @param feedback_item the feedback function 
-	 * 
-	 * @return a radio button menu item 
+	 * @param feedback_item the feedback function
+	 *
+	 * @return a radio button menu item
 	 */
 	public RadioButton js_addRadioButton(String name, Function feedback_item) throws PluginException
 	{
@@ -510,11 +510,11 @@ public abstract class AbstractMenu implements IScriptable, IJavaScriptType
 	/**
 	 * @clonedesc js_addRadioButton(String,Function,Object,String,Boolean,Number)
 	 * @sampleas js_addRadioButton(String,Function,Object,String,Boolean,Number)
-	 * 
+	 *
 	 * @param name the radio button text; this can be also html if enclosed between html tags
-	 * @param feedback_item the feedback function  
+	 * @param feedback_item the feedback function
 	 * @param icon the radio button icon (can be an image URL or the image content byte array)
-	 * 
+	 *
 	 * @return a radio button menu item
 	 */
 	public RadioButton js_addRadioButton(String name, Function feedback_item, Object icon) throws PluginException
@@ -525,13 +525,13 @@ public abstract class AbstractMenu implements IScriptable, IJavaScriptType
 	/**
 	 * @clonedesc js_addRadioButton(String,Function,Object,String,Boolean,Number)
 	 * @sampleas js_addRadioButton(String,Function,Object,String,Boolean,Number)
-	 * 
+	 *
 	 * @param name the radio button text; this can be also html if enclosed between html tags
-	 * @param feedback_item the feedback function  
-	 * @param icon the radio button icon (can be an image URL or the image content byte array)  
+	 * @param feedback_item the feedback function
+	 * @param icon the radio button icon (can be an image URL or the image content byte array)
 	 * @param mnemonic the radio button mnemonic
-	 * 
-	 * @return a radio button menu item 
+	 *
+	 * @return a radio button menu item
 	 */
 	public RadioButton js_addRadioButton(String name, Function feedback_item, Object icon, String mnemonic) throws PluginException
 	{
@@ -541,13 +541,13 @@ public abstract class AbstractMenu implements IScriptable, IJavaScriptType
 	/**
 	 * @clonedesc js_addRadioButton(String,Function,Object,String,Boolean,Number)
 	 * @sampleas js_addRadioButton(String,Function,Object,String,Boolean,Number)
-	 * 
+	 *
 	 * @param name the radio button text; this can be also html if enclosed between html tags
-	 * @param feedback_item the feedback function  
-	 * @param icon the radio button icon (can be an image URL or the image content byte array)  
+	 * @param feedback_item the feedback function
+	 * @param icon the radio button icon (can be an image URL or the image content byte array)
 	 * @param mnemonic the radio button mnemonic
-	 * @param enabled the enabled state of radio button 
-	 * 
+	 * @param enabled the enabled state of radio button
+	 *
 	 * @return a radio button menu item
 	 */
 	public RadioButton js_addRadioButton(String name, Function feedback_item, Object icon, String mnemonic, Boolean enabled) throws PluginException
@@ -565,7 +565,7 @@ public abstract class AbstractMenu implements IScriptable, IJavaScriptType
 	 * menu.text = "New Menu";
 	 * // alternatively create a popup menu
 	 * //var menu = plugins.window.createPopupMenu();
-	 * 	
+	 *
 	 * // when you don't define an index the radiobutton will be added at the last position
 	 * // this is what you usually do to build a new menu
 	 * // minimum settings are the text and method
@@ -576,14 +576,14 @@ public abstract class AbstractMenu implements IScriptable, IJavaScriptType
 	 * menu.addRadioButton("radio with icon", feedback_radiobutton, "media:///yourimage.gif");
 	 * //var pic_bytes = plugins.file.readFile("/path/to/image.jpg");
 	 * //menu.addRadioButton("radio with icon", feedback_radiobutton, pic_bytes);
-	 * 	
+	 *
 	 * // add a new radiobutton group
 	 * // a group will 'bind' all added radiobuttons after the group together
 	 * // as a result checking one item will uncheck the other
 	 * // if no group is added, a group is created automatically when the first radiobutton is added to the menu
 	 * // so in this case we will have two groups, one with the radiobuttons added until now and one with the ones added from now on
 	 * menu.addRadioGroup();
-	 * 	
+	 *
 	 * // add a radiobutton with a mnemonic
 	 * menu.addRadioButton("radio with mnemonic", feedback_radiobutton, "media:///yourimage.gif", "i");
 	 * // add a disabled radiobutton
@@ -597,12 +597,12 @@ public abstract class AbstractMenu implements IScriptable, IJavaScriptType
 	 * rd.setMethod(feedback_item);
 	 *
 	 * @param name the radio button text; this can be also html if enclosed between html tags
-	 * @param feedback_item the feedback function  
-	 * @param icon the radio button icon (can be an image URL or the image content byte array)  
+	 * @param feedback_item the feedback function
+	 * @param icon the radio button icon (can be an image URL or the image content byte array)
 	 * @param mnemonic the radio button mnemonic
-	 * @param enabled the enabled state of radio button  
-	 * @param align the alignment type  
-	 * 
+	 * @param enabled the enabled state of radio button
+	 * @param align the alignment type
+	 *
 	 * @return a radio button menu item
 	 */
 	public RadioButton js_addRadioButton(String name, Function feedback_item, Object icon, String mnemonic, Boolean enabled, Number align)
@@ -632,7 +632,7 @@ public abstract class AbstractMenu implements IScriptable, IJavaScriptType
 	 * Add a radiogroup for radiobuttons. A radiogroup groups together all radiobuttons that are added
 	 * after the group is added. From all radiobuttons that belong to the same radiogroup only one can be
 	 * checked at a time.
-	 * 
+	 *
 	 * If no radiogroup is added, one is created automatically when the first radiobutton is added.
 	 *
 	 * @sampleas js_addRadioButton(String,Function,Object,String,Boolean,Number)
@@ -652,7 +652,7 @@ public abstract class AbstractMenu implements IScriptable, IJavaScriptType
 	 * menu.text = "New Menu";
 	 * // alternatively create a popup menu
 	 * //var menu = plugins.window.createPopupMenu();
-	 * 
+	 *
 	 * // add an item and a checkbox
 	 * menu.addMenuItem("item", feedback_item);
 	 * menu.addCheckBox("checkbox", feedback_checkbox);
@@ -660,9 +660,9 @@ public abstract class AbstractMenu implements IScriptable, IJavaScriptType
 	 * menu.addSeparator();
 	 * // add a radiobutton. it will be separated from the rest of the control by the separator
 	 * menu.addRadioButton("radio", feedback_radiobutton);
-	 * // add another separator between the item and the checkbox 
+	 * // add another separator between the item and the checkbox
 	 * menu.addSeparator(1);
-	 * 
+	 *
 	 */
 	public void js_addSeparator()
 	{
@@ -672,7 +672,7 @@ public abstract class AbstractMenu implements IScriptable, IJavaScriptType
 	/**
 	 * @sampleas js_addSeparator()
 	 * @clonedesc js_addSeparator()
-	 * 
+	 *
 	 * @param index the index at which to add the separator
 	 */
 	public void js_addSeparator(int index)
@@ -692,7 +692,7 @@ public abstract class AbstractMenu implements IScriptable, IJavaScriptType
 
 	/**
 	 * @param index the index at which to add the submenu
-	 * 
+	 *
 	 * @deprecated Replaced by {@link #addMenu(Number)}.
 	 */
 	@Deprecated
@@ -702,7 +702,7 @@ public abstract class AbstractMenu implements IScriptable, IJavaScriptType
 	}
 
 	/**
-	 * 
+	 *
 	 * Add a submenu with given name.
 	 *
 	 * @sample
@@ -712,7 +712,7 @@ public abstract class AbstractMenu implements IScriptable, IJavaScriptType
 	 * menu.text = "New Menu";
 	 * // alternatively create a popup menu
 	 * //var menu = plugins.window.createPopupMenu();
-	 * 
+	 *
 	 * // add a first submenu
 	 * var submenu1 = menu.addMenu("submenu 1");
 	 * submenu1.addMenuItem("sub item 1 - 1", feedback_item);
@@ -731,7 +731,7 @@ public abstract class AbstractMenu implements IScriptable, IJavaScriptType
 	 * submenu0.addMenuItem("sub item 0 - 1", feedback_item);
 	 *
 	 * @param name the text of the submenu; this can be also html if enclosed between html tags
-	 * 
+	 *
 	 * @return the submenu
 	 */
 	public Menu js_addMenu(String name) throws PluginException
@@ -750,11 +750,11 @@ public abstract class AbstractMenu implements IScriptable, IJavaScriptType
 
 	/**
 	 * Add a submenu at the selected index (starting at 0).
-	 * 
+	 *
 	 * @sampleas js_addMenu(String)
-	 * 
+	 *
 	 * @param index the index at which to add the submenu
-	 * 
+	 *
 	 * @return the submenu
 	 */
 	public Menu js_addMenu(Number index) throws PluginException
@@ -767,9 +767,9 @@ public abstract class AbstractMenu implements IScriptable, IJavaScriptType
 
 	/**
 	 * Add a submenu at the end.
-	 * 
+	 *
 	 * @sampleas js_addMenu(String)
-	 * 
+	 *
 	 * @return the submenu
 	 */
 	public Menu js_addMenu() throws PluginException
@@ -787,7 +787,7 @@ public abstract class AbstractMenu implements IScriptable, IJavaScriptType
 	 * menu.text = "New Menu";
 	 * // alternatively create a popup menu
 	 * //var menu = plugins.window.createPopupMenu();
-	 * 
+	 *
 	 * // add two radiobuttons
 	 * menu.addRadioButton("radio one", feedback_radiobutton);
 	 * menu.addRadioButton("radio two", feedback_radiobutton);
@@ -800,7 +800,7 @@ public abstract class AbstractMenu implements IScriptable, IJavaScriptType
 	 * // add a submenu with an item under it
 	 * var submenu = menu.addMenu("submenu");
 	 * submenu.addMenuItem("subitem", feedback_item);
-	 * 
+	 *
 	 * // depending on some state, update the entries in the menu
 	 * var some_state = true;
 	 * if (some_state) {
@@ -826,7 +826,7 @@ public abstract class AbstractMenu implements IScriptable, IJavaScriptType
 	 * 	menu.getMenu(6).text = "not some state";
 	 * 	menu.getMenu(6).getItem(0).text = "other text";
 	 * }
-	 * 
+	 *
 	 * @param index
 	 */
 	public CheckBox js_getCheckBox(int index)
@@ -843,7 +843,7 @@ public abstract class AbstractMenu implements IScriptable, IJavaScriptType
 	 * Get the item at the selected index (starting at 0).
 	 *
 	 * @sampleas js_getCheckBox(int)
-	 * 
+	 *
 	 * @param index
 	 */
 	public AbstractMenuItem js_getItem(int index)
@@ -875,7 +875,7 @@ public abstract class AbstractMenu implements IScriptable, IJavaScriptType
 	 * menu.text = "New Menu";
 	 * // alternatively create a popup menu
 	 * //var menu = plugins.window.createPopupMenu();
-	 * 
+	 *
 	 * // add two radiobuttons
 	 * menu.addRadioButton("radio one", feedback_radiobutton);
 	 * menu.addRadioButton("radio two", feedback_radiobutton);
@@ -885,7 +885,7 @@ public abstract class AbstractMenu implements IScriptable, IJavaScriptType
 	 * menu.addMenuItem("item", feedback_item);
 	 * // add another menu item
 	 * menu.addMenuItem("item 2", feedback_item);
-	 * 
+	 *
 	 * // remove the last item
 	 * menu.removeItem(menu.getItemCount() - 1);
 	 */
@@ -904,7 +904,7 @@ public abstract class AbstractMenu implements IScriptable, IJavaScriptType
 	 * menu.text = "New Menu";
 	 * // alternatively create a popup menu
 	 * //var menu = plugins.window.createPopupMenu();
-	 * 
+	 *
 	 * // add two radiobuttons
 	 * menu.addRadioButton("radio one", feedback_radiobutton);
 	 * menu.addRadioButton("radio two", feedback_radiobutton);
@@ -914,7 +914,7 @@ public abstract class AbstractMenu implements IScriptable, IJavaScriptType
 	 * menu.addMenuItem("item", feedback_item);
 	 * // add another menu item
 	 * menu.addMenuItem("item 2", feedback_item);
-	 * 
+	 *
 	 * // find the index of the checkbox
 	 * var idx = menu.getItemIndexByText("check");
 	 * // remove the checkbox by its index
@@ -925,7 +925,7 @@ public abstract class AbstractMenu implements IScriptable, IJavaScriptType
 	 * menu.removeAllItems();
 	 * // add back an item
 	 * menu.addMenuItem("new item", feedback_item);
-	 * 
+	 *
 	 * @param text
 	 */
 	public int js_getItemIndexByText(String text)
@@ -956,6 +956,11 @@ public abstract class AbstractMenu implements IScriptable, IJavaScriptType
 			{
 				return i;
 			}
+			if (menuItem.getMenuComponent() != null && menu.getMenuItem(i) != null &&
+				menuItem.getMenuComponent().equals(menu.getMenuItem(i).getMenuComponent()))
+			{
+				return i;
+			}
 		}
 		return -1;
 	}
@@ -964,7 +969,7 @@ public abstract class AbstractMenu implements IScriptable, IJavaScriptType
 	 * Get the radiobutton at the selected index (starting at 0).
 	 *
 	 * @sampleas js_getCheckBox(int)
-	 * 
+	 *
 	 * @param index
 	 */
 	public RadioButton js_getRadioButton(int index)
@@ -990,7 +995,7 @@ public abstract class AbstractMenu implements IScriptable, IJavaScriptType
 	 * Get the submenu at the selected index (starting at 0).
 	 *
 	 * @sampleas js_getCheckBox(int)
-	 * 
+	 *
 	 * @param index
 	 */
 	public Menu js_getMenu(int index)
@@ -1046,7 +1051,7 @@ public abstract class AbstractMenu implements IScriptable, IJavaScriptType
 	 * Sets the value for the specified element client property key.
 	 *
 	 * @sampleas js_getClientProperty(Object)
-	 * 
+	 *
 	 * @param key
 	 * @param value
 	 */
@@ -1066,20 +1071,20 @@ public abstract class AbstractMenu implements IScriptable, IJavaScriptType
 	 * menu.text = "New Menu";
 	 * // alternatively create a popup menu
 	 * //var menu = plugins.window.createPopupMenu();
-	 * 
+	 *
 	 * // add an item to the menu
 	 * menu.addMenuItem("item", feedback_item);
-	 * 
+	 *
 	 * // set the tooltip of the menu via client properties
 	 * // keep the original tooltip in a form or global variable
 	 * originalTooltip = menu.getClientProperty("ToolTipText");
 	 * menu.putClientProperty("ToolTipText", "changed tooltip");
-	 * 
+	 *
 	 * // later restore the original tooltip from the variable
 	 * //var menubar = plugins.window.getMenuBar();
 	 * //var menu = menubar.getMenu(menubar.getMenuCount()-1);
 	 * //menu.putClientProperty("ToolTipText", originalTooltip);
-	 * 
+	 *
 	 * @param key
 	 */
 	public Object js_getClientProperty(Object key)
