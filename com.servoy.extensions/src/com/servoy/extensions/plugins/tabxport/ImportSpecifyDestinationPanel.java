@@ -45,6 +45,7 @@ import com.servoy.j2db.Messages;
 import com.servoy.j2db.persistence.Column;
 import com.servoy.j2db.persistence.ColumnWrapper;
 import com.servoy.j2db.persistence.IServer;
+import com.servoy.j2db.persistence.ITable;
 import com.servoy.j2db.persistence.Relation;
 import com.servoy.j2db.persistence.RepositoryException;
 import com.servoy.j2db.persistence.Table;
@@ -130,7 +131,8 @@ public class ImportSpecifyDestinationPanel extends JPanel implements IWizardPane
 		tableCombobox = new JComboBox();
 		try
 		{
-			tableCombobox.setModel(new SortedComboModel(StringComparator.INSTANCE, server == null ? Collections.EMPTY_LIST : server.getTableAndViewNames(false)));
+			tableCombobox.setModel(
+				new SortedComboModel(StringComparator.INSTANCE, server == null ? Collections.EMPTY_LIST : server.getTableAndViewNames(false)));
 			if (table != null) tableCombobox.setSelectedItem(table.getName());
 		}
 		catch (RemoteException e)
@@ -264,7 +266,7 @@ public class ImportSpecifyDestinationPanel extends JPanel implements IWizardPane
 						columns.addItem("-none-"); //$NON-NLS-1$
 						try
 						{
-							Table possTable = (Table)state.getProperty("table"); //$NON-NLS-1$
+							ITable possTable = (ITable)state.getProperty("table"); //$NON-NLS-1$
 							if (possTable != null)
 							{
 								Iterator e1 = possTable.getColumnsSortedByName();
@@ -333,7 +335,7 @@ public class ImportSpecifyDestinationPanel extends JPanel implements IWizardPane
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.awt.event.ItemListener#itemStateChanged(java.awt.event.ItemEvent)
 	 */
 	public void itemStateChanged(ItemEvent e)
