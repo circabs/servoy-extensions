@@ -40,6 +40,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumn;
 
+import com.servoy.j2db.FlattenedSolution;
 import com.servoy.j2db.IApplication;
 import com.servoy.j2db.Messages;
 import com.servoy.j2db.persistence.Column;
@@ -274,13 +275,14 @@ public class ImportSpecifyDestinationPanel extends JPanel implements IWizardPane
 								{
 									columns.addItem(e1.next());
 								}
-								Iterator it = application.getFlattenedSolution().getRelations(possTable, true, true);
+								FlattenedSolution fs = application.getFlattenedSolution();
+								Iterator it = fs.getRelations(possTable, true, true);
 								while (it.hasNext())
 								{
 									Relation r = (Relation)it.next();
-									if (r.isValid() && !r.isGlobal() && r.getAllowCreationRelatedRecords())
+									if (Relation.isValid(r, fs) && !r.isGlobal() && r.getAllowCreationRelatedRecords())
 									{
-										possTable = application.getFlattenedSolution().getTable(r.getForeignDataSource());
+										possTable = fs.getTable(r.getForeignDataSource());
 										if (possTable != null)
 										{
 											Iterator e2 = possTable.getColumnsSortedByName();
