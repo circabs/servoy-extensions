@@ -280,7 +280,7 @@ public class ImportSpecifyDestinationPanel extends JPanel implements IWizardPane
 									Relation r = (Relation)it.next();
 									if (r.isValid() && !r.isGlobal() && r.getAllowCreationRelatedRecords())
 									{
-										possTable = r.getForeignTable();
+										possTable = application.getFlattenedSolution().getTable(r.getForeignDataSource());
 										if (possTable != null)
 										{
 											Iterator e2 = possTable.getColumnsSortedByName();
