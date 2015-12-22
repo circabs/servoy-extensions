@@ -14,7 +14,7 @@ if (typeof(ServoyPopup) == "undefined")
 		{
 			ServoyPopup.id = id;
 			ServoyPopup.callback = callback;
-			var hitEvent = 'ontouchstart' in document? 'touchstart': 'click';
+			var hitEvent = 'ontouchstart' in document? 'touchstart': 'mousedown';
 			$('iframe').each(function() { 
 				try {
 					var parentDiv=$(this).closest("div"); 
@@ -146,7 +146,7 @@ function removePopupPanel(e) {
 function doPopupPanelRemove(element) {
 	if($('#' + ServoyPopup.id).length > 0) {
 		// if target element is at a higher z-index then the panel, then do not remove it
-		var hitEvent = 'ontouchstart' in document? 'touchstart': 'click';
+		var hitEvent = 'ontouchstart' in document? 'touchstart': 'mousedown';
 		if(element && (zIndex(element) > zIndex($('#' + ServoyPopup.id)))) return;		
 		wicketAjaxGet(ServoyPopup.callback);
 		for(var iframeid in ServoyPopup.iframeClickCallback) {
