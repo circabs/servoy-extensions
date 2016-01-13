@@ -288,7 +288,7 @@ public class WindowProvider implements IReturnedTypesProvider, IScriptable
 	 *
 	 * @param shortcut
 	 * @param methodName scopes.scopename.methodname or formname.methodname String to target the method to execute
-	 * @param contextFilter	only triggers the shortcut when on this form
+	 * @param contextFilter	form or element name ( ng only - specified by formName.elementName); only triggers the shortcut when on this form/element
 	 */
 	public boolean js_createShortcut(String shortcut, String methodName, String contextFilter)
 	{
@@ -313,7 +313,7 @@ public class WindowProvider implements IReturnedTypesProvider, IScriptable
 	 *
 	 * @param shortcut
 	 * @param method the method/function that needs to be called when the shortcut is hit
-	 * @param contextFilter	only triggers the shortcut when on this form
+	 * @param contextFilter	form or element name ( ng only - specified by formName.elementName); only triggers the shortcut when on this form/element
 	 */
 	public boolean js_createShortcut(String shortcut, Function method, String contextFilter)
 	{
@@ -341,7 +341,7 @@ public class WindowProvider implements IReturnedTypesProvider, IScriptable
 	 *
 	 * @param shortcut
 	 * @param method the method/function that needs to be called when the shortcut is hit
-	 * @param contextFilter	only triggers the shortcut when on this form
+	 * @param contextFilter	form or element name ( ng only - specified by formName.elementName); only triggers the shortcut when on this form/element
 	 * @param arguments
 	 */
 	public boolean js_createShortcut(String shortcut, Function method, String contextFilter, Object[] arguments)
@@ -355,7 +355,7 @@ public class WindowProvider implements IReturnedTypesProvider, IScriptable
 	 *
 	 * @param shortcut
 	 * @param method the method/function that needs to be called when the shortcut is hit
-	 * @param contextFilter	only triggers the shortcut when on this form
+	 * @param contextFilter	form or element name ( ng only - specified by formName.elementName); only triggers the shortcut when on this form/element
 	 * @param arguments
 	 * @param consumeEvent if true then the shotcut will consume the event and the default browser behavior will not be executed (default false)
 	 */
@@ -370,7 +370,7 @@ public class WindowProvider implements IReturnedTypesProvider, IScriptable
 	 *
 	 * @param shortcut
 	 * @param method the method/function that needs to be called when the shortcut is hit
-	 * @param contextFilter	only triggers the shortcut when on this form
+	 * @param contextFilter	form or element name ( ng only - specified by formName.elementName); only triggers the shortcut when on this form/element
 	 * @param arguments
 	 */
 	public boolean js_createShortcut(String shortcut, String methodName, String contextFilter, Object[] arguments)
@@ -423,7 +423,7 @@ public class WindowProvider implements IReturnedTypesProvider, IScriptable
 	 *
 	 * @param shortcut
 	 * @param methodName scopes.scopename.methodname or formname.methodname String to target the method to execute
-	 * @param contextFilter	only triggers the shortcut when on this form
+	 * @param contextFilter	form or element name ( ng only - specified by formName.elementName); only triggers the shortcut when on this form/element
 	 * @param arguments
 	 * @param consumeEvent if true then the shotcut will consume the event and the default browser behavior will not be executed (default false)
 	 */
@@ -516,7 +516,7 @@ public class WindowProvider implements IReturnedTypesProvider, IScriptable
 	 * @clonedesc js_removeShortcut(String)
 	 * @sampleas js_removeShortcut(String)
 	 * @param shortcut
-	 * @param contextFilter	only triggers the shortcut when on this form
+	 * @param contextFilter	form or element name ( ng only - specified by formName.elementName); only triggers the shortcut when on this form/element
 	 * @return
 	 */
 	public boolean js_removeShortcut(String shortcut, String contextFilter)
