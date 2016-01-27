@@ -30,6 +30,7 @@ import org.apache.wicket.protocol.http.WebRequest;
 import com.servoy.extensions.plugins.window.menu.IMenuItem;
 import com.servoy.extensions.plugins.window.popup.wicket.PopupPanel;
 import com.servoy.j2db.server.headlessclient.IWebClientPluginAccess;
+import com.servoy.j2db.server.headlessclient.WebClientSession;
 import com.servoy.j2db.server.headlessclient.dataui.AbstractServoyDefaultAjaxBehavior;
 import com.servoy.j2db.server.headlessclient.yui.YUILoader;
 import com.servoy.j2db.util.Utils;
@@ -37,6 +38,7 @@ import com.servoy.j2db.util.Utils;
 /**
  * @author jblok
  */
+@SuppressWarnings("nls")
 public final class MenuExecutorBehavior extends AbstractServoyDefaultAjaxBehavior
 {
 	private static final long serialVersionUID = 1L;
@@ -68,11 +70,19 @@ public final class MenuExecutorBehavior extends AbstractServoyDefaultAjaxBehavio
 			response.renderJavascript("if (typeof(YAHOO_config) == \"undefined\") {YAHOO_config = {};}YAHOO_config.injecting = true;", "yahoo_config"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 
+		WebClientSession webClientSession = WebClientSession.get();
+		boolean isBlockRequest = webClientSession != null && webClientSession.blockRequest();
+		String indicatorId = webClientSession != null && WebClientSession.get().hideLoadingIndicator() ? null : "indicator"; //$NON-NLS-1$
+
 		response.renderJavascriptReference(YUILoader.JS_YAHOO_DOM_EVENT);
 		response.renderJavascriptReference(YUILoader.JS_CONTAINER_CORE);
 		response.renderJavascriptReference(YUILoader.JS_MENU);
-		response.renderJavascript(
-			"function svy_popmenu_click(psType,psArgs,psValue){wicketAjaxGet(psValue)};var oMenu = new YAHOO.widget.Menu('basicmenu',{zIndex : " + (PopupPanel.ZINDEX + 1) + "});", "yahoomenu"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		response.renderJavascript("function svy_popmenu_click(psType,psArgs,psValue){" +
+			(indicatorId != null ? "Wicket.showIncrementally('" + indicatorId + "');" : "") + "wicketAjaxGet(psValue, function() {" +
+			(isBlockRequest ? "hideBlocker();" : "") + (indicatorId != null ? "Wicket.hideIncrementally('" + indicatorId + "');" : "") + "}, function() {" +
+			(isBlockRequest ? "hideBlocker();" : "") + (indicatorId != null ? "Wicket.hideIncrementally('" + indicatorId + "');" : "") + "}, function() {" +
+			(isBlockRequest ? "onABC();" : "") + "return true;})};var oMenu = new YAHOO.widget.Menu('basicmenu',{zIndex : " + (PopupPanel.ZINDEX + 1) + "});",
+			"yahoomenu");
 	}
 
 	@Override
