@@ -132,11 +132,9 @@ public class MailServer implements IMailService, IServerPlugin
 		req.put("mail.smtp.connectiontimeout", "Socket connection timeout value in milliseconds. Default is infinite timeout.");
 		req.put("mail.smtp.timeout", "Socket I/O timeout value in milliseconds. Default is infinite timeout.");
 		req.put("mail.smtp.ssl.enable", "Use SSL (true/false), defaults to false .");
-		req.put(
-			"mail.mime.charset",
+		req.put("mail.mime.charset",
 			"Specify the name of the charset to use for mail encoding (leave emtpy for system default), see http://java.sun.com/j2se/1.4.2/docs/api/java/nio/charset/Charset.html forinfo which charset names are usable");
-		req.put(
-			"mail.development.override.address",
+		req.put("mail.development.override.address",
 			"Specify an email address to which all email will be send instead of the specified To, Cc and Bcc addresses.\nThe specified to, Cc and Bcc addresses will be added to the Subject.");
 		return req;
 	}
@@ -412,7 +410,7 @@ public class MailServer implements IMailService, IServerPlugin
 		ClassLoader saveCl = Thread.currentThread().getContextClassLoader();
 		try
 		{
-			Thread.currentThread().setContextClassLoader(application.getPluginManager().getClassLoader());
+			Thread.currentThread().setContextClassLoader(javax.mail.Session.class.getClassLoader());
 			// Create empty properties
 			// -- Get hold of the default session --
 			Properties properties = overrideProperties(settings, overrideProperties);
@@ -515,7 +513,7 @@ public class MailServer implements IMailService, IServerPlugin
 		ClassLoader saveCl = Thread.currentThread().getContextClassLoader();
 		try
 		{
-			Thread.currentThread().setContextClassLoader(application.getPluginManager().getClassLoader());
+			Thread.currentThread().setContextClassLoader(javax.mail.Session.class.getClassLoader());
 			try
 			{
 				ByteArrayInputStream is = new ByteArrayInputStream(data);
