@@ -55,7 +55,7 @@ import com.servoy.j2db.util.FileChooserUtils;
  * @author jblok
  */
 @ServoyDocumented(publicName = PDFPlugin.PLUGIN_NAME, scriptingName = "plugins." + PDFPlugin.PLUGIN_NAME)
-@ServoyClientSupport(ng = false, wc = true, sc = true)
+@ServoyClientSupport(ng = true, wc = true, sc = true)
 public class PDFProvider implements IScriptable
 {
 	private final PDFPlugin plugin;
@@ -74,6 +74,7 @@ public class PDFProvider implements IScriptable
 	 * //to print current record without printdialog to pdf file in temp dir.
 	 * controller.print(true,false,plugins.pdf_output.getPDFPrinter());
 	 */
+	@ServoyClientSupport(ng = false, wc = true, sc = true)
 	public PrinterJob js_getPDFPrinter()
 	{
 		return metaPrintJob;
@@ -89,6 +90,7 @@ public class PDFProvider implements IScriptable
 	 * @param filename the file name
 	 */
 	@SuppressWarnings("nls")
+	@ServoyClientSupport(ng = false, wc = true, sc = true)
 	public PrinterJob js_getPDFPrinter(String filename)
 	{
 		try
@@ -121,6 +123,7 @@ public class PDFProvider implements IScriptable
 	 *
 	 * @sampleas js_endMetaPrintJob()
 	 */
+	@ServoyClientSupport(ng = false, wc = true, sc = true)
 	public boolean js_startMetaPrintJob()
 	{
 		return js_startMetaPrintJob(null);
@@ -134,6 +137,7 @@ public class PDFProvider implements IScriptable
 	 * @param filename the file name
 	 */
 	@SuppressWarnings("nls")
+	@ServoyClientSupport(ng = false, wc = true, sc = true)
 	public boolean js_startMetaPrintJob(String filename)
 	{
 		try
@@ -196,6 +200,7 @@ public class PDFProvider implements IScriptable
 	 * application.output('total printed pages: ' + plugins.pdf_output.getTotalPagesPrinted());
 	 * mediaDataProvider = plugins.pdf_output.endMetaPrintJob()
 	 */
+	@ServoyClientSupport(ng = false, wc = true, sc = true)
 	public byte[] js_endMetaPrintJob()
 	{
 		byte[] retval = null;
@@ -224,6 +229,7 @@ public class PDFProvider implements IScriptable
 	 *
 	 * @param path the path to use
 	 */
+	@ServoyClientSupport(ng = false, wc = true, sc = true)
 	public int js_insertFontDirectory(String path)
 	{
 		if (metaPrintJob != null)
@@ -243,6 +249,7 @@ public class PDFProvider implements IScriptable
 	 * @param pdf_docs_bytearrays  the array of documents to combine
 	 * @param pdf_docs_passwords an array of passwords to use
 	 */
+	@ServoyClientSupport(ng = true, wc = true, sc = true)
 	public byte[] js_combineProtectedPDFDocuments(Object[] pdf_docs_bytearrays, Object[] pdf_docs_passwords)
 	{
 		if (pdf_docs_bytearrays == null || pdf_docs_bytearrays.length == 0) return null;
@@ -325,6 +332,7 @@ public class PDFProvider implements IScriptable
 	 *
 	 * @param pdf_docs_bytearrays the array of documents to combine
 	 */
+	@ServoyClientSupport(ng = true, wc = true, sc = true)
 	public byte[] js_combinePDFDocuments(Object[] pdf_docs_bytearrays)
 	{
 		return js_combineProtectedPDFDocuments(pdf_docs_bytearrays, null);
@@ -349,6 +357,7 @@ public class PDFProvider implements IScriptable
 	 * @param pdf_password the password to use
 	 * @param field_values the field values to use
 	 */
+	@ServoyClientSupport(ng = true, wc = true, sc = true)
 	public byte[] js_convertProtectedPDFFormToPDFDocument(byte[] pdf_form, String pdf_password, Object field_values)
 	{
 		try
@@ -429,6 +438,7 @@ public class PDFProvider implements IScriptable
 	 * @param pdf_form the PDF Form to convert
 	 * @param field_values the values to use
 	 */
+	@ServoyClientSupport(ng = true, wc = true, sc = true)
 	public byte[] js_convertPDFFormToPDFDocument(byte[] pdf_form, Object field_values)
 	{
 		return js_convertProtectedPDFFormToPDFDocument(pdf_form, null, field_values);
@@ -439,6 +449,7 @@ public class PDFProvider implements IScriptable
 	 *
 	 * @sampleas js_endMetaPrintJob()
 	 */
+	@ServoyClientSupport(ng = false, wc = true, sc = true)
 	public int js_getPagesPrinted()
 	{
 		if (metaPrintJob != null)
@@ -453,6 +464,7 @@ public class PDFProvider implements IScriptable
 	 *
 	 * @sampleas js_endMetaPrintJob()
 	 */
+	@ServoyClientSupport(ng = false, wc = true, sc = true)
 	public int js_getTotalPagesPrinted()
 	{
 		if (metaPrintJob != null)
@@ -484,6 +496,7 @@ public class PDFProvider implements IScriptable
 	 *
 	 * @throws Exception
 	 */
+	@ServoyClientSupport(ng = false, wc = true, sc = true)
 	public byte[] js_addMetaData(byte[] data, Scriptable metaData) throws Exception
 	{
 
@@ -520,6 +533,7 @@ public class PDFProvider implements IScriptable
 	 *
 	 * @throws Exception
 	 */
+	@ServoyClientSupport(ng = true, wc = true, sc = true)
 	public byte[] js_encrypt(byte[] data, String ownerPassword) throws Exception
 	{
 		return js_encrypt(data, ownerPassword, ownerPassword, true, true, true, true, true, true, true, true, true, null);
@@ -541,6 +555,7 @@ public class PDFProvider implements IScriptable
 	 *
 	 * @throws Exception
 	 */
+	@ServoyClientSupport(ng = true, wc = true, sc = true)
 	public byte[] js_encrypt(byte[] data, String ownerPassword, String userPassword) throws Exception
 	{
 		return js_encrypt(data, ownerPassword, userPassword, true, true, true, true, true, true, true, true, true, null);
@@ -570,6 +585,7 @@ public class PDFProvider implements IScriptable
 	 *
 	 * @throws Exception
 	 */
+	@ServoyClientSupport(ng = true, wc = true, sc = true)
 	public byte[] js_encrypt(byte[] data, String ownerPassword, String userPassword, boolean allowAssembly, boolean allowCopy, boolean allowDegradedPrinting,
 		boolean allowFillIn, boolean allowModifyAnnotations, boolean allowModifyContents, boolean allowPrinting, boolean allowScreenreaders) throws Exception
 	{
@@ -602,9 +618,10 @@ public class PDFProvider implements IScriptable
 	 *
 	 * @throws Exception
 	 */
+	@ServoyClientSupport(ng = true, wc = true, sc = true)
 	public byte[] js_encrypt(byte[] data, String ownerPassword, String userPassword, boolean allowAssembly, boolean allowCopy, boolean allowDegradedPrinting,
 		boolean allowFillIn, boolean allowModifyAnnotations, boolean allowModifyContents, boolean allowPrinting, boolean allowScreenreaders, boolean is128bit)
-		throws Exception
+			throws Exception
 	{
 		return js_encrypt(data, ownerPassword, userPassword, allowAssembly, allowCopy, allowDegradedPrinting, allowFillIn, allowModifyAnnotations,
 			allowModifyContents, allowPrinting, allowScreenreaders, is128bit, null);
@@ -636,6 +653,7 @@ public class PDFProvider implements IScriptable
 	 *
 	 * @throws Exception
 	 */
+	@ServoyClientSupport(ng = true, wc = true, sc = true)
 	public byte[] js_encrypt(byte[] data, String ownerPassword, String userPassword, boolean allowAssembly, boolean allowCopy, boolean allowDegradedPrinting,
 		boolean allowFillIn, boolean allowModifyAnnotations, boolean allowModifyContents, boolean allowPrinting, boolean allowScreenreaders, boolean is128bit,
 		Scriptable metaData) throws Exception
@@ -701,6 +719,7 @@ public class PDFProvider implements IScriptable
 	 *
 	 * @throws Exception
 	 */
+	@ServoyClientSupport(ng = true, wc = true, sc = true)
 	public byte[] js_numberPages(byte[] data) throws Exception
 	{
 		return js_numberPages(data, 10, 520, 30, BaseFont.HELVETICA, "#000000"); //$NON-NLS-1$
@@ -725,6 +744,7 @@ public class PDFProvider implements IScriptable
 	 *
 	 * @throws Exception
 	 */
+	@ServoyClientSupport(ng = true, wc = true, sc = true)
 	public byte[] js_numberPages(byte[] data, int fontSize, int locationX, int locationY, String font, String hexColor) throws Exception
 	{
 		if (data == null) throw new IllegalArgumentException("Missing argument"); //$NON-NLS-1$
@@ -758,6 +778,7 @@ public class PDFProvider implements IScriptable
 	 *
 	 * @throws Exception
 	 */
+	@ServoyClientSupport(ng = true, wc = true, sc = true)
 	public byte[] js_watermark(byte[] data, String image) throws Exception
 	{
 		return js_watermark(data, image, 200, 400, false, null);
@@ -781,6 +802,7 @@ public class PDFProvider implements IScriptable
 	 *
 	 * @throws Exception
 	 */
+	@ServoyClientSupport(ng = true, wc = true, sc = true)
 	public byte[] js_watermark(byte[] data, String image, int locationX, int locationY, boolean isOver) throws Exception
 	{
 		return js_watermark(data, image, locationX, locationY, isOver, null);
@@ -805,6 +827,7 @@ public class PDFProvider implements IScriptable
 	 *
 	 * @throws Exception
 	 */
+	@ServoyClientSupport(ng = true, wc = true, sc = true)
 	public byte[] js_watermark(byte[] data, String image, int locationX, int locationY, boolean isOver, String[] pages) throws Exception
 	{
 		if (data == null) throw new IllegalArgumentException("Missing argument"); //$NON-NLS-1$
@@ -848,6 +871,7 @@ public class PDFProvider implements IScriptable
 	 *
 	 * @throws Exception
 	 */
+	@ServoyClientSupport(ng = true, wc = true, sc = true)
 	public byte[] js_overlay(byte[] data, byte[] forOverlay) throws Exception
 	{
 		return js_overlay(data, forOverlay, false, null);
@@ -869,6 +893,7 @@ public class PDFProvider implements IScriptable
 	 *
 	 * @throws Exception
 	 */
+	@ServoyClientSupport(ng = true, wc = true, sc = true)
 	public byte[] js_overlay(byte[] data, byte[] forOverlay, String[] pages) throws Exception
 	{
 		return js_overlay(data, forOverlay, false, pages);
@@ -890,6 +915,7 @@ public class PDFProvider implements IScriptable
 	 *
 	 * @throws Exception
 	 */
+	@ServoyClientSupport(ng = true, wc = true, sc = true)
 	public byte[] js_overlay(byte[] data, byte[] forOverlay, boolean isOver) throws Exception
 	{
 		return js_overlay(data, forOverlay, isOver, null);
@@ -913,6 +939,7 @@ public class PDFProvider implements IScriptable
 	 *
 	 * @throws Exception
 	 */
+	@ServoyClientSupport(ng = true, wc = true, sc = true)
 	public byte[] js_overlay(byte[] data, byte[] forOverlay, boolean isOver, String[] pages) throws Exception
 	{
 		if (data == null || forOverlay == null) throw new IllegalArgumentException("Missing argument"); //$NON-NLS-1$
@@ -944,6 +971,7 @@ public class PDFProvider implements IScriptable
 	 *
 	 * @throws Exception
 	 */
+	@ServoyClientSupport(ng = true, wc = true, sc = true)
 	public byte[] js_overlayText(byte[] data, String text) throws Exception
 	{
 		return js_overlayText(data, text, 230, 430, true, 32, BaseFont.HELVETICA, "#000000"); //$NON-NLS-1$
@@ -970,6 +998,7 @@ public class PDFProvider implements IScriptable
 	 *
 	 * @throws Exception
 	 */
+	@ServoyClientSupport(ng = true, wc = true, sc = true)
 	public byte[] js_overlayText(byte[] data, String text, int locationX, int locationY, boolean isOver, int fontSize, String font, String hexColor)
 		throws Exception
 	{
