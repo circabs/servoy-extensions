@@ -228,7 +228,8 @@ public class RestWSServlet extends HttpServlet
 		{
 			plugin.log.error(
 				"Client could not be found. Possible reasons: 1.Client could not be created due to maximum number of licenses reached. 2.Client could not be created due to property mustAuthenticate=true in ws solution. 3.The client pool reached maximum number of clients. 4.An internal error occured. " +
-					request.getRequestURI(), e);
+					request.getRequestURI(),
+				e);
 			errorCode = HttpServletResponse.SC_SERVICE_UNAVAILABLE;
 		}
 		else if (e instanceof IllegalArgumentException)
@@ -745,6 +746,10 @@ public class RestWSServlet extends HttpServlet
 			{
 				return CONTENT_MULTIPART;
 			}
+			if (header.indexOf("application/x-www-form-urlencoded") >= 0)
+			{
+				return CONTENT_OTHER;
+			}
 			if (header.indexOf("octet-stream") >= 0 || header.indexOf("application") >= 0)
 			{
 				return CONTENT_BINARY;
@@ -1073,7 +1078,7 @@ public class RestWSServlet extends HttpServlet
 
 			switch (contentType)
 			{
-			//multipart requests cannot respond multipart responses so treat response as json
+				//multipart requests cannot respond multipart responses so treat response as json
 				case CONTENT_MULTIPART :
 				case CONTENT_JSON :
 					resultContentType = "application/json";
