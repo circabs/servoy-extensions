@@ -1065,6 +1065,10 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	 * if (plugins.file.deleteFile('story.txt'))
 	 * 	application.output('File deleted.');
 	 *
+	 * In case the file to delete is a remote file:
+	 * var file = plugins.file.convertToRemoteJSFile('/story.txt');
+	 * plugins.file.deleteFile(file);
+	 *
 	 * @param destination
 	 */
 	public boolean js_deleteFile(Object destination)
@@ -1082,6 +1086,9 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	 * @sample
 	 * if (plugins.file.deleteFolder('stories', true))
 	 * 	application.output('Folder deleted.');
+	 *
+	 * In case the file to delete is a remote folder:
+	 * plugins.file.deleteFolder(plugins.file.convertToRemoteJSFile('/stories'), true);
 	 *
 	 * @param destination
 	 * @param showWarning
@@ -1120,11 +1127,19 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	 * var f = plugins.file.convertToJSFile('story.txt');
 	 * application.output('file size: ' + plugins.file.getFileSize(f));
 	 *
-	 * @param path
+	 * In case the file is remote, located on the server side inside the default upload folder:
+	 * var f = plugins.file.convertToRemoteJSFile('/story.txt');
+	 * application.output('file size: ' + plugins.file.getFileSize(f));
+	 *
+	 * @param fileOrPath can be a (remote) JSFile or a local file path
 	 */
-	public long js_getFileSize(Object path)
+	public long js_getFileSize(Object fileOrPath)
 	{
-		File file = convertToFile(path);
+		if (fileOrPath instanceof JSFile && ((JSFile)fileOrPath).getAbstractFile() instanceof RemoteFile)
+		{
+			return ((JSFile)fileOrPath).js_size();
+		}
+		File file = convertToFile(fileOrPath);
 		if (file == null) return -1;
 		return file.length();
 	}
@@ -1136,11 +1151,19 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	 * var f = plugins.file.convertToJSFile('story.txt');
 	 * application.output('last changed: ' + plugins.file.getModificationDate(f));
 	 *
-	 * @param path
+	 * In case the file is remote, located on the server side inside the default upload folder:
+	 * var f = plugins.file.convertToRemoteJSFile('/story.txt');
+	 * application.output('file size: ' + plugins.file.getModificationDate(f));
+	 *
+	 * @param fileOrPath can be a (remote) JSFile or a local file path
 	 */
-	public Date js_getModificationDate(Object path)
+	public Date js_getModificationDate(Object fileOrPath)
 	{
-		File file = convertToFile(path);
+		if (fileOrPath instanceof JSFile && ((JSFile)fileOrPath).getAbstractFile() instanceof RemoteFile)
+		{
+			return ((JSFile)fileOrPath).js_lastModified();
+		}
+		File file = convertToFile(fileOrPath);
 		if (file == null) return null;
 		return new Date(file.lastModified());
 	}
@@ -2269,10 +2292,10 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	 *
 	 * @sample
 	 * // retrieves an array of files located on the server side inside the default upload folder:
-	 * var files = plugins.file.getRemoteFolderContents('/', '.txt');
+	 * var files = plugins.file.getRemoteFolderContents(plugins.file.convertToRemoteJSFile('/'), '.txt');
 	 *
 	 * @since Servoy 5.2.1
-	
+	 * 
 	 * @param targetFolder
 	 * @return the array of file names
 	 */
@@ -2282,9 +2305,15 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	}
 
 	/**
-	 * @clonedesc js_getRemoteFolderContents(JSFile)
-	 * @sampleas js_getRemoteFolderContents(JSFile)
-	 * @param targetFolder Folder path.
+	 * Returns an array of JSFile instances corresponding to content of the specified folder on the server side. The content can be filtered by optional name filter(s), by type, by visibility and by lock status.
+	 *
+	 * @sample
+	 * // retrieves an array of files located on the server side inside the default upload folder:
+	 * var files = plugins.file.getRemoteFolderContents('/', '.txt');
+	 *
+	 * @since Servoy 5.2.1
+	
+	 * @param targetFolder
 	 * @return the array of file names
 	 */
 	public JSFile[] js_getRemoteFolderContents(String targetFolder)
@@ -2305,8 +2334,8 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	}
 
 	/**
-	 * @clonedesc js_getRemoteFolderContents(JSFile)
-	 * @sampleas js_getRemoteFolderContents(JSFile)
+	 * @clonedesc js_getRemoteFolderContents(String)
+	 * @sampleas js_getRemoteFolderContents(String)
 	 * @param targetFolder Folder path.
 	 * @param fileFilter Filter or array of filters for files in folder.
 	 * @return the array of file names
@@ -2330,8 +2359,8 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	}
 
 	/**
-	 * @clonedesc js_getRemoteFolderContents(JSFile)
-	 * @sampleas js_getRemoteFolderContents(JSFile)
+	 * @clonedesc js_getRemoteFolderContents(String)
+	 * @sampleas js_getRemoteFolderContents(String)
 	 * @param targetFolder Folder path.
 	 * @param fileFilter Filter or array of filters for files in folder.
 	 * @param fileOption 1=files, 2=dirs
@@ -2357,8 +2386,8 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	}
 
 	/**
-	 * @clonedesc js_getRemoteFolderContents(JSFile)
-	 * @sampleas js_getRemoteFolderContents(JSFile)
+	 * @clonedesc js_getRemoteFolderContents(String)
+	 * @sampleas js_getRemoteFolderContents(String)
 	 * @param targetFolder Folder path.
 	 * @param fileFilter Filter or array of filters for files in folder.
 	 * @param fileOption 1=files, 2=dirs
@@ -2386,8 +2415,8 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	}
 
 	/**
-	 * @clonedesc js_getRemoteFolderContents(JSFile)
-	 * @sampleas js_getRemoteFolderContents(JSFile)
+	 * @clonedesc js_getRemoteFolderContents(String)
+	 * @sampleas js_getRemoteFolderContents(String)
 	 * @param targetFolder Folder path.
 	 * @param fileFilter Filter or array of filters for files in folder.
 	 * @param fileOption 1=files, 2=dirs
