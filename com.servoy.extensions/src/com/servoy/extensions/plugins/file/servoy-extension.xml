@@ -1271,7 +1271,11 @@ plugins.file.writeTXTFile(tempFile, 'abcdefg');]]></sample>
             </summaries>
             <samples>
               <sample clientSupport="wc,sc"><![CDATA[if (plugins.file.deleteFile('story.txt'))
-	application.output('File deleted.');]]></sample>
+	application.output('File deleted.');
+
+In case the file to delete is a remote file:
+var file = plugins.file.convertToRemoteJSFile('/story.txt');
+plugins.file.deleteFile(file);]]></sample>
             </samples>
             <parameters>
               <parameter name="destination" type="com.servoy.j2db.documentation.scripting.docs.Object" typecode="java.lang.Object"/>
@@ -1291,7 +1295,10 @@ plugins.file.writeTXTFile(tempFile, 'abcdefg');]]></sample>
             </summaries>
             <samples>
               <sample clientSupport="wc,sc"><![CDATA[if (plugins.file.deleteFolder('stories', true))
-	application.output('Folder deleted.');]]></sample>
+	application.output('Folder deleted.');
+
+In case the file to delete is a remote folder:
+plugins.file.deleteFolder(plugins.file.convertToRemoteJSFile('/stories'), true);]]></sample>
             </samples>
             <parameters>
               <parameter name="destination" type="com.servoy.j2db.documentation.scripting.docs.Object" typecode="java.lang.Object"/>
@@ -1354,10 +1361,16 @@ for (var i = 0; i < roots.length; i++)
             </summaries>
             <samples>
               <sample clientSupport="wc,sc"><![CDATA[var f = plugins.file.convertToJSFile('story.txt');
+application.output('file size: ' + plugins.file.getFileSize(f));
+
+In case the file is remote, located on the server side inside the default upload folder:
+var f = plugins.file.convertToRemoteJSFile('/story.txt');
 application.output('file size: ' + plugins.file.getFileSize(f));]]></sample>
             </samples>
             <parameters>
-              <parameter name="path" type="com.servoy.j2db.documentation.scripting.docs.Object" typecode="java.lang.Object"/>
+              <parameter name="fileOrPath" type="com.servoy.j2db.documentation.scripting.docs.Object" typecode="java.lang.Object">
+                <description><![CDATA[can be a (remote) JSFile or a local file path]]></description>
+              </parameter>
             </parameters>
           </function>
           <function clientSupport="wc,sc" name="getFolderContents">
@@ -1692,10 +1705,16 @@ application.output('home folder: ' + d.getAbsolutePath());]]></sample>
             </summaries>
             <samples>
               <sample clientSupport="wc,sc"><![CDATA[var f = plugins.file.convertToJSFile('story.txt');
-application.output('last changed: ' + plugins.file.getModificationDate(f));]]></sample>
+application.output('last changed: ' + plugins.file.getModificationDate(f));
+
+In case the file is remote, located on the server side inside the default upload folder:
+var f = plugins.file.convertToRemoteJSFile('/story.txt');
+application.output('file size: ' + plugins.file.getModificationDate(f));]]></sample>
             </samples>
             <parameters>
-              <parameter name="path" type="com.servoy.j2db.documentation.scripting.docs.Object" typecode="java.lang.Object"/>
+              <parameter name="fileOrPath" type="com.servoy.j2db.documentation.scripting.docs.Object" typecode="java.lang.Object">
+                <description><![CDATA[can be a (remote) JSFile or a local file path]]></description>
+              </parameter>
             </parameters>
           </function>
           <function clientSupport="wc,sc" name="getRemoteFolderContents" since="Servoy 5.2.1">
@@ -1711,7 +1730,7 @@ application.output('last changed: ' + plugins.file.getModificationDate(f));]]></
             </summaries>
             <samples>
               <sample clientSupport="wc,sc"><![CDATA[// retrieves an array of files located on the server side inside the default upload folder:
-var files = plugins.file.getRemoteFolderContents('/', '.txt');]]></sample>
+var files = plugins.file.getRemoteFolderContents(plugins.file.convertToRemoteJSFile('/'), '.txt');]]></sample>
             </samples>
             <parameters>
               <parameter name="targetFolder" type="com.servoy.extensions.plugins.file.JSFile" typecode="com.servoy.extensions.plugins.file.JSFile"/>
@@ -1731,7 +1750,7 @@ var files = plugins.file.getRemoteFolderContents('/', '.txt');]]></sample>
             </summaries>
             <samples>
               <sample clientSupport="wc,sc"><![CDATA[// retrieves an array of files located on the server side inside the default upload folder:
-var files = plugins.file.getRemoteFolderContents('/', '.txt');]]></sample>
+var files = plugins.file.getRemoteFolderContents(plugins.file.convertToRemoteJSFile('/'), '.txt');]]></sample>
             </samples>
             <parameters>
               <parameter name="targetFolder" type="com.servoy.extensions.plugins.file.JSFile" typecode="com.servoy.extensions.plugins.file.JSFile">
@@ -1757,7 +1776,7 @@ var files = plugins.file.getRemoteFolderContents('/', '.txt');]]></sample>
             </summaries>
             <samples>
               <sample clientSupport="wc,sc"><![CDATA[// retrieves an array of files located on the server side inside the default upload folder:
-var files = plugins.file.getRemoteFolderContents('/', '.txt');]]></sample>
+var files = plugins.file.getRemoteFolderContents(plugins.file.convertToRemoteJSFile('/'), '.txt');]]></sample>
             </samples>
             <parameters>
               <parameter name="targetFolder" type="com.servoy.extensions.plugins.file.JSFile" typecode="com.servoy.extensions.plugins.file.JSFile">
@@ -1787,7 +1806,7 @@ var files = plugins.file.getRemoteFolderContents('/', '.txt');]]></sample>
             </summaries>
             <samples>
               <sample clientSupport="wc,sc"><![CDATA[// retrieves an array of files located on the server side inside the default upload folder:
-var files = plugins.file.getRemoteFolderContents('/', '.txt');]]></sample>
+var files = plugins.file.getRemoteFolderContents(plugins.file.convertToRemoteJSFile('/'), '.txt');]]></sample>
             </samples>
             <parameters>
               <parameter name="targetFolder" type="com.servoy.extensions.plugins.file.JSFile" typecode="com.servoy.extensions.plugins.file.JSFile">
@@ -1821,7 +1840,7 @@ var files = plugins.file.getRemoteFolderContents('/', '.txt');]]></sample>
             </summaries>
             <samples>
               <sample clientSupport="wc,sc"><![CDATA[// retrieves an array of files located on the server side inside the default upload folder:
-var files = plugins.file.getRemoteFolderContents('/', '.txt');]]></sample>
+var files = plugins.file.getRemoteFolderContents(plugins.file.convertToRemoteJSFile('/'), '.txt');]]></sample>
             </samples>
             <parameters>
               <parameter name="targetFolder" type="com.servoy.extensions.plugins.file.JSFile" typecode="com.servoy.extensions.plugins.file.JSFile">
@@ -1841,7 +1860,7 @@ var files = plugins.file.getRemoteFolderContents('/', '.txt');]]></sample>
               </parameter>
             </parameters>
           </function>
-          <function clientSupport="wc,sc" name="getRemoteFolderContents">
+          <function clientSupport="wc,sc" name="getRemoteFolderContents" since="Servoy 5.2.1">
             <argumentsTypes>
               <argumentType typecode="java.lang.String"/>
             </argumentsTypes>
@@ -1857,9 +1876,7 @@ var files = plugins.file.getRemoteFolderContents('/', '.txt');]]></sample>
 var files = plugins.file.getRemoteFolderContents('/', '.txt');]]></sample>
             </samples>
             <parameters>
-              <parameter name="targetFolder" type="com.servoy.j2db.documentation.scripting.docs.String" typecode="java.lang.String">
-                <description><![CDATA[Folder path.]]></description>
-              </parameter>
+              <parameter name="targetFolder" type="com.servoy.j2db.documentation.scripting.docs.String" typecode="java.lang.String"/>
             </parameters>
           </function>
           <function clientSupport="wc,sc" name="getRemoteFolderContents">
