@@ -1065,7 +1065,7 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	 * if (plugins.file.deleteFile('story.txt'))
 	 * 	application.output('File deleted.');
 	 *
-	 * In case the file to delete is a remote file:
+	 * //In case the file to delete is a remote file:
 	 * var file = plugins.file.convertToRemoteJSFile('/story.txt');
 	 * plugins.file.deleteFile(file);
 	 *
@@ -1087,7 +1087,7 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	 * if (plugins.file.deleteFolder('stories', true))
 	 * 	application.output('Folder deleted.');
 	 *
-	 * In case the file to delete is a remote folder:
+	 * //In case the file to delete is a remote folder:
 	 * plugins.file.deleteFolder(plugins.file.convertToRemoteJSFile('/stories'), true);
 	 *
 	 * @param destination
@@ -1127,7 +1127,7 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	 * var f = plugins.file.convertToJSFile('story.txt');
 	 * application.output('file size: ' + plugins.file.getFileSize(f));
 	 *
-	 * In case the file is remote, located on the server side inside the default upload folder:
+	 * //In case the file is remote, located on the server side inside the default upload folder:
 	 * var f = plugins.file.convertToRemoteJSFile('/story.txt');
 	 * application.output('file size: ' + plugins.file.getFileSize(f));
 	 *
@@ -1151,7 +1151,7 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	 * var f = plugins.file.convertToJSFile('story.txt');
 	 * application.output('last changed: ' + plugins.file.getModificationDate(f));
 	 *
-	 * In case the file is remote, located on the server side inside the default upload folder:
+	 * //In case the file is remote, located on the server side inside the default upload folder:
 	 * var f = plugins.file.convertToRemoteJSFile('/story.txt');
 	 * application.output('file size: ' + plugins.file.getModificationDate(f));
 	 *
@@ -2295,7 +2295,7 @@ public class FileProvider implements IReturnedTypesProvider, IScriptable
 	 * var files = plugins.file.getRemoteFolderContents(plugins.file.convertToRemoteJSFile('/'), '.txt');
 	 *
 	 * @since Servoy 5.2.1
-	 * 
+	 *
 	 * @param targetFolder
 	 * @return the array of file names
 	 */
