@@ -255,7 +255,7 @@ public class SchedulerProvider implements IScriptable
 	 * Adds a cron job to the scheduler. A cron job must have at least one minute between each execution (otherwise it won't execute).
 	 *
 	 * @sample
-	 * // see: http://www.quartz-scheduler.org/docs/tutorials/crontrigger.html for more info
+	 * // see: http://www.quartz-scheduler.org/documentation/quartz-2.1.x/tutorials/tutorial-lesson-06.html for more info
 	 * // add a job that runs every 20 minutes after the hour (0,20,40)
 	 * plugins.scheduler.addCronJob('20mins','0 0/20 * * * ?',method)
 	 * // add a job that runs every day at 23:30 between now and 5 days from now
