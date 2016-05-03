@@ -217,7 +217,7 @@ public class ExportSpecifyFilePanel extends JPanel implements ActionListener, IW
 			HSSFCell cell = header.createCell((short)(k + startColumn));
 			cell.setCellValue(columnNames[k]);
 		}
-
+		HSSFCellStyle[] cellStyles = new HSSFCellStyle[dataProviders.length];
 		for (int i = 0; i < foundSet.getSize(); i++)
 		{
 			HSSFRow row = sheet.createRow((short)(i + 1 + startRow));
@@ -229,10 +229,14 @@ public class ExportSpecifyFilePanel extends JPanel implements ActionListener, IW
 				Object obj = s.getValue(dataProviders[k]);
 				if (obj instanceof Date)
 				{
-					HSSFCellStyle cellStyle = hwb.createCellStyle();
-					cellStyle.setDataFormat((short)16);
+					if (cellStyles[k] == null)
+					{
+						HSSFCellStyle cellStyle = hwb.createCellStyle();
+						cellStyle.setDataFormat((short)16);
+						cellStyles[k] = cellStyle;
+					}
 					cell.setCellValue((Date)obj);
-					cell.setCellStyle(cellStyle);
+					cell.setCellStyle(cellStyles[k]);
 				}
 				else if (obj instanceof String)
 				{
