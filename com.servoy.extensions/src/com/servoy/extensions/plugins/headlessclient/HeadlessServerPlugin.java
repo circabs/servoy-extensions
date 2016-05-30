@@ -290,6 +290,7 @@ public class HeadlessServerPlugin implements IHeadlessServer, IServerPlugin
 			}
 			catch (JavaScriptException jse)
 			{
+				Debug.log(jse);
 				Object o = jse.getValue();
 				if (o instanceof NativeError)
 				{
@@ -299,6 +300,7 @@ public class HeadlessServerPlugin implements IHeadlessServer, IServerPlugin
 			}
 			catch (RhinoException e)
 			{
+				Debug.error(e);
 				// wrap it in a normal exception, else serializeable exceptions will happen.
 				throw new ExceptionWrapper(correctServerObject.getJSONConverter().convertToJSON(e.details()));
 			}
