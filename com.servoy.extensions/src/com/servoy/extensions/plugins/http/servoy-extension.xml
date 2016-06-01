@@ -2852,6 +2852,91 @@ var httpCode = poster.executeRequest(scopes.globals.twitterUserName, scopes.glob
       </object>
       <object clientSupport="wc,sc" publicName="PutRequest" qualifiedName="com.servoy.extensions.plugins.http.PutRequest">
         <functions>
+          <function clientSupport="wc,sc" name="addFile">
+            <argumentsTypes>
+              <argumentType typecode="java.lang.String"/>
+              <argumentType typecode="java.lang.Object"/>
+            </argumentsTypes>
+            <return type="com.servoy.j2db.documentation.scripting.docs.Boolean" typecode="boolean"/>
+            <descriptions>
+              <description clientSupport="wc,sc"><![CDATA[Add a file to the post.]]></description>
+            </descriptions>
+            <summaries>
+              <summary clientSupport="wc,sc"><![CDATA[Add a file to the post.]]></summary>
+            </summaries>
+            <samples>
+              <sample clientSupport="wc,sc"><![CDATA[poster.addFile('myFileParamName','manual.doc','c:/temp/manual_01a.doc')
+poster.addFile(null,'postXml.xml','c:/temp/postXml.xml') // sets the xml to post
+
+var f = plugins.file.convertToJSFile('./somefile02.txt')
+if (f && f.exists()) poster.addFile('myTxtFileParamName','somefile.txt', f)
+
+f = plugins.file.convertToJSFile('./anotherfile_v2b.txt')
+if (f && f.exists()) poster.addFile('myOtherTxtFileParamName', f)]]></sample>
+            </samples>
+            <parameters>
+              <parameter name="parameterName" type="com.servoy.j2db.documentation.scripting.docs.String" typecode="java.lang.String"/>
+              <parameter name="jsFile" type="com.servoy.j2db.documentation.scripting.docs.Object" typecode="java.lang.Object"/>
+            </parameters>
+          </function>
+          <function clientSupport="wc,sc" name="addFile">
+            <argumentsTypes>
+              <argumentType typecode="java.lang.String"/>
+              <argumentType typecode="java.lang.String"/>
+              <argumentType typecode="java.lang.Object"/>
+            </argumentsTypes>
+            <return type="com.servoy.j2db.documentation.scripting.docs.Boolean" typecode="boolean"/>
+            <descriptions>
+              <description clientSupport="wc,sc"><![CDATA[Add a file to the post.]]></description>
+            </descriptions>
+            <summaries>
+              <summary clientSupport="wc,sc"><![CDATA[Add a file to the post.]]></summary>
+            </summaries>
+            <samples>
+              <sample clientSupport="wc,sc"><![CDATA[poster.addFile('myFileParamName','manual.doc','c:/temp/manual_01a.doc')
+poster.addFile(null,'postXml.xml','c:/temp/postXml.xml') // sets the xml to post
+
+var f = plugins.file.convertToJSFile('./somefile02.txt')
+if (f && f.exists()) poster.addFile('myTxtFileParamName','somefile.txt', f)
+
+f = plugins.file.convertToJSFile('./anotherfile_v2b.txt')
+if (f && f.exists()) poster.addFile('myOtherTxtFileParamName', f)]]></sample>
+            </samples>
+            <parameters>
+              <parameter name="parameterName" type="com.servoy.j2db.documentation.scripting.docs.String" typecode="java.lang.String"/>
+              <parameter name="fileName" type="com.servoy.j2db.documentation.scripting.docs.String" typecode="java.lang.String"/>
+              <parameter name="jsFile" type="com.servoy.j2db.documentation.scripting.docs.Object" typecode="java.lang.Object"/>
+            </parameters>
+          </function>
+          <function clientSupport="wc,sc" name="addFile">
+            <argumentsTypes>
+              <argumentType typecode="java.lang.String"/>
+              <argumentType typecode="java.lang.String"/>
+              <argumentType typecode="java.lang.String"/>
+            </argumentsTypes>
+            <return type="com.servoy.j2db.documentation.scripting.docs.Boolean" typecode="boolean"/>
+            <descriptions>
+              <description clientSupport="wc,sc"><![CDATA[Add a file to the post.]]></description>
+            </descriptions>
+            <summaries>
+              <summary clientSupport="wc,sc"><![CDATA[Add a file to the post.]]></summary>
+            </summaries>
+            <samples>
+              <sample clientSupport="wc,sc"><![CDATA[poster.addFile('myFileParamName','manual.doc','c:/temp/manual_01a.doc')
+poster.addFile(null,'postXml.xml','c:/temp/postXml.xml') // sets the xml to post
+
+var f = plugins.file.convertToJSFile('./somefile02.txt')
+if (f && f.exists()) poster.addFile('myTxtFileParamName','somefile.txt', f)
+
+f = plugins.file.convertToJSFile('./anotherfile_v2b.txt')
+if (f && f.exists()) poster.addFile('myOtherTxtFileParamName', f)]]></sample>
+            </samples>
+            <parameters>
+              <parameter name="parameterName" type="com.servoy.j2db.documentation.scripting.docs.String" typecode="java.lang.String"/>
+              <parameter name="fileName" type="com.servoy.j2db.documentation.scripting.docs.String" typecode="java.lang.String"/>
+              <parameter name="fileLocation" type="com.servoy.j2db.documentation.scripting.docs.String" typecode="java.lang.String"/>
+            </parameters>
+          </function>
           <function clientSupport="wc,sc" name="addHeader">
             <argumentsTypes>
               <argumentType typecode="java.lang.String"/>
@@ -2869,6 +2954,27 @@ var httpCode = poster.executeRequest(scopes.globals.twitterUserName, scopes.glob
             </samples>
             <parameters>
               <parameter name="headerName" type="com.servoy.j2db.documentation.scripting.docs.String" typecode="java.lang.String"/>
+              <parameter name="value" type="com.servoy.j2db.documentation.scripting.docs.String" typecode="java.lang.String"/>
+            </parameters>
+          </function>
+          <function clientSupport="wc,sc" name="addParameter">
+            <argumentsTypes>
+              <argumentType typecode="java.lang.String"/>
+              <argumentType typecode="java.lang.String"/>
+            </argumentsTypes>
+            <return type="com.servoy.j2db.documentation.scripting.docs.Boolean" typecode="boolean"/>
+            <descriptions>
+              <description clientSupport="wc,sc"><![CDATA[Add a parameter to the post.]]></description>
+            </descriptions>
+            <summaries>
+              <summary clientSupport="wc,sc"><![CDATA[Add a parameter to the post.]]></summary>
+            </summaries>
+            <samples>
+              <sample clientSupport="wc,sc"><![CDATA[poster.addParameter('name','value')
+poster.addParameter(null,'value') //sets the content to post]]></sample>
+            </samples>
+            <parameters>
+              <parameter name="name" type="com.servoy.j2db.documentation.scripting.docs.String" typecode="java.lang.String"/>
               <parameter name="value" type="com.servoy.j2db.documentation.scripting.docs.String" typecode="java.lang.String"/>
             </parameters>
           </function>
