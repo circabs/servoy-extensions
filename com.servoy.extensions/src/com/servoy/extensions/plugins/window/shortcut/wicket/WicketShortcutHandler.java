@@ -63,6 +63,7 @@ public class WicketShortcutHandler implements IShortcutHandler
 	public static final String BEHAVIOUR = "ShortcutBehaviour"; //$NON-NLS-1$
 
 	private static final Map<Integer, String> specialKeys = new HashMap<Integer, String>();
+
 	static
 	{
 		specialKeys.put(new Integer(KeyEvent.VK_BACK_QUOTE), "`"); //$NON-NLS-1$
@@ -200,13 +201,14 @@ public class WicketShortcutHandler implements IShortcutHandler
 				response.renderJavascriptReference(shortcut_js);
 				response.renderJavascript(new StringBuilder().append(//
 					"function registerShortcut(sc){").append( //$NON-NLS-1$
-					"shortcut.add(sc,function(e){").append( //$NON-NLS-1$
-					"var element;").append( //$NON-NLS-1$
-					"if(e.target) element=e.target;").append( //$NON-NLS-1$
-					"else if(e.srcElement) element=e.srcElement;").append( //$NON-NLS-1$
-					"if(element.nodeType==3) element=element.parentNode;").append(// defeat Safari bug //$NON-NLS-1$
-					getCallbackScript()).append(//
-					"},{'propagate':true,'disable_in_input':false})}"), "registerShortcut"); //$NON-NLS-1$ //$NON-NLS-2$
+						"shortcut.add(sc,function(e){").append( //$NON-NLS-1$
+							"var element;").append( //$NON-NLS-1$
+								"if(e.target) element=e.target;").append( //$NON-NLS-1$
+									"else if(e.srcElement) element=e.srcElement;").append( //$NON-NLS-1$
+										"if(element.nodeType==3 || !element.id) element=element.parentNode;").append(// defeat Safari bug //$NON-NLS-1$
+											getCallbackScript()).append(//
+												"},{'propagate':true,'disable_in_input':false})}"), //$NON-NLS-1$
+					"registerShortcut"); //$NON-NLS-1$
 
 				if (headRendered && !isAjax)
 				{
@@ -449,7 +451,7 @@ public class WicketShortcutHandler implements IShortcutHandler
 			case KeyEvent.VK_BEGIN :
 				return "Begin";
 
-				// modifiers
+			// modifiers
 			case KeyEvent.VK_SHIFT :
 				return "Shift";
 			case KeyEvent.VK_CONTROL :
@@ -461,7 +463,7 @@ public class WicketShortcutHandler implements IShortcutHandler
 			case KeyEvent.VK_ALT_GRAPH :
 				return "Alt Graph";
 
-				// punctuation
+			// punctuation
 			case KeyEvent.VK_COMMA :
 				return "Comma";
 			case KeyEvent.VK_PERIOD :
@@ -479,7 +481,7 @@ public class WicketShortcutHandler implements IShortcutHandler
 			case KeyEvent.VK_CLOSE_BRACKET :
 				return "Close Bracket";
 
-				// numpad numeric keys handled below
+			// numpad numeric keys handled below
 			case KeyEvent.VK_MULTIPLY :
 				return "NumPad *";
 			case KeyEvent.VK_ADD :
