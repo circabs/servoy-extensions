@@ -156,7 +156,7 @@ public class HttpClient implements IScriptable, IJavaScriptType
 	 * @sample
 	 * client.setTimeout(1000)
 	 *
-	 * @param msTimeout 
+	 * @param msTimeout
 	 */
 	public void js_setTimeout(int timeout)
 	{
@@ -175,7 +175,7 @@ public class HttpClient implements IScriptable, IJavaScriptType
 	 * 	//do something
 	 * }
 	 *
-	 * @param cookieName the name of the cookie 
+	 * @param cookieName the name of the cookie
 	 * @param cookieValue the value of the cookie
 	 */
 	public boolean js_setCookie(String cookieName, String cookieValue)
@@ -274,7 +274,7 @@ public class HttpClient implements IScriptable, IJavaScriptType
 	 * else
 	 * 	client.setCookie('JSESSIONID', 'abc', 'localhost', '/', -1, false)
 	 *
-	 * @param cookieName 
+	 * @param cookieName
 	 */
 	public Cookie js_getCookie(String cookieName)
 	{
@@ -309,7 +309,7 @@ public class HttpClient implements IScriptable, IJavaScriptType
 	 * (Like a self signed certificate or a none existing root certificate)
 	 * Then for a smart client a dialog will be given, to give the user the ability to accept this certificate for the next time.
 	 * For a Web or Headless client the system administrator does have to add that certificate (chain) to the java install on the server.
-	 * See http://wiki.servoy.com/display/tutorials/Import+a+%28Root%29+certificate+in+the+java+cacerts+file 
+	 * See http://wiki.servoy.com/display/tutorials/Import+a+%28Root%29+certificate+in+the+java+cacerts+file
 	 *
 	 * @sample
 	 * var client = plugins.http.createNewHttpClient();
@@ -319,7 +319,7 @@ public class HttpClient implements IScriptable, IJavaScriptType
 	 * poster.setCharset('UTF-8');
 	 * var httpCode = poster.executeRequest(globals.twitterUserName, globals.twitterPassword).getStatusCode(); // httpCode 200 is ok
 	 *
-	 * @param url 
+	 * @param url
 	 */
 	public PostRequest js_createPostRequest(String url)
 	{
@@ -333,7 +333,7 @@ public class HttpClient implements IScriptable, IJavaScriptType
 	 * (Like a self signed certificate or a none existing root certificate)
 	 * Then for a smart client a dialog will be given, to give the user the ability to accept this certificate for the next time.
 	 * For a Web or Headless client the system administrator does have to add that certificate (chain) to the java install on the server.
-	 * See http://wiki.servoy.com/display/tutorials/Import+a+%28Root%29+certificate+in+the+java+cacerts+file 
+	 * See http://wiki.servoy.com/display/tutorials/Import+a+%28Root%29+certificate+in+the+java+cacerts+file
 	 *
 	 * @sample
 	 * var client = plugins.http.createNewHttpClient();
@@ -342,7 +342,7 @@ public class HttpClient implements IScriptable, IJavaScriptType
 	 * var httpCode = response.getStatusCode(); // httpCode 200 is ok"
 	 * var content = response.getResponseBody();
 	 *
-	 * @param url 
+	 * @param url
 	 */
 	public GetRequest js_createGetRequest(String url)
 	{
@@ -359,13 +359,30 @@ public class HttpClient implements IScriptable, IJavaScriptType
 	 * var response = request.executeRequest();
 	 * var httpCode = response.getStatusCode(); // httpCode 200 is ok"
 	 * var content = response.getResponseBody();
-	 * 
-	 * @param url 
+	 *
+	 * @param url
 	 */
 	public DeleteRequest js_createDeleteRequest(String url)
 	{
 		HttpProvider.setHttpClientProxy(client, url, proxyUser, proxyPassword);
 		return new DeleteRequest(url, client, plugin);
+	}
+
+	/**
+	 * Creates a new patch request (used for granular updates).
+	 *
+	 * @sample
+	 * var client = plugins.http.createNewHttpClient();
+	 * var request = client.createPatchRequest('http://jakarta.apache.org');
+	 * request.setBodyContent('{"email": "newemail@newdomain.com"}','application/json');
+	 * var httpCode = request.executeRequest().getStatusCode() // httpCode 200 is ok
+	 *
+	 * @param url
+	 */
+	public PatchRequest js_createPatchRequest(String url)
+	{
+		HttpProvider.setHttpClientProxy(client, url, proxyUser, proxyPassword);
+		return new PatchRequest(url, client, plugin);
 	}
 
 	/**
@@ -377,7 +394,7 @@ public class HttpClient implements IScriptable, IJavaScriptType
 	 * request.setFile('UploadMe.gif');
 	 * var httpCode = putRequest.executeRequest().getStatusCode() // httpCode 200 is ok
 	 *
-	 * @param url 
+	 * @param url
 	 */
 	public PutRequest js_createPutRequest(String url)
 	{
@@ -392,8 +409,8 @@ public class HttpClient implements IScriptable, IJavaScriptType
 	 * var client = plugins.http.createNewHttpClient();
 	 * var request = client.createOptionsRequest('http://www.servoy.com');
 	 * var methods = request.getAllowedMethods(request.executeRequest());
-	 * 
-	 * @param url 
+	 *
+	 * @param url
 	 */
 	public OptionsRequest js_createOptionsRequest(String url)
 	{
@@ -411,7 +428,7 @@ public class HttpClient implements IScriptable, IJavaScriptType
 	 * var httpCode = response.getStatusCode(); // httpCode 200 is ok
 	 * var header = response.getResponseHeaders('last-modified');
 	 *
-	 * @param url 
+	 * @param url
 	 */
 	public HeadRequest js_createHeadRequest(String url)
 	{
@@ -427,8 +444,8 @@ public class HttpClient implements IScriptable, IJavaScriptType
 	 * var response = request.executeRequest();
 	 * var httpCode = response.getStatusCode(); // httpCode 200 is ok"
 	 * var content = response.getResponseBody();
-	 * 
-	 * @param url 
+	 *
+	 * @param url
 	 */
 	public TraceRequest js_createTraceRequest(String url)
 	{
@@ -442,8 +459,8 @@ public class HttpClient implements IScriptable, IJavaScriptType
 	 * @sample
 	 * client.setClientProxyCredentials('my_proxy_username','my_proxy_password');
 	 *
-	 * @param userName 
-	 * @param password 
+	 * @param userName
+	 * @param password
 	 */
 	public void js_setClientProxyCredentials(String userName, String password)
 	{

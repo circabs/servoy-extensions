@@ -100,7 +100,7 @@ public class HttpProvider implements IReturnedTypesProvider, IScriptable
 	 * // get data using a default connection
 	 * var pageData = plugins.http.getPageData('http://www.cnn.com');
 	 *
-	 * @param url 
+	 * @param url
 	 */
 	public String js_getPageData(String url)
 	{
@@ -114,9 +114,9 @@ public class HttpProvider implements IReturnedTypesProvider, IScriptable
 	 * // create an http client and use it to get the data
 	 * var pageData = plugins.http.getPageData('http://www.cnn.com','myclient');
 	 *
-	 * @param url 
-	 * @param httpClientName 
-	 * 
+	 * @param url
+	 * @param httpClientName
+	 *
 	 * @deprecated Replaced by HttpClient.createGetRequest(String)
 	 */
 	@Deprecated
@@ -132,11 +132,11 @@ public class HttpProvider implements IReturnedTypesProvider, IScriptable
 	 * // create an http client and use it to get the data
 	 * var pageData = plugins.http.getPageData('http://www.admin.com','myclient','myuser','secret');
 	 *
-	 * @param url 
-	 * @param httpClientName 
-	 * @param username 
+	 * @param url
+	 * @param httpClientName
+	 * @param username
 	 * @param password
-	 * 
+	 *
 	 * @deprecated Replaced by HttpClient.createGetRequest(String)
 	 */
 	@Deprecated
@@ -328,12 +328,12 @@ public class HttpProvider implements IReturnedTypesProvider, IScriptable
 
 	/**
 	 * Set the proxy username and password. Used for named http clients (else use implicit java data).
-	 * 
+	 *
 	 * @sample plugins.http.setClientProxyUserNamePassword('my_proxy_username','my_proxy_password');
 	 *
-	 * @param username 
-	 * @param password 
-	 * 
+	 * @param username
+	 * @param password
+	 *
 	 * @deprecated Replaced by HttpClient.setClientProxyCredentials(String,String)
 	 */
 	@Deprecated
@@ -347,9 +347,9 @@ public class HttpProvider implements IReturnedTypesProvider, IScriptable
 	 *
 	 * @sample plugins.http.setClientProxyCredentials('my_proxy_username','my_proxy_password');
 	 *
-	 * @param username 
-	 * @param password 
-	 * 
+	 * @param username
+	 * @param password
+	 *
 	 * @deprecated Replaced by HttpClient.setClientProxyCredentials(String,String)
 	 */
 	@Deprecated
@@ -373,9 +373,9 @@ public class HttpProvider implements IReturnedTypesProvider, IScriptable
 
 	/**
 	 * Get the charset of the last page received with getPageData(...)
-	 * 
+	 *
 	 * @deprecated Obsolete method.
-	 * 
+	 *
 	 * @sample
 	 * var a = plugins.http.getPageData('http://www.google.com.hk');
 	 * var charset = plugins.http.getLastPageCharset();
@@ -397,7 +397,7 @@ public class HttpProvider implements IReturnedTypesProvider, IScriptable
 	 * @sample
 	 * var image_byte_array = plugins.http.getMediaData('http://www.cnn.com/cnn.gif');
 	 *
-	 * @param url 
+	 * @param url
 	 */
 	public byte[] js_getMediaData(String url)
 	{
@@ -423,12 +423,12 @@ public class HttpProvider implements IReturnedTypesProvider, IScriptable
 
 	/**
 	 * @deprecated Obsolete method.
-	 * 
+	 *
 	 * @clonedesc js_getMediaData(String)
 	 * @sampleas js_getMediaData(String)
 	 *
-	 * @param url 
-	 * @param clientName 
+	 * @param url
+	 * @param clientName
 	 */
 	@Deprecated
 	public byte[] js_getMediaData(String url, String clientName)
@@ -484,11 +484,11 @@ public class HttpProvider implements IReturnedTypesProvider, IScriptable
 	 * @sample
 	 * var fileAdded = plugins.http.put('clientName', 'http://www.abc.com/put_stuff.jsp', 'manual.doc', 'c:/temp/manual_01a.doc')
 	 *
-	 * @param clientName 
-	 * @param url 
-	 * @param fileName 
-	 * @param filePath 
-	 * 
+	 * @param clientName
+	 * @param url
+	 * @param fileName
+	 * @param filePath
+	 *
 	 * @deprecated Replaced by HttpClient.createPutRequest(String)
 	 */
 	@Deprecated
@@ -503,13 +503,13 @@ public class HttpProvider implements IReturnedTypesProvider, IScriptable
 	 * @sample
 	 * var fileAdded = plugins.http.put('clientName', 'http://www.abc.com/put_stuff.jsp', 'manual.doc', 'c:/temp/manual_01a.doc', 'user', 'password')
 	 *
-	 * @param clientName 
-	 * @param url 
-	 * @param fileName 
-	 * @param filePath 
-	 * @param username 
+	 * @param clientName
+	 * @param url
+	 * @param fileName
+	 * @param filePath
+	 * @param username
 	 * @param password
-	 * 
+	 *
 	 * @deprecated Replaced by HttpClient.createPutRequest(String)
 	 */
 	@Deprecated
@@ -565,9 +565,9 @@ public class HttpProvider implements IReturnedTypesProvider, IScriptable
 
 	/**
 	 * Add cookie to the specified client.
-	 * 
+	 *
 	 * @deprecated Replaced by {@link HttpClient#setCookie(String,String)}.
-	 * 
+	 *
 	 * @sample
 	 * var cookieSet = plugins.http.setHttpClientCookie('clientName', 'JSESSIONID', 'abc', 'localhost', '/', -1, false)
 	 * if (cookieSet)
@@ -575,9 +575,9 @@ public class HttpProvider implements IReturnedTypesProvider, IScriptable
 	 * 	//do something
 	 * }
 	 *
-	 * @param clientName 
-	 * @param cookieName 
-	 * @param cookieValue 
+	 * @param clientName
+	 * @param cookieName
+	 * @param cookieValue
 	 * @param domain optional
 	 * @param path optional
 	 * @param maxAge optional
@@ -625,13 +625,13 @@ public class HttpProvider implements IReturnedTypesProvider, IScriptable
 
 	/**
 	 * Returns a Cookie array with all the cookies set on the specified client.
-	 * 
+	 *
 	 * @deprecated Replaced by {@link HttpClient#setCookie(String,String)}.
-	 * 
+	 *
 	 * @sample
 	 * var cookies = plugins.http.getHttpClientCookies('clientName')
 	 *
-	 * @param clientName 
+	 * @param clientName
 	 */
 	@Deprecated
 	public Cookie[] js_getHttpClientCookies(String httpClientName)
@@ -656,9 +656,9 @@ public class HttpProvider implements IReturnedTypesProvider, IScriptable
 
 	/**
 	 * Get cookie object from the specified client.
-	 * 
+	 *
 	 * @deprecated Replaced by {@link HttpClient#setCookie(String,String)}.
-	 * 
+	 *
 	 * @sample
 	 * var cookie = plugins.http.getHttpClientCookie('clientName', 'JSESSIONID');
 	 * if (cookie != null)
@@ -668,8 +668,8 @@ public class HttpProvider implements IReturnedTypesProvider, IScriptable
 	 * else
 	 * 	plugins.http.setHttpClientCookie('clientName', 'JSESSIONID', 'abc', 'localhost', '/', -1, false)
 	 *
-	 * @param clientName 
-	 * @param cookieName 
+	 * @param clientName
+	 * @param cookieName
 	 */
 
 	@Deprecated
@@ -687,9 +687,9 @@ public class HttpProvider implements IReturnedTypesProvider, IScriptable
 
 	/**
 	 * Get poster object to do http (file) posts. If posting files, it will post multipart!
-	 * 
+	 *
 	 * @deprecated Replaced by {@link HttpClient#createPostRequest(String)}.
-	 * 
+	 *
 	 * @sample
 	 * var poster = plugins.http.getPoster('http://www.abc.com/apply_form.jsp');
 	 * var didAddParam = poster.addParameter('myParamName','myValue');
@@ -698,7 +698,7 @@ public class HttpProvider implements IReturnedTypesProvider, IScriptable
 	 * //var httpCode = poster.doPost('username','mypassword'); //use if authentication is needed
 	 * var pageData = poster.getPageData()
 	 *
-	 * @param url 
+	 * @param url
 	 * @param http_clientname optional
 	 */
 	@Deprecated
@@ -721,13 +721,13 @@ public class HttpProvider implements IReturnedTypesProvider, IScriptable
 
 	/**
 	 * Get or create an http client.
-	 * 
+	 *
 	 * @deprecated Replaced by {@link #createNewHttpClient()}.
-	 * 
+	 *
 	 * @sample
 	 * var client = plugins.http.createHttpClient();
 	 *
-	 * @param name 
+	 * @param name
 	 */
 	@Deprecated
 	public void js_createHttpClient(String name)
@@ -737,7 +737,7 @@ public class HttpProvider implements IReturnedTypesProvider, IScriptable
 
 	/**
 	 * Create an http client (like a web browser with session binding) usable todo multiple request/posts in same server session.
-	 * 
+	 *
 	 * @sample
 	 * var client = plugins.http.createNewHttpClient();
 	 */
@@ -748,13 +748,13 @@ public class HttpProvider implements IReturnedTypesProvider, IScriptable
 
 	/**
 	 * Delete a named http client.
-	 * 
-	 * @deprecated Obsolete method, HttpClient mechanism has changed. 
-	 * 
+	 *
+	 * @deprecated Obsolete method, HttpClient mechanism has changed.
+	 *
 	 * @sample
 	 * plugins.http.deleteHttpClient('mybrowser');
 	 *
-	 * @param http_clientname 
+	 * @param http_clientname
 	 */
 	@Deprecated
 	public void js_deleteHttpClient(String name)
@@ -766,11 +766,11 @@ public class HttpProvider implements IReturnedTypesProvider, IScriptable
 	 * Sets a timeout in milliseconds for retrieving of data (when 0 there is no timeout).
 	 *
 	 * @deprecated Replaced by {@link HttpClient#setTimeout(Object[])}.
-	 * 
+	 *
 	 * @sample
 	 * plugins.http.setTimeout(1000,'client_name')
 	 *
-	 * @param msTimeout 
+	 * @param msTimeout
 	 * @param http_clientname optional
 	 */
 	@Deprecated
@@ -800,7 +800,7 @@ public class HttpProvider implements IReturnedTypesProvider, IScriptable
 	 */
 	public Class< ? >[] getAllReturnedTypes()
 	{
-		return new Class[] { PostRequest.class, PutRequest.class, GetRequest.class, DeleteRequest.class, OptionsRequest.class, HeadRequest.class, TraceRequest.class, Cookie.class, Response.class, HttpClient.class, HTTP_STATUS.class };
+		return new Class[] { PatchRequest.class, PostRequest.class, PutRequest.class, GetRequest.class, DeleteRequest.class, OptionsRequest.class, HeadRequest.class, TraceRequest.class, Cookie.class, Response.class, HttpClient.class, HTTP_STATUS.class };
 	}
 
 	//old test method
@@ -810,7 +810,8 @@ public class HttpProvider implements IReturnedTypesProvider, IScriptable
 		{
 			System.out.println("Use: ContentFetcher mainurl contenturl destdir"); //$NON-NLS-1$
 			System.out.println("Example: ContentFetcher http://site.com http://site.com/dir[0-2]/image_A[001-040].jpg c:/temp"); //$NON-NLS-1$
-			System.out.println("Result: accessing http://site.com for cookie, reading http://site.com/dir1/image_A004.jpg writing c:/temp/dir_1_image_A004.jpg"); //$NON-NLS-1$
+			System.out.println(
+				"Result: accessing http://site.com for cookie, reading http://site.com/dir1/image_A004.jpg writing c:/temp/dir_1_image_A004.jpg"); //$NON-NLS-1$
 		}
 		else
 		{
