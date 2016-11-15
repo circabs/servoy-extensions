@@ -77,6 +77,8 @@ import com.servoy.j2db.util.Utils;
  * call the method mysolution.myform.ws_read(args), return the method result in the response or set status NOT_FOUND when null was returned
  * <li>UPDATE<br>
  * call the method mysolution.myform.ws_update(post-data, args), set status NOT_FOUND when FALSE was returned
+ * <li>PATCH<br>
+ * call the method mysolution.myform.ws_patch(patch-data, args), set status NOT_FOUND when FALSE was returned
  * <li>DELETE<br>
  * call the method mysolution.myform.ws_delete(args), set status NOT_FOUND when FALSE was returned
  * </ul>
@@ -93,6 +95,7 @@ public class RestWSServlet extends HttpServlet
 {
 	// solution method names
 	private static final String WS_UPDATE = "ws_update";
+	private static final String WS_PATCH = "ws_patch";
 	private static final String WS_CREATE = "ws_create";
 	private static final String WS_DELETE = "ws_delete";
 	private static final String WS_READ = "ws_read";
@@ -153,7 +156,14 @@ public class RestWSServlet extends HttpServlet
 			response.setHeader("Access-Control-Allow-Headers", value);
 		}
 
-		super.service(request, response);
+		if (request.getMethod().equals("PATCH"))
+		{
+			doPatch(request, response);
+		}
+		else
+		{
+			super.service(request, response);
+		}
 	}
 
 	@Override
@@ -405,6 +415,57 @@ public class RestWSServlet extends HttpServlet
 		}
 	}
 
+	protected void doPatch(HttpServletRequest request, HttpServletResponse response) throws IOException
+	{
+		Pair<IHeadlessClient, String> client = null;
+		boolean reloadSolution = plugin.shouldReloadSolutionAfterRequest();
+		try
+		{
+			byte[] contents = getBody(request);
+			if (contents == null || contents.length == 0)
+			{
+				sendError(response, HttpServletResponse.SC_NO_CONTENT);
+				return;
+			}
+			int contentType = getRequestContentType(request, "Content-Type", contents, CONTENT_OTHER);
+			if (contentType == CONTENT_OTHER)
+			{
+				sendError(response, HttpServletResponse.SC_UNSUPPORTED_MEDIA_TYPE);
+				return;
+			}
+			client = getClient(request);
+			String charset = getHeaderKey(request.getHeader("Content-Type"), "charset", CHARSET_DEFAULT);
+			Object result = wsService(WS_PATCH, new Object[] { decodeContent(request.getContentType(), contentType, contents, charset) }, request, response,
+				client.getLeft());
+			if (Boolean.FALSE.equals(result))
+			{
+				sendError(response, HttpServletResponse.SC_NOT_FOUND);
+			}
+			else
+			{
+				sendResult(request, response, result, contentType);
+			}
+			HTTPUtils.setNoCacheHeaders(response);
+		}
+		catch (ExecFailedException e)
+		{
+			handleException(e.getCause(), request, response, client != null ? client.getLeft() : null);
+			// do not reload solution when the error was thrown in solution code
+			if (!reloadSolution) reloadSolution = !e.isUserScriptException();
+		}
+		catch (Exception e)
+		{
+			handleException(e, request, response, client != null ? client.getLeft() : null);
+		}
+		finally
+		{
+			if (client != null)
+			{
+				plugin.releaseClient(client.getRight(), client.getLeft(), reloadSolution);
+			}
+		}
+	}
+
 	@Override
 	protected void doOptions(HttpServletRequest request, HttpServletResponse response) throws IOException
 	{
@@ -433,6 +494,10 @@ public class RestWSServlet extends HttpServlet
 			if (new FunctionDefinition(wsRequest.formName, WS_UPDATE).exists(client.getPluginAccess()) == FunctionDefinition.Exist.METHOD_FOUND)
 			{
 				retval += ", PUT";
+			}
+			if (new FunctionDefinition(wsRequest.formName, WS_PATCH).exists(client.getPluginAccess()) == FunctionDefinition.Exist.METHOD_FOUND)
+			{
+				retval += ", PATCH";
 			}
 			if (new FunctionDefinition(wsRequest.formName, WS_DELETE).exists(client.getPluginAccess()) == FunctionDefinition.Exist.METHOD_FOUND)
 			{
