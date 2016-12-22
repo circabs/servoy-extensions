@@ -21,8 +21,9 @@
 
 	<property file="personal_settings.properties"/>
 	
-	<property name="jdk1.7_home" value="${JAVA_HOME}"/>
-	<property name="javac_1.7" value="${jdk1.7_home}/bin/javac"/>		
+	<property environment="environment_v" />
+	<property name="jdk.dir" value="${environment_v.JAVA_HOME}"/>
+	<property name="javac_1.7" value="${jdk.dir}/bin/javac"/>		
 		
 	<property name="bin_plugins.dir" value="${bin.dir}/com/servoy/extensions/plugins"/>
 
