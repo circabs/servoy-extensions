@@ -44,7 +44,7 @@ import com.servoy.j2db.util.Debug;
 
 /**
  * Data model based on foundset(s) used by the tree
- * 
+ *
  * @author gboros
  */
 public class FoundSetTreeModel extends DefaultTreeModel
@@ -417,18 +417,18 @@ public class FoundSetTreeModel extends DefaultTreeModel
 			return super.getChildCount();
 		}
 
+		private boolean isLeaf;
+
 		@Override
 		public boolean isLeaf()
 		{
 			if (!didInit)
 			{
-				boolean isLeaf = !hasChild(this);
+				isLeaf = !hasChild(this);
 				if (isLeaf) setAllowsChildren(false);
-
-				return isLeaf;
 			}
 
-			return super.isLeaf();
+			return isLeaf;
 		}
 
 
@@ -440,11 +440,6 @@ public class FoundSetTreeModel extends DefaultTreeModel
 		public void flagInitialized()
 		{
 			didInit = true;
-		}
-
-		public void setFlagInitialized(boolean didInit)
-		{
-			this.didInit = didInit;
 		}
 
 		@Override
@@ -534,19 +529,19 @@ public class FoundSetTreeModel extends DefaultTreeModel
 			}
 		}
 
+		private boolean isLeaf;
+
 		@Override
 		public boolean isLeaf()
 		{
 			if (!didInit)
 			{
-				boolean isLeaf = !hasChild(this);
+				isLeaf = !hasChild(this);
 				if (isLeaf) setAllowsChildren(false);
 				else application.getExecutor().execute(this);
-
-				return isLeaf;
 			}
 
-			return super.isLeaf();
+			return isLeaf;
 		}
 
 		public IRecord getRecord()
@@ -567,11 +562,6 @@ public class FoundSetTreeModel extends DefaultTreeModel
 		public void flagInitialized()
 		{
 			didInit = true;
-		}
-
-		public void setFlagInitialized(boolean didInit)
-		{
-			this.didInit = didInit;
 		}
 
 		public void setExUserObject(Object exUserObject)
@@ -640,8 +630,8 @@ public class FoundSetTreeModel extends DefaultTreeModel
 			{
 				public void run()
 				{
-					if (FoundSetTreeModel.this.tableModelListener != null) FoundSetTreeModel.this.tableModelListener.tableChanged(new TableModelEvent(
-						(ISwingFoundSet)foundSet, recordIndex));
+					if (FoundSetTreeModel.this.tableModelListener != null)
+						FoundSetTreeModel.this.tableModelListener.tableChanged(new TableModelEvent((ISwingFoundSet)foundSet, recordIndex));
 				}
 			});
 		}
