@@ -35,7 +35,7 @@ import com.servoy.j2db.ui.scripting.AbstractRuntimeBaseComponent;
 
 /**
  * Popup menu scriptable.
- * 
+ *
  */
 @ServoyDocumented
 @ServoyClientSupport(ng = true, wc = true, sc = true)
@@ -58,9 +58,9 @@ public class Popup extends AbstractMenu
 	}
 
 	/**
-	 * Show the popup above the specified element.
+	 * Show the popup above the specified element. In NGClient, using a component from tableview/listview form doesn't work, you have to specify coordinates (from JSEvent).
 	 *
-	 * @sample 
+	 * @sample
 	 * // NOTE: usually this code is placed in a handler of an event (e.g. right click on some component)
 	 * // create a popup menu
 	 * var menu = plugins.window.createPopupMenu();
@@ -68,7 +68,7 @@ public class Popup extends AbstractMenu
 	 * menu.addMenuItem("item", feedback_item);
 	 * // add another menu item
 	 * menu.addMenuItem("item 2", feedback_item);
-	 * 
+	 *
 	 * if (event.getSource())
 	 * {
 	 * 	// display the popup over the component which is the source of the event
@@ -78,10 +78,10 @@ public class Popup extends AbstractMenu
 	 * 	// display the popup at specified coordinates relative to the main window
 	 * 	//menu.show(100, 100);
 	 * }
-	 * 
+	 *
 	 * // in Smart client, you can also use show with no parameters, it will show at the mouse coordinates:
 	 * //menu.show();
-	 * 
+	 *
 	 * @param component
 	 */
 	public void js_show(IComponent component) throws PluginException
@@ -96,7 +96,7 @@ public class Popup extends AbstractMenu
 	 * Show the popup above the specified element, adding x an y values relative to the element.
 	 *
 	 * @sampleas js_show(IComponent)
-	 * 
+	 *
 	 * @param component
 	 * @param x
 	 * @param y
@@ -108,9 +108,9 @@ public class Popup extends AbstractMenu
 
 	/**
 	 * Show the popup at the mouse coordinates (Smart client only).
-	 * 
+	 *
 	 * @sampleas js_show(IComponent)
-	 * 
+	 *
 	 */
 	public void js_show() throws PluginException
 	{
@@ -134,7 +134,7 @@ public class Popup extends AbstractMenu
 	 * Show the popup at x an y coordinates.
 	 *
 	 * @sampleas js_show(IComponent)
-	 * 
+	 *
 	 * @param x
 	 * @param y
 	 */
@@ -153,7 +153,7 @@ public class Popup extends AbstractMenu
 	 * Show the popup based on JSEvent information. This can be used to show popup in tableview header that is styled with labelfor label.
 	 *
 	 * @sampleas js_show(IComponent)
-	 * 
+	 *
 	 * @param jsEvent
 	 */
 	public void js_show(JSEvent jsEvent) throws PluginException
