@@ -1,5 +1,6 @@
 package com.servoy.extensions.plugins.clientmanager;
 
+import java.rmi.RemoteException;
 import java.util.Map;
 import java.util.Properties;
 
@@ -35,6 +36,14 @@ public class ClientManagerServer implements IServerPlugin, IClientManagerService
 	{
 		application = app;
 		INSTANCE = this;
+		try
+		{
+			app.registerRemoteService(IClientManagerService.class.getName(), this);
+		}
+		catch (RemoteException ex)
+		{
+			throw new PluginException(ex);
+		}
 	}
 
 	@Override

@@ -1,10 +1,11 @@
 package com.servoy.extensions.plugins.clientmanager;
 
+import java.rmi.Remote;
 import java.rmi.RemoteException;
 
 import com.servoy.j2db.server.shared.IClientInformation;
 
-public interface IClientManagerService
+public interface IClientManagerService extends Remote
 {
 	IClientInformation[] getConnectedClients() throws RemoteException;
 
