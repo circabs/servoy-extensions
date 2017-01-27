@@ -42,7 +42,7 @@ public class ClientManagerProvider implements IScriptable, IReturnedTypesProvide
 	 * @param callback The callback when for incomming messages
 	 * @return BroadCaster
 	 */
-	public Broadcaster js_getBroadCaster(String name, String channelName, Function callback)
+	public Broadcaster js_getBroadcaster(String name, String channelName, Function callback)
 	{
 		Broadcaster broadCaster = new Broadcaster(name, channelName, callback, plugin);
 		plugin.addLiveBroadcaster(broadCaster);
