@@ -34,9 +34,8 @@ public class ClientManagerProvider implements IScriptable, IReturnedTypesProvide
 	 * Returns an array of JSClientInformation elements describing the clients connected to the server.
 	 *
 	 * @sample
-	 * // WARNING: maintenance plugin is only meant to run during solution import using before or after import hook(so not from Smart/Web client)
 	 * //Returns an array of JSClientInformation elements describing the clients connected to the server.
-	 * var clients = plugins.maintenance.getConnectedClients();
+	 * var clients = plugins.clientmanager.getConnectedClients();
 	 * application.output("There are " + clients.length + " connected clients.");
 	 * for (var i = 0; i < clients.length; i++)
 	 * 	application.output("Client has clientId '" + clients[i].getClientID() + "' and has connected from host '" + clients[i].getHostAddress() + "'.");
@@ -66,9 +65,8 @@ public class ClientManagerProvider implements IScriptable, IReturnedTypesProvide
 	 * Sends a message to all connected clients.
 	 *
 	 * @sample
-	 * // WARNING: maintenance plugin is only meant to run during solution import using before or after import hook(so not from Smart/Web client)
 	 * //Sends a message to all connected clients.
-	 * plugins.maintenance.sendMessageToAllClients("Hello, all clients!");
+	 * plugins.clientmanager.sendMessageToAllClients("Hello, all clients!");
 	 *
 	 * @param message
 	 */
@@ -88,11 +86,10 @@ public class ClientManagerProvider implements IScriptable, IReturnedTypesProvide
 	 * Sends a message to a specific client, identified by its clientId. The clientIds are retrieved by calling the getConnectedClients method.
 	 *
 	 * @sample
-	 * // WARNING: maintenance plugin is only meant to run during solution import using before or after import hook(so not from Smart/Web client)
 	 * //Sends a message to a specific client, identified by its clientId. The clientIds are retrieved by calling the getConnectedClients method.
-	 * var clients = plugins.maintenance.getConnectedClients();
+	 * var clients = plugins.clientmanager.getConnectedClients();
 	 * for (var i=0; i<clients.length; i++)
-	 * 	plugins.maintenance.sendMessageToClient(clients[i].getClientId(), "Hello, client " + clients[i].getClientID() + "!");
+	 * 	plugins.clientmanager.sendMessageToClient(clients[i].getClientId(), "Hello, client " + clients[i].getClientID() + "!");
 	 *
 	 * @param clientId
 	 * @param message
@@ -114,9 +111,8 @@ public class ClientManagerProvider implements IScriptable, IReturnedTypesProvide
 	 * Shuts down all connected clients. This method returns immediately, it does not wait until the client shuts down.
 	 *
 	 * @sample
-	 * // WARNING: maintenance plugin is only meant to run during solution import using before or after import hook(so not from Smart/Web client)
 	 * //Shuts down all connected clients. This method returns immediately, it does not wait until the client shuts down.
-	 * plugins.maintenance.shutDownAllClients();
+	 * plugins.clientmanager.shutDownAllClients();
 	 */
 	public void js_shutDownAllClients()
 	{
@@ -134,11 +130,10 @@ public class ClientManagerProvider implements IScriptable, IReturnedTypesProvide
 	 * Shuts down a specific client, identified by its clientId. The clientIds are retrieved by calling the getConnectedClients method. This method returns immediately, it does not wait until the client shuts down.
 	 *
 	 * @sample
-	 * // WARNING: maintenance plugin is only meant to run during solution import using before or after import hook(so not from Smart/Web client)
 	 * //Shuts down a specific client, identified by its clientId. The clientIds are retrieved by calling the getConnectedClients method. This method returns immediately, it does not wait until the client shuts down.
-	 * var clients = plugins.maintenance.getConnectedClients();
+	 * var clients = plugins.clientmanager.getConnectedClients();
 	 * for (var i=0; i<clients.length; i++)
-	 * 	plugins.maintenance.shutDownClient(clients[i].getClientId());
+	 * 	plugins.clientmanager.shutDownClient(clients[i].getClientId());
 	 *
 	 * @param clientId
 	 */

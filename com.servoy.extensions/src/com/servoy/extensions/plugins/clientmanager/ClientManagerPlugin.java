@@ -14,7 +14,7 @@ import com.servoy.j2db.scripting.IScriptable;
 
 public class ClientManagerPlugin implements IClientPlugin
 {
-	public static final String PLUGIN_NAME = "clientManager"; //$NON-NLS-1$
+	public static final String PLUGIN_NAME = "clientmanager"; //$NON-NLS-1$
 
 	private IClientPluginAccess access;
 	private ClientManagerProvider impl;
