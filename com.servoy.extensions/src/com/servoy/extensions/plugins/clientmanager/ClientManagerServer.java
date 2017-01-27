@@ -16,7 +16,7 @@ import com.servoy.j2db.server.shared.IClientInformation;
 public class ClientManagerServer implements IServerPlugin, IClientManagerService
 {
 	private IServerAccess application;
-	private final ConcurrentHashMap<String, List<BroadCastInfo>> registeredClients = new ConcurrentHashMap<>();
+	private final ConcurrentHashMap<String, List<BroadcastInfo>> registeredClients = new ConcurrentHashMap<>();
 
 
 	private static IClientManagerService INSTANCE;
@@ -100,24 +100,24 @@ public class ClientManagerServer implements IServerPlugin, IClientManagerService
 	}
 
 	@Override
-	public void registerChannelListener(BroadCastInfo info) throws RemoteException
+	public void registerChannelListener(BroadcastInfo info) throws RemoteException
 	{
 		String channel = info.getChannelName();
-		List<BroadCastInfo> list = registeredClients.get(channel);
+		List<BroadcastInfo> list = registeredClients.get(channel);
 		if (list == null)
 		{
 			list = new CopyOnWriteArrayList<>();
-			List<BroadCastInfo> prev = registeredClients.putIfAbsent(channel, list);
+			List<BroadcastInfo> prev = registeredClients.putIfAbsent(channel, list);
 			if (prev != null) list = prev;
 		}
 		list.add(info);
 	}
 
 	@Override
-	public void deregisterChannelListener(BroadCastInfo info) throws RemoteException
+	public void deregisterChannelListener(BroadcastInfo info) throws RemoteException
 	{
 		String channel = info.getChannelName();
-		List<BroadCastInfo> list = registeredClients.get(channel);
+		List<BroadcastInfo> list = registeredClients.get(channel);
 		if (list != null)
 		{
 			list.remove(info);
@@ -133,13 +133,13 @@ public class ClientManagerServer implements IServerPlugin, IClientManagerService
 	}
 
 	@Override
-	public void broadcastMessage(BroadCastInfo info, String message)
+	public void broadcastMessage(BroadcastInfo info, String message)
 	{
 		// TODO for smart client this is really slow, because getName() call goes to the smart client first all the time.
-		List<BroadCastInfo> list = registeredClients.get(info.getChannelName());
+		List<BroadcastInfo> list = registeredClients.get(info.getChannelName());
 		if (list != null)
 		{
-			for (BroadCastInfo bci : list)
+			for (BroadcastInfo bci : list)
 			{
 				if (bci != info) try
 				{

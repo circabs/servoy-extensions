@@ -24,7 +24,7 @@ import java.rmi.RemoteException;
  * @author jcompagner
  *
  */
-public interface IBroadCaster extends Remote
+public interface IBroadcaster extends Remote
 {
 	/**
 	 * @param channel

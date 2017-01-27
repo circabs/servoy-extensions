@@ -23,13 +23,13 @@ import java.io.Serializable;
  * @author jcompagner
  *
  */
-public class BroadCastInfo implements Serializable
+public class BroadcastInfo implements Serializable
 {
 	private final String channelName;
 	private final String name;
-	private final IBroadCaster broadCaster;
+	private final IBroadcaster broadCaster;
 
-	public BroadCastInfo(IBroadCaster broadCaster, String name, String channelName)
+	public BroadcastInfo(IBroadcaster broadCaster, String name, String channelName)
 	{
 		this.broadCaster = broadCaster;
 		this.name = name;
@@ -49,7 +49,7 @@ public class BroadCastInfo implements Serializable
 	/**
 	 * @return the broadCaster
 	 */
-	public IBroadCaster getBroadCaster()
+	public IBroadcaster getBroadCaster()
 	{
 		return broadCaster;
 	}

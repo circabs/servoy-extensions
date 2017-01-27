@@ -21,7 +21,7 @@ public class ClientManagerPlugin implements IClientPlugin
 
 	private IClientPluginAccess access;
 	private ClientManagerProvider impl;
-	private final List<BroadCaster> liveBroadCasters = new ArrayList<>();
+	private final List<Broadcaster> liveBroadcasters = new ArrayList<>();
 
 
 	public Icon getImage()
@@ -76,11 +76,11 @@ public class ClientManagerPlugin implements IClientPlugin
 
 	public void unload() throws PluginException
 	{
-		for (BroadCaster broadCaster : liveBroadCasters.toArray(new BroadCaster[liveBroadCasters.size()]))
+		for (Broadcaster broadcaster : liveBroadcasters.toArray(new Broadcaster[liveBroadcasters.size()]))
 		{
 			try
 			{
-				broadCaster.js_destroy();
+				broadcaster.js_destroy();
 			}
 			catch (Exception e)
 			{
@@ -89,14 +89,14 @@ public class ClientManagerPlugin implements IClientPlugin
 		}
 	}
 
-	void addLiveBroadCaster(BroadCaster bc)
+	void addLiveBroadcaster(Broadcaster bc)
 	{
-		liveBroadCasters.add(bc);
+		liveBroadcasters.add(bc);
 	}
 
-	void removeLiveBroadCaster(BroadCaster bc)
+	void removeLiveBroadcaster(Broadcaster bc)
 	{
-		liveBroadCasters.remove(bc);
+		liveBroadcasters.remove(bc);
 	}
 
 	public void propertyChange(PropertyChangeEvent evt)

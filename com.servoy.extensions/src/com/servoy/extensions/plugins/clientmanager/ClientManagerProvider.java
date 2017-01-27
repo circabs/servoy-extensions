@@ -29,7 +29,7 @@ public class ClientManagerProvider implements IScriptable, IReturnedTypesProvide
 
 	public Class< ? >[] getAllReturnedTypes()
 	{
-		return new Class[] { BroadCaster.class, JSClientInformation.class };
+		return new Class[] { Broadcaster.class, JSClientInformation.class };
 	}
 
 
@@ -42,10 +42,10 @@ public class ClientManagerProvider implements IScriptable, IReturnedTypesProvide
 	 * @param callback The callback when for incomming messages
 	 * @return BroadCaster
 	 */
-	public BroadCaster js_getBroadCaster(String name, String channelName, Function callback)
+	public Broadcaster js_getBroadCaster(String name, String channelName, Function callback)
 	{
-		BroadCaster broadCaster = new BroadCaster(name, channelName, callback, plugin);
-		plugin.addLiveBroadCaster(broadCaster);
+		Broadcaster broadCaster = new Broadcaster(name, channelName, callback, plugin);
+		plugin.addLiveBroadcaster(broadCaster);
 		return broadCaster;
 	}
 

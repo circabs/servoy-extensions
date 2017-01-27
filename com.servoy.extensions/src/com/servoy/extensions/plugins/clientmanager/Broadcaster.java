@@ -33,9 +33,9 @@ import com.servoy.j2db.util.Debug;
  *
  */
 @ServoyDocumented
-public class BroadCaster implements IBroadCaster, IJavaScriptType
+public class Broadcaster implements IBroadcaster, IJavaScriptType
 {
-	private final BroadCastInfo bci;
+	private final BroadcastInfo bci;
 	private final ClientManagerPlugin plugin;
 	private final FunctionDefinition fd;
 
@@ -44,9 +44,9 @@ public class BroadCaster implements IBroadCaster, IJavaScriptType
 	 * @param channelName
 	 * @param client
 	 */
-	public BroadCaster(String name, String channelName, Function callback, ClientManagerPlugin plugin)
+	public Broadcaster(String name, String channelName, Function callback, ClientManagerPlugin plugin)
 	{
-		this.bci = new BroadCastInfo(this, name, channelName);
+		this.bci = new BroadcastInfo(this, name, channelName);
 		this.plugin = plugin;
 		this.fd = new FunctionDefinition(callback);
 
@@ -105,7 +105,7 @@ public class BroadCaster implements IBroadCaster, IJavaScriptType
 		{
 			Debug.error(e);
 		}
-		plugin.removeLiveBroadCaster(this);
+		plugin.removeLiveBroadcaster(this);
 	}
 
 	/**
