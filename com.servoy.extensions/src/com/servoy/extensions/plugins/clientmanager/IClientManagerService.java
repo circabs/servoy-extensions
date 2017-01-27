@@ -17,4 +17,10 @@ public interface IClientManagerService extends Remote
 
 	void shutDownClient(String clientId) throws RemoteException;
 
+	void deregisterChannelListener(BroadcastInfo info) throws RemoteException;
+
+	void broadcastMessage(BroadcastInfo info, String message) throws RemoteException;
+
+	void registerChannelListener(BroadcastInfo info) throws RemoteException;
+
 }

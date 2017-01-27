@@ -1,5 +1,7 @@
 package com.servoy.extensions.plugins.clientmanager;
 
+import org.mozilla.javascript.Function;
+
 import com.servoy.j2db.documentation.ServoyDocumented;
 import com.servoy.j2db.scripting.IReturnedTypesProvider;
 import com.servoy.j2db.scripting.IScriptable;
@@ -27,7 +29,24 @@ public class ClientManagerProvider implements IScriptable, IReturnedTypesProvide
 
 	public Class< ? >[] getAllReturnedTypes()
 	{
-		return new Class[] { JSClientInformation.class };
+		return new Class[] { Broadcaster.class, JSClientInformation.class };
+	}
+
+
+	/**
+	 * Get a broadcast object giving it a (nick)name and on a specific channel, the callback is used for getting messages of other clients on that channel
+	 * The function gets 2 arguments (nickName, message)
+	 *
+	 * @param name The nickname for this user on this channel
+	 * @param channelName The channel name where should be listened to (and send messages to)
+	 * @param callback The callback when for incomming messages
+	 * @return BroadCaster
+	 */
+	public Broadcaster js_getBroadcaster(String name, String channelName, Function callback)
+	{
+		Broadcaster broadCaster = new Broadcaster(name, channelName, callback, plugin);
+		plugin.addLiveBroadcaster(broadCaster);
+		return broadCaster;
 	}
 
 	/**
@@ -46,7 +65,7 @@ public class ClientManagerProvider implements IScriptable, IReturnedTypesProvide
 	{
 		try
 		{
-			IClientInformation[] connectedClients = ClientManagerServer.getInstance().getConnectedClients();
+			IClientInformation[] connectedClients = plugin.getClientService().getConnectedClients();
 			JSClientInformation[] infos = new JSClientInformation[connectedClients == null ? 0 : connectedClients.length];
 			for (int i = 0; i < infos.length; i++)
 			{
@@ -74,7 +93,7 @@ public class ClientManagerProvider implements IScriptable, IReturnedTypesProvide
 	{
 		try
 		{
-			ClientManagerServer.getInstance().sendMessageToAllClients(message);
+			plugin.getClientService().sendMessageToAllClients(message);
 		}
 		catch (Exception e)
 		{
@@ -98,7 +117,7 @@ public class ClientManagerProvider implements IScriptable, IReturnedTypesProvide
 	{
 		try
 		{
-			ClientManagerServer.getInstance().sendMessageToClient(clientId, message);
+			plugin.getClientService().sendMessageToClient(clientId, message);
 		}
 		catch (Exception e)
 		{
@@ -118,7 +137,7 @@ public class ClientManagerProvider implements IScriptable, IReturnedTypesProvide
 	{
 		try
 		{
-			ClientManagerServer.getInstance().shutDownAllClients(plugin.getClientPluginAccess().getClientID());
+			plugin.getClientService().shutDownAllClients(plugin.getClientPluginAccess().getClientID());
 		}
 		catch (Exception e)
 		{
@@ -141,7 +160,7 @@ public class ClientManagerProvider implements IScriptable, IReturnedTypesProvide
 	{
 		try
 		{
-			ClientManagerServer.getInstance().shutDownClient(clientId);
+			plugin.getClientService().shutDownClient(clientId);
 		}
 		catch (Exception e)
 		{

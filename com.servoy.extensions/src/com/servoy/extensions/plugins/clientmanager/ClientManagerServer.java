@@ -1,8 +1,11 @@
 package com.servoy.extensions.plugins.clientmanager;
 
 import java.rmi.RemoteException;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import com.servoy.j2db.Messages;
 import com.servoy.j2db.plugins.IServerAccess;
@@ -13,6 +16,8 @@ import com.servoy.j2db.server.shared.IClientInformation;
 public class ClientManagerServer implements IServerPlugin, IClientManagerService
 {
 	private IServerAccess application;
+	private final ConcurrentHashMap<String, List<BroadcastInfo>> registeredClients = new ConcurrentHashMap<>();
+
 
 	private static IClientManagerService INSTANCE;
 
@@ -92,6 +97,61 @@ public class ClientManagerServer implements IServerPlugin, IClientManagerService
 	public void shutDownClient(String clientId)
 	{
 		application.shutDownClient(clientId);
+	}
+
+	@Override
+	public void registerChannelListener(BroadcastInfo info) throws RemoteException
+	{
+		String channel = info.getChannelName();
+		List<BroadcastInfo> list = registeredClients.get(channel);
+		if (list == null)
+		{
+			list = new CopyOnWriteArrayList<>();
+			List<BroadcastInfo> prev = registeredClients.putIfAbsent(channel, list);
+			if (prev != null) list = prev;
+		}
+		list.add(info);
+	}
+
+	@Override
+	public void deregisterChannelListener(BroadcastInfo info) throws RemoteException
+	{
+		String channel = info.getChannelName();
+		List<BroadcastInfo> list = registeredClients.get(channel);
+		if (list != null)
+		{
+			list.remove(info);
+			if (list.size() == 0)
+			{
+				registeredClients.remove(channel, list);
+				if (list.size() > 0)
+				{
+					registeredClients.putIfAbsent(channel, list);
+				}
+			}
+		}
+	}
+
+	@Override
+	public void broadcastMessage(BroadcastInfo info, String message)
+	{
+		// TODO for smart client this is really slow, because getName() call goes to the smart client first all the time.
+		List<BroadcastInfo> list = registeredClients.get(info.getChannelName());
+		if (list != null)
+		{
+			for (BroadcastInfo bci : list)
+			{
+				if (bci != info) try
+				{
+					bci.getBroadCaster().channelMessage(info.getName(), message);
+				}
+				catch (RemoteException e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 
 }
