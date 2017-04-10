@@ -32,8 +32,9 @@ import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.Consumer;
 import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
-import com.rabbitmq.client.ShutdownListener;
-import com.rabbitmq.client.ShutdownSignalException;
+import com.rabbitmq.client.Recoverable;
+import com.rabbitmq.client.RecoverableConnection;
+import com.rabbitmq.client.RecoveryListener;
 import com.servoy.j2db.plugins.IDataNotifyService;
 import com.servoy.j2db.plugins.IServerAccess;
 import com.servoy.j2db.plugins.IServerPlugin;
@@ -88,28 +89,35 @@ public class DataNotifyBroadCaster implements IServerPlugin
 			factory.setHost(hostname);
 			try
 			{
+				final IDataNotifyService dataNotifyService = app.getDataNotifyService();
+
 				connection = factory.newConnection();
-				connection.addShutdownListener(new ShutdownListener()
+				if (connection instanceof RecoverableConnection)
 				{
-					@Override
-					public void shutdownCompleted(ShutdownSignalException cause)
+					((RecoverableConnection)connection).addRecoveryListener(new RecoveryListener()
 					{
-						System.err.println("connection shutdown");
-					}
-				});
+						@Override
+						public void handleRecoveryStarted(Recoverable recoverable)
+						{
+						}
+
+						@Override
+						public void handleRecovery(Recoverable recoverable)
+						{
+							// when a connection is recovered, we don't know what we missed so the only thing to do is a full flush
+							// of all the touched datasources.
+							String[] datasources = dataNotifyService.getUsedDataSources();
+							for (String ds : datasources)
+							{
+								dataNotifyService.flushCachedDatabaseData(ds);
+							}
+						}
+					});
+				}
 				channel = connection.createChannel();
-				channel.addShutdownListener(new ShutdownListener()
-				{
-					@Override
-					public void shutdownCompleted(ShutdownSignalException cause)
-					{
-						System.err.println("channel shutdown");
-					}
-				});
 
 				channel.exchangeDeclare(EXCHANGE_NAME, "fanout");
 
-				final IDataNotifyService dataNotifyService = app.getDataNotifyService();
 				dataNotifyService.registerDataNotifyListener(new DataNotifyListener(ORIGIN_SERVER_UUID, channel, connection));
 
 				String queueName = channel.queueDeclare().getQueue();
@@ -128,19 +136,16 @@ public class DataNotifyBroadCaster implements IServerPlugin
 							if (readObject instanceof NotifyData)
 							{
 								NotifyData nd = (NotifyData)readObject;
-								if (ORIGIN_SERVER_UUID.equals(nd.originServerUUID))
+								if (!ORIGIN_SERVER_UUID.equals(nd.originServerUUID))
 								{
-									System.err.print("ignorning incomming broadcast because it is our own: " + nd);
-								}
-								else if (nd.dataSource != null)
-								{
-									System.err.println("fire full flush for " + readObject);
-									dataNotifyService.flushCachedDatabaseData(nd.dataSource);
-								}
-								else
-								{
-									System.err.println("fire notify data change for  " + readObject);
-									dataNotifyService.notifyDataChange(nd.server_name, nd.table_name, nd.pks, nd.action, nd.insertColumnData);
+									if (nd.dataSource != null)
+									{
+										dataNotifyService.flushCachedDatabaseData(nd.dataSource);
+									}
+									else
+									{
+										dataNotifyService.notifyDataChange(nd.server_name, nd.table_name, nd.pks, nd.action, nd.insertColumnData);
+									}
 								}
 							}
 							else

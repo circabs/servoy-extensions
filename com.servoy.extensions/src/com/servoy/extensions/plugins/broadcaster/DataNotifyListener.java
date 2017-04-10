@@ -21,7 +21,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import com.rabbitmq.client.Channel;
@@ -62,7 +61,6 @@ public class DataNotifyListener implements IDataNotifyListener
 				@Override
 				public void handleRecovery(Recoverable recoverable)
 				{
-					System.err.println("connection recovered trying to send what couldn't be send: " + failedList.size());
 					sendFailedList();
 				}
 			});
@@ -76,15 +74,12 @@ public class DataNotifyListener implements IDataNotifyListener
 	@Override
 	public void flushCachedDatabaseData(String dataSource)
 	{
-		System.err.println("flushing " + dataSource);
 		sendBytes(new NotifyData(originServerUUID, dataSource));
 	}
 
 	@Override
 	public void notifyDataChange(String server_name, String table_name, IDataSet pks, int action, Object[] insertColumnData)
 	{
-		System.err.println("servername : " + server_name + ", tablename: " + table_name + " has changes: " + pks + ", action " + action + ", column data: " +
-			Arrays.toString(insertColumnData));
 		sendBytes(new NotifyData(originServerUUID, server_name, table_name, pks, action, insertColumnData));
 	}
 
