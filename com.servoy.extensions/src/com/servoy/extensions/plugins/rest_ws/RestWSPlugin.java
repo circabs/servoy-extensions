@@ -1,4 +1,4 @@
-/*
+*
  This file belongs to the Servoy development and deployment environment, Copyright (C) 1997-2010 Servoy BV
 
  This program is free software; you can redistribute it and/or modify it under
@@ -220,9 +220,19 @@ public class RestWSPlugin implements IServerPlugin
 
 	public static class NoClientsException extends Exception
 	{
+
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 8443437048344634302L;
 	}
 	public static class NotAuthorizedException extends Exception
 	{
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 8982064741754218209L;
+
 		public NotAuthorizedException(String message)
 		{
 			super(message);
@@ -230,6 +240,10 @@ public class RestWSPlugin implements IServerPlugin
 	}
 	public static class NotAuthenticatedException extends Exception
 	{
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = -1673394822247292724L;
 		private final String realm;
 
 		public NotAuthenticatedException(String realm)

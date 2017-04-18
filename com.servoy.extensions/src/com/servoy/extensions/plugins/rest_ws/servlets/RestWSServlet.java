@@ -20,7 +20,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Writer;
+import java.net.InetAddress;
 import java.util.Arrays;
+import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
@@ -81,6 +83,10 @@ import com.servoy.j2db.util.Utils;
 @SuppressWarnings("nls")
 public class RestWSServlet extends HttpServlet
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3061822312551686355L;
 	// solution method names
 	private static final String WS_UPDATE = "ws_update";
 	private static final String WS_CREATE = "ws_create";
@@ -104,31 +110,6 @@ public class RestWSServlet extends HttpServlet
 	{
 		this.webServiceName = webServiceName;
 		this.plugin = restWSPlugin;
-	}
-
-	@Override
-	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
-	{
-		String value = request.getHeader("Origin");
-		if (value != null)
-		{
-			response.setHeader("Access-Control-Allow-Origin", value);
-			response.setHeader("Access-Control-Max-Age", "1728000");
-			response.setHeader("Access-Control-Allow-Credentials", "true");
-
-			if (request.getHeader("Access-Control-Request-Method") != null)
-			{
-				response.setHeader("Access-Control-Allow-Methods", "GET, DELETE, POST, PUT, OPTIONS");
-			}
-
-			value = request.getHeader("Access-Control-Request-Headers");
-			if (value != null)
-			{
-				response.setHeader("Access-Control-Allow-Headers", value);
-			}
-		}
-
-		super.service(request, response);
 	}
 
 	@Override
@@ -231,21 +212,35 @@ public class RestWSServlet extends HttpServlet
 	{
 		try
 		{
+			String remoteHost = request.getRemoteAddr();
+			InetAddress remoteAddress =  InetAddress.getByName(remoteHost);
+
+			if (!remoteAddress.isLoopbackAddress())
+			{
+				sendError(response, HttpServletResponse.SC_FORBIDDEN);
+				return;
+			}
+
 			String contents = getBody(request);
-			plugin.log.trace("POST contents='" + contents + "'");
-			if (contents == null || contents.length() == 0)
+			plugin.log.debug("POST contents='" + contents + "'");
+			
+			if ((contents == null) || (contents.length() == 0))
 			{
 				sendError(response, HttpServletResponse.SC_NO_CONTENT);
 				return;
 			}
+
 			int contentType = getContentType(request, "Content-Type", contents, CONTENT_OTHER);
+			
 			if (contentType == CONTENT_OTHER)
 			{
 				sendError(response, HttpServletResponse.SC_UNSUPPORTED_MEDIA_TYPE);
 				return;
 			}
+
 			Object result = wsService(WS_CREATE, new Object[] { decodeRequest(contentType, contents) }, request, response);
 			HTTPUtils.setNoCacheHeaders(response);
+			
 			if (result != null)
 			{
 				sendResult(request, response, result, contentType);
@@ -379,18 +374,21 @@ public class RestWSServlet extends HttpServlet
 		try
 		{
 			client = plugin.getClient(wsRequest.solutionName);
-			checkAuthorization(request, client.getPluginAccess(), wsRequest.solutionName, wsRequest.formName);
-
 			FunctionDefinition fd = new FunctionDefinition(wsRequest.formName, methodName);
 			Exist functionExists = fd.exists(client.getPluginAccess());
+			
 			if (functionExists == FunctionDefinition.Exist.NO_SOLUTION)
 			{
 				throw new WebServiceException("Solution " + wsRequest.solutionName + "not loaded", HttpServletResponse.SC_SERVICE_UNAVAILABLE);
 			}
+			
+			String username = checkAuthorization(request, client.getPluginAccess(), wsRequest.solutionName, wsRequest.formName);
+
 			if (functionExists == FunctionDefinition.Exist.FORM_NOT_FOUND)
 			{
 				throw new WebServiceException("Form " + wsRequest.formName + " not found", HttpServletResponse.SC_NOT_FOUND);
 			}
+
 			if (functionExists != FunctionDefinition.Exist.METHOD_FOUND)
 			{
 				throw new WebServiceException("Method " + methodName + "not found" + (wsRequest.formName != null ? " on form " + wsRequest.formName : ""),
@@ -398,65 +396,80 @@ public class RestWSServlet extends HttpServlet
 			}
 
 			FunctionDefinition fd_headers = new FunctionDefinition(wsRequest.formName, WS_RESPONSE_HEADERS);
+			
 			if (fd_headers.exists(client.getPluginAccess()) == FunctionDefinition.Exist.METHOD_FOUND)
 			{
 				Object result = fd_headers.executeSync(client.getPluginAccess(), null);
+				
 				if (result instanceof String)
 				{
 					String[] l_r = String.valueOf(result).split("=");
-					if (l_r.length == 2) response.addHeader(l_r[0], l_r[1]);
+					
+					if (l_r.length == 2)
+						response.addHeader(l_r[0], l_r[1]);
 				}
 				else if (result instanceof Object[])
 				{
 					Object[] resultArray = (Object[])result;
+
 					for (Object element : resultArray)
 					{
 						String[] l_r = String.valueOf(element).split("=");
-						if (l_r.length == 2) response.addHeader(l_r[0], l_r[1]);
+						
+						if (l_r.length == 2)
+							response.addHeader(l_r[0], l_r[1]);
 					}
 				}
 			}
 
 			Object[] args = null;
-			if (fixedArgs != null || wsRequest.args.length > 0 || request.getParameterMap().size() > 0)
-			{
-				args = new Object[((fixedArgs == null) ? 0 : fixedArgs.length) + wsRequest.args.length + (request.getParameterMap().size() > 0 ? 1 : 0)];
-				int idx = 0;
-				if (fixedArgs != null)
-				{
-					System.arraycopy(fixedArgs, 0, args, 0, fixedArgs.length);
-					idx += fixedArgs.length;
-				}
-				if (wsRequest.args.length > 0)
-				{
-					System.arraycopy(wsRequest.args, 0, args, idx, wsRequest.args.length);
-					idx += wsRequest.args.length;
-				}
-				if (request.getParameterMap().size() > 0)
-				{
-					JSMap jsMap = new JSMap();
-					Iterator<Entry<String, Object>> parameters = request.getParameterMap().entrySet().iterator();
-					while (parameters.hasNext())
-					{
-						Entry<String, Object> entry = parameters.next();
-						if (entry.getValue() instanceof String)
-						{
-							jsMap.put(entry.getKey(), new String[] { (String)entry.getValue() });
-						}
-						else if (entry.getValue() instanceof String[] && ((String[])entry.getValue()).length > 0)
-						{
-							jsMap.put(entry.getKey(), entry.getValue());
-						}
-					}
+			
+			int objectSize = ((fixedArgs == null) ? 0 : fixedArgs.length) + wsRequest.args.length + (request.getParameterMap().size() > 0 ? 1 : 0);
+			objectSize++; // Allow for user name as first argument.
+			args = new Object[objectSize];
+			int idx = 0;
+			args[idx++] = username;
 
-					args[idx++] = jsMap;
+			if (fixedArgs != null)
+			{
+				System.arraycopy(fixedArgs, 0, args, idx, fixedArgs.length);
+				idx += fixedArgs.length;
+			}
+
+			if (wsRequest.args.length > 0)
+			{
+				System.arraycopy(wsRequest.args, 0, args, idx, wsRequest.args.length);
+				idx += wsRequest.args.length;
+			}
+
+			if (request.getParameterMap().size() > 0)
+			{
+				JSMap jsMap = new JSMap();
+				@SuppressWarnings("unchecked")
+				Iterator<Entry<String, Object>> parameters = request.getParameterMap().entrySet().iterator();
+
+				while (parameters.hasNext())
+				{
+					Entry<String, Object> entry = parameters.next();
+				
+					if (entry.getValue() instanceof String)
+					{
+						jsMap.put(entry.getKey(), new String[] { (String)entry.getValue() });
+					}
+					else if (entry.getValue() instanceof String[] && ((String[])entry.getValue()).length > 0)
+					{
+						jsMap.put(entry.getKey(), entry.getValue());
+					}
 				}
+
+				args[idx++] = jsMap;
 			}
 
 			plugin.log.debug("executeMethod('" + wsRequest.formName + "', '" + methodName + "', <args>)");
 			//DO NOT USE FunctionDefinition here! we want to be able to catch possible exceptions! 
 			Object result = client.getPluginAccess().executeMethod(wsRequest.formName, methodName, args, false);
 			plugin.log.debug("result = " + (result == null ? "<NULL>" : ("'" + result + '\'')));
+
 			return result;
 		}
 		finally
@@ -475,90 +488,96 @@ public class RestWSServlet extends HttpServlet
 		}
 	}
 
-	private void checkAuthorization(HttpServletRequest request, IClientPluginAccess client, String solutionName, String formName) throws Exception
+	private String checkAuthorization(HttpServletRequest request, IClientPluginAccess client, String solutionName, String formName) throws Exception
 	{
-		String[] authorizedGroups = plugin.getAuthorizedGroups();
 		FunctionDefinition fd = new FunctionDefinition(formName, WS_AUTHENTICATE);
 		Exist authMethodExists = fd.exists(client);
-		if (authorizedGroups == null && authMethodExists != FunctionDefinition.Exist.METHOD_FOUND)
+		
+		if (authMethodExists == FunctionDefinition.Exist.FORM_NOT_FOUND)
 		{
-			plugin.log.debug("No authorization to check, allow all access");
-			return;
+			throw new WebServiceException("Form " + formName + " not found", HttpServletResponse.SC_NOT_FOUND);
+		}
+
+		if (authMethodExists != FunctionDefinition.Exist.METHOD_FOUND)
+		{
+			throw new WebServiceException("Method " + WS_AUTHENTICATE + "not found" + (formName != null ? " on form " + formName : ""),
+				HttpServletResponse.SC_METHOD_NOT_ALLOWED);
 		}
 
 		//Process authentication Header
 		String authorizationHeader = request.getHeader("Authorization");
+		@SuppressWarnings("rawtypes")
+		Enumeration headerNames = request.getHeaderNames();
+		
+		while (headerNames.hasMoreElements())
+		{
+			String headerName = (String)headerNames.nextElement();
+			@SuppressWarnings("rawtypes")
+			Enumeration headers = request.getHeaders(headerName);
+			
+			while (headers.hasMoreElements())
+			{
+				String header = (String)headers.nextElement();
+				plugin.log.debug("Header Name: '" + headerName + "' - Contents: '" + header + "'");
+			}
+		}
+		
+		plugin.log.info("Auth Type: '" + request.getAuthType() + "'");
+		
 		String user = null;
 		String password = null;
+		String domain = null;
+		
 		if (authorizationHeader != null)
 		{
+			plugin.log.info("Raw Authorization Header: '" + authorizationHeader + "'");
+
 			if (authorizationHeader.toLowerCase().startsWith("basic "))
 			{
 				String authorization = authorizationHeader.substring(6);
+				// TODO: which encoding to use? see http://tools.ietf.org/id/draft-reschke-basicauth-enc-05.xml
 				authorization = new String(Utils.decodeBASE64(authorization));
 				int index = authorization.indexOf(':');
+
 				if (index > 0)
 				{
 					user = authorization.substring(0, index);
 					password = authorization.substring(index + 1);
+					
+					index = user.indexOf('\\');
+					
+					if (index > 0)
+					{
+						domain = user.substring(0, index);
+						user = user.substring(index + 1);
+					}
+					else
+						domain = "";
+					
+					plugin.log.info("Username: '" + user + "'  Password: '" + password + "'  Domain: '" + domain + "'");
 				}
 			}
 			else
 			{
-				plugin.log.debug("No or unsupported Authorization header");
+				plugin.log.info("No or unsupported Authorization header");
 			}
 		}
 		else
 		{
-			plugin.log.debug("No Authorization header");
+			plugin.log.info("No Authorization header");
 		}
 
 		if (user == null || password == null || user.trim().length() == 0 || password.trim().length() == 0)
 		{
-			plugin.log.debug("No credentials to proceed with authentication");
+			plugin.log.info("No credentials to proceed with authentication");
 			throw new NotAuthenticatedException(solutionName);
 		}
 
-		//Process the Authentication Header values
-		if (authMethodExists == FunctionDefinition.Exist.METHOD_FOUND)
-		{
-			if (Boolean.TRUE.equals(fd.executeSync(client, (new String[] { user, password }))))
-			{
-				return;
-			}
-			plugin.log.debug("Authentication method " + WS_AUTHENTICATE + " denied authentication");
-			throw new NotAuthenticatedException(solutionName);
-		}
-
-		String userUid = plugin.getServerAccess().checkPasswordForUserName(user, password);
-		if (userUid == null)
-		{
-			plugin.log.debug("Supplied credentails not valid");
-			throw new NotAuthenticatedException(user);
-		}
-
-
-		String[] userGroups = plugin.getServerAccess().getUserGroups(userUid);
-		// find a match in groups
-		if (userGroups != null)
-		{
-			for (String ug : userGroups)
-			{
-				for (String ag : authorizedGroups)
-				{
-					if (ag.trim().equals(ug))
-					{
-						if (plugin.log.isDebugEnabled())
-						{
-							plugin.log.debug("Authorized access for user " + user + ", group " + ug);
-						}
-						return;
-					}
-				}
-			}
-		}
-		// no match
-		throw new NotAuthorizedException("User not authorized");
+		if (Boolean.TRUE.equals(fd.executeSync(client, (new String[] { user, password }))))
+			return(user);
+			
+		plugin.log.error("Authentication method " + WS_AUTHENTICATE + " denied authentication");
+		throw new NotAuthenticatedException(solutionName);
 	}
 
 	protected String getBody(HttpServletRequest request) throws IOException
@@ -789,6 +808,10 @@ public class RestWSServlet extends HttpServlet
 
 	public static class WebServiceException extends Exception
 	{
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 128349552708339442L;
 		public final int httpResponseCode;
 
 		public WebServiceException(String message, int httpResponseCode)
