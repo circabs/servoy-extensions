@@ -45,7 +45,7 @@ import com.servoy.j2db.util.serialize.NativeObjectSerializer;
  * Configuration:
  * <ul>
  * <li>rest_ws_plugin_client_pool_size, default 5
- * <l/i>rest_ws_plugin_client_pool_exhausted_action [block/fail/grow], default block
+ * <li>rest_ws_plugin_client_pool_exhausted_action [block/fail/grow], default block
  * </ul>
  * 
  * @see RestWSServlet
