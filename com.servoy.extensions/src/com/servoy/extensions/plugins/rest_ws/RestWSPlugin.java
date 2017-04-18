@@ -1,4 +1,4 @@
-*
+/*
  This file belongs to the Servoy development and deployment environment, Copyright (C) 1997-2010 Servoy BV
 
  This program is free software; you can redistribute it and/or modify it under
@@ -45,7 +45,7 @@ import com.servoy.j2db.util.serialize.NativeObjectSerializer;
  * Configuration:
  * <ul>
  * <li>rest_ws_plugin_client_pool_size, default 5
- * <li>rest_ws_plugin_client_pool_exhausted_action [block/fail/grow], default block
+ * <l/i>rest_ws_plugin_client_pool_exhausted_action [block/fail/grow], default block
  * </ul>
  * 
  * @see RestWSServlet
